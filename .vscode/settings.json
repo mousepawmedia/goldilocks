@@ -1,0 +1,9 @@
+{
+    "workbench.colorCustomizations": {
+        "statusBar.background": "#eb5424",
+        "statusBarItem.hoverBackground": "#ef7853",
+        "statusBar.foreground": "#e7e7e7"
+    },
+    "peacock.color": "#eb5424",
+    "restructuredtext.confPath": "${workspaceFolder}/docs/source"
+}
