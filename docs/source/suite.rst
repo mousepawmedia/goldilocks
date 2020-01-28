@@ -19,7 +19,7 @@ batch run halts and returns false.
 Structure
 =====================================================
 
-Every Goldilocks suite is derived from the ``TestSuite`` abstract class. This
+Every Goldilocks suite is derived from the ``Suite`` abstract class. This
 only has two functions to overload, but both are required.
 
 ..  index::
@@ -30,7 +30,7 @@ only has two functions to overload, but both are required.
 ``get_title()``
 -----------------------------------------------------
 
-Returns a string (of type ``testsuitedoc_t``) with the title of the
+Returns a string (of type ``Suitedoc_t``) with the title of the
 suite. This is the a required function for any test.
 
 ..  NOTE:: The title is separate from the ID (name) of the test used to
@@ -45,7 +45,7 @@ suite. This is the a required function for any test.
 
 This function specifies which tests belong to the suite.
 
-``TestSuite`` provides a function ``register_test()`` which properly registers
+``Suite`` provides a function ``register_test()`` which properly registers
 each test with both the suite and the TestManager itself. For convenience, it
 follows the same format as ``TestManager::register_test()``, with the exception
 of an optional boolean argument for specifying a test which belongs to the
@@ -60,7 +60,7 @@ Below is an example of a Suite's ``load_tests``.
 
 ..  code-block:: c++
 
-    void TestSuite_MagicThing::load_tests()
+    void Suite_MagicThing::load_tests()
     {
         /* Register this test with both the suite and the test manager.
          * Also register the comparative form. */
@@ -94,9 +94,9 @@ as above, it is registered with...
 ..  code-block:: c++
 
     //Assuming testmanager is our instance of the Goldilocks test manager.
-    testmanager.register_suite("TestSuiteFoo", new TestSuiteFoo());
+    testmanager.register_suite("SuiteFoo", new SuiteFoo());
 
-As with tests, Goldilocks owns the instance of ``TestSuiteFoo``, and
+As with tests, Goldilocks owns the instance of ``SuiteFoo``, and
 automatically handles its deletion at the proper time.
 
 ..  WARNING:: Goldilocks requires exclusive ownership of each suite
@@ -113,7 +113,7 @@ on demand. This is especially useful if you have hundreds or thousands of tests.
 ..  code-block:: c++
 
     //Load a particular suite.
-    testmanager.load_suite("TestSuiteFoo");
+    testmanager.load_suite("SuiteFoo");
 
 Of course, sometimes you don't want to have to load each suite manually.
 As a shortcut, you can just load all suites currently registered with the
@@ -134,4 +134,4 @@ You can start a batch run of all the suite's tests using...
 ..  code-block:: c++
 
     //Batch run all tests in a suite.
-    testmanager.run_suite("TestSuiteFoo");
+    testmanager.run_suite("SuiteFoo");

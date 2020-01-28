@@ -10,7 +10,7 @@ What good are tests without a way to run them? While you can certainly
 write your own class for interacting with Golidlocks, we wanted to provide
 a quick and easy way to run your tests and suites interactively.
 
-Assuming you have one or more TestSuites configured
+Assuming you have one or more Suites configured
 (see :ref:`goldilocks_suites`), you can set up a GoldilocksShell
 relatively quickly!
 
@@ -23,7 +23,7 @@ We import GoldilocksShell with...
 
 ..  code-block:: c++
 
-    #include "pawlib/goldilocks_shell.hpp"
+    #include "goldilocks/goldilocks_shell.hpp"
 
 We start by defining a new ``GoldilocksShell`` object instaces somewhere in our
 code, preferably in our ``main()`` function.
@@ -35,17 +35,17 @@ code, preferably in our ``main()`` function.
 The part in quotes is the *prompt string*, which will appear at the start
 of every line where the user can type in the interactive terminal.
 
-Now we need to register all of our Goldilocks ``TestSuite`` classes with the
+Now we need to register all of our Goldilocks ``Suite`` classes with the
 shell. Note that we don't need to create instances of these ourselves, but
 merely pass the class as a type. We also need to specify the name of the
 suite in quotes: this name will be what is used to idenfity it in the shell.
 
 ..  code-block:: c++
 
-    shell->register_suite<TestSuite_Brakes>("s-brakes");
-    shell->register_suite<TestSuite_Hologram>("s-hologram");
-    shell->register_suite<TestSuite_TimeRotor>("s-timerotor");
-    shell->register_suite<TestSuite_CloisterBell>("s-cloisterbell");
+    shell->register_suite<Suite_Brakes>("s-brakes");
+    shell->register_suite<Suite_Hologram>("s-hologram");
+    shell->register_suite<Suite_TimeRotor>("s-timerotor");
+    shell->register_suite<Suite_CloisterBell>("s-cloisterbell");
 
 That is it! We are now ready to use GolidlocksShell.
 
@@ -62,7 +62,7 @@ GoldilocksShell via a single line of code...
     shell->interactive();
 
 The GoldilocksShell will immediately launch and take over the terminal, using
-IOChannel.
+Channel.
 
 ..  _goldilocksshell_interactive_commands:
 
@@ -374,10 +374,10 @@ function set up to use GoldilocksShell, as outlined in the previous sections.
     {
         GoldilocksShell* shell = new GoldilocksShell(">> ");
 
-        shell->register_suite<TestSuite_Brakes>("s-brakes");
-        shell->register_suite<TestSuite_Hologram>("s-hologram");
-        shell->register_suite<TestSuite_TimeRotor>("s-timerotor");
-        shell->register_suite<TestSuite_CloisterBell>("s-cloisterbell");
+        shell->register_suite<Suite_Brakes>("s-brakes");
+        shell->register_suite<Suite_Hologram>("s-hologram");
+        shell->register_suite<Suite_TimeRotor>("s-timerotor");
+        shell->register_suite<Suite_CloisterBell>("s-cloisterbell");
 
         // If we got command-line arguments...
         if(argc > 1)
