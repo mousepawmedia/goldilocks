@@ -56,4 +56,13 @@ enum class GolidlocksItemType
     suite
 };
 
+enum class TestStatus
+{
+    OK,
+    PREFAIL,
+    FAIL,
+    POSTFAIL,
+    CONFUSED
+};
+
 #endif //GOLDILOCKS_TYPES_HPP

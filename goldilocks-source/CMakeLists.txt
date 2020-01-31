@@ -141,6 +141,7 @@ include_directories(${EVENTPP_DIR}/include)
 
 # CHANGEME: Include files to compile.
 add_library(${TARGET_NAME} STATIC
+    include/goldilocks/assertions.hpp
     include/goldilocks/benchmark.hpp
     include/goldilocks/benchmark_result.hpp
     include/goldilocks/manager.hpp
@@ -148,11 +149,7 @@ add_library(${TARGET_NAME} STATIC
     include/goldilocks/test.hpp
     include/goldilocks/types.hpp
 
-    include/goldilocks/goldilocks.hpp
-    include/goldilocks/goldilocks_assertions.hpp
     include/goldilocks/goldilocks_shell.hpp
-
-    src/goldilocks.cpp
     src/goldilocks_shell.cpp
 )
 

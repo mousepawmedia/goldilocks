@@ -93,8 +93,8 @@ public:
 
     /** Verify test success.
      * If undefined, always returns true.
-         * \return true if successful, false if the test fails.
-         */
+     * \return true if successful, false if the test fails.
+     */
     virtual bool verify() { return true; }
 
     /**Clean up after successful test.

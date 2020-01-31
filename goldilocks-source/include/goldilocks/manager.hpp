@@ -48,24 +48,16 @@
 #define GOLDILOCKS_MANAGER_HPP
 
 #include <stdexcept>
-// uint64_t and friends
-#include <cstdlib>
-// std::unique_ptr
-#include <memory>
-// std::map (we will use this here)
-#include <map>
-// std::vector (we will use this here)
-#include <vector>
+#include <cstdlib>  // uint64_t and friends
+#include <memory>  // std::unique_ptr
+#include <map>  // std::map
+#include <vector>  // std::vector
 
-// String Manipulation
-#include "iosqueak/stringy.hpp"
-// Output
-#include "iosqueak/channel.hpp"
-// Sorting
-#include "pawlib/pawsort.hpp"
+#include "iosqueak/stringy.hpp"  // String Manipulation
+#include "iosqueak/channel.hpp"  // Output
+#include "pawlib/pawsort.hpp"  // Sorting
 
-#include "goldilocks/goldilocks_assertions.hpp"
-
+#include "goldilocks/assertions.hpp"
 #include "goldilocks/benchmark.hpp"
 #include "goldilocks/benchmark_result.hpp"
 #include "goldilocks/suite.hpp"
@@ -77,6 +69,13 @@ class Suite;
 
 class TestManager
 {
+protected:
+    /** Stores all of the Suite pointers for access-by-name-string. */
+    std::map<suitename_t, suiteptr_t> suites;
+
+    /* We are using std::map intentionally above. Dynamic allocation is
+     * more appropriate in this situation, especially since test
+     * registration should be on-demand and front-loaded (all at once).*/
 public:
     /* We are using smart pointers, so that TestManager exclusively
         * owns all test instances it uses, and thus can delete them
@@ -85,7 +84,7 @@ public:
     /**The TestManager doesn't need anything to its constructor,
      * as all of its tests will be added ("registered") after the
      * fact, and it doesn't do any heap allocation besides that.*/
-    TestManager() : tests(), suites(), comparatives() {}
+    TestManager() = default;
 
     /**List all tests registered with the TestManager.
      * \param whether to show the titles
@@ -119,7 +118,7 @@ public:
         /* Loop through all the indexes in the map `suites`...
             * SOURCE: http://stackoverflow.com/a/110255/472647
             */
-        for(std::map<suitename_t, Suiteptr_t>::iterator it = suites.begin(); it != suites.end(); ++it)
+        for(std::map<suitename_t, suiteptr_t>::iterator it = suites.begin(); it != suites.end(); ++it)
         {
             // Print out the index to Channel.
             out << it->first;
@@ -148,7 +147,7 @@ public:
             /* Loop through all the indexes in the map `suites`...
                 * SOURCE: http://stackoverflow.com/a/110255/472647
                 */
-            for(std::map<suitename_t, Suiteptr_t>::iterator it = suites.begin(); it != suites.end(); ++it)
+            for(std::map<suitename_t, suiteptr_t>::iterator it = suites.begin(); it != suites.end(); ++it)
             {
                 // Load each suite that isn't already loaded.
                 if(it->second->is_loaded() == false)
@@ -309,7 +308,7 @@ public:
             * string as the key, and a smart pointer (unique_ptr) to the suite.
             * emplace() allows us to define the new unique_ptr within the map,
             * as insert() would literally NOT work (you can't copy a unique_ptr).*/
-        suites.emplace(suite_name, Suiteptr_t(suite));
+        suites.emplace(suite_name, suiteptr_t(suite));
 
         /* WARNING: The end-developer must be sure they aren't trying to
             * retain ownership of the Suite instance, as that will cause UB
@@ -1426,20 +1425,6 @@ protected:
             << "Cache warming will NOT be performed.\n"
             << IOCtrl::endl;
     }
-
-    /** Stores all of the test pointers for access-by-name-string. */
-    std::map<testname_t, testptr_t> tests;
-
-    /** Stores all of the Suite pointers for access-by-name-string. */
-    std::map<suitename_t, Suiteptr_t> suites;
-
-    /** Stores all of the comparative test pointers for
-     * access-by-name-string. */
-    std::map<testname_t, testptr_t> comparatives;
-
-    /* We are using std::map intentionally above. Dynamic allocation is
-     * more appropriate in this situation, especially since test
-     * registration should be on-demand and front-loaded (all at once).*/
 };
 
 #endif // GOLDILOCKS_MANAGER_HPP

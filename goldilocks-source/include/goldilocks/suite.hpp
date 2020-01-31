@@ -1,13 +1,14 @@
 /** Suite [Goldilocks]
  * Version: 2.0
  *
- * The base class for all Goldilocks suites.
+ * A Suite is responsible for organizing Tests, allowing them to be loaded
+ * and run on-demand. Suites also report what tests it contains.
  *
  * Author(s): Jason C. McDonald
  */
 
 /* LICENSE (BSD-3-Clause)
- * Copyright (c) 2016-2019 MousePaw Media.
+ * Copyright (c) 2016-2020 MousePaw Media.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -49,19 +50,19 @@
 
 class TestManager;
 
-/**A Suite is responsible for registering a batch of Tests with
- * Goldilocks Test Manager on demand. This is primarily useful if an
- * interactive test console is implemented, as we can load batches of
- * tests when, and only when, we need them. A Suite should also
- * be able to report what tests it contains, for user reference while
- * using the interactive test console.
- */
 class Suite
 {
     friend class TestManager;
+protected:
+    /** Stores all of the test pointers for access-by-name-string. */
+    std::map<testname_t, testptr_t> tests;
+
+    /** Stores all of the comparative test pointers for
+     * access-by-name-string. */
+    std::map<testname_t, testptr_t> comparatives;
 
 public:
-    Suite() : testmanager(0), loaded(false) {}
+    Suite() : loaded(false) {}
 
     /** Load all of the tests into the testsystem and suite.
      */
@@ -72,7 +73,7 @@ public:
     /** Run all of the tests in the suite.
      * \return true if all the tests run, else false
      */
-    bool run_tests()
+    bool run_tests() final
     {
         // If we have a valid testmanager and tests to run...
         if(testmanager && tests_run.size() > 0)
@@ -115,7 +116,7 @@ public:
      * Used directly by Goldilocks.
      * \param whether to mark the suite as loaded
      * \return true if loaded, else false */
-    bool is_loaded(bool mark = false)
+    bool is_loaded(bool mark = false) final
     {
         if (mark)
         {
@@ -127,11 +128,11 @@ public:
     virtual ~Suite() {}
 
 protected:
-    /** Register a test with both the suite and the testmanager.
+    /** Register a test with the suite.
      * This is here purely for end-developer convenience when creating
      * a derived Suite.
-     * \param the name of the test
-     * \param the pointer to the test (declare "new" for this argument)
+     * \param name of the test
+     * \param pointer to the test (declare "new" for this argument)
      * \param whether to run the test on suite run (default true)
      */
     void register_test(testname_t test_name, Test* test, bool will_run = true, Test* compare = 0)
@@ -140,6 +141,9 @@ protected:
         if(testmanager)
         {
             // Register the test with the testmanager.
+            /* FIXME: Remove "backregister" pattern and just store tests in
+             * Suite. Have Manager share pointers/names managed by Suites.
+             */
             testmanager->register_test(test_name, test, compare);
             // Store the test name for loading on demand.
             tests_load.push_back(test_name);
@@ -159,35 +163,16 @@ protected:
         }
     }
 
-    /// The list of tests to load. Mainly here for reference right now.
-    std::vector<testname_t> tests_load;
-
     /** The list of tests to run. This should always be a subset
      * of tests_load. */
     std::vector<testname_t> tests_run;
-
-    /** We store the pointer to the testmanager we're using in
-     * this instance for ease of test registration. */
-    TestManager* testmanager;
 
     /** Tracks whether we've already loaded this suite, to prevent
      * loading multiple times into one testmanager. */
     bool loaded;
 
-private:
-    /** Completes registration of a suite with the testmanager.
-     * This is only accessible by TestManager: it is even hidden
-     * from the derived classes and end-developer (intentionally).
-     * \param the pointer to the TestManager controlling the suite.
-     */
-    void backregister(TestManager* tm)
-    {
-        testmanager = tm;
-    }
-};
-
 /* The Suite smart pointer type shall henceforth be known
- * as "Suiteptr_t".*/
-typedef std::unique_ptr<Suite> Suiteptr_t;
+ * as "suiteptr_t".*/
+typedef std::unique_ptr<Suite> suiteptr_t;
 
 #endif // GOLDILOCKS_SUITE_HPP

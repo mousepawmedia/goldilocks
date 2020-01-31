@@ -42,6 +42,8 @@
 #ifndef GOLDILOCKS_BENCHMARK_HPP
 #define GOLDILOCKS_BENCHMARK_HPP
 
+#include "goldilocks/test.hpp"
+
 // MACRO IF we are using a GCC-style compiler.
 // NOTE: We're assuming Intel/AMD. What about PowerPC and ARM?
 #if defined __GNUC__ || __MINGW32__ || __MINGW64__

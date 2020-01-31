@@ -1,5 +1,5 @@
-/** Goldilocks Test System: Assertions
- * Version: 1.2
+/** Assertions [Goldilocks]
+ * Version: 2.0
  *
  * Assertion functions and macros for Goldilocks.
  *
@@ -41,8 +41,8 @@
  * on how to contribute to our projects.
  */
 
-#ifndef PAWLIB_GOLDILOCKS_ASSERT_HPP
-#define PAWLIB_GOLDILOCKS_ASSERT_HPP
+#ifndef GOLDILOCKS_ASSERT_HPP
+#define GOLDILOCKS_ASSERT_HPP
 
 // String Manipulation
 #include "iosqueak/stringy.hpp"
@@ -50,46 +50,46 @@
 #include "iosqueak/channel.hpp"
 
 // Assertion macros
-#define PL_ASSERT_TRUE(val) \
+#define GL_ASSERT_TRUE(val) \
     do { if (!do_assert_true(val)) { return false; } } while(0)
 
-#define PL_ASSERT_FALSE(val) \
+#define GL_ASSERT_FALSE(val) \
     do { if (!do_assert_false(val)) { return false; } } while(0)
 
-#define PL_ASSERT_EQUAL(lhs, rhs) \
+#define GL_ASSERT_EQUAL(lhs, rhs) \
     do { if (!do_assert_equal(lhs, rhs)) { return false; } } while(0)
 
-#define PL_ANTIASSERT_EQUAL(lhs, rhs) \
+#define GL_ANTIASSERT_EQUAL(lhs, rhs) \
     do { if (!do_antiassert_equal(lhs, rhs)) { return false; } } while(0)
 
-#define PL_ASSERT_NOT_EQUAL(lhs, rhs) \
+#define GL_ASSERT_NOT_EQUAL(lhs, rhs) \
     do { if (!do_assert_not_equal(lhs, rhs)) { return false; } } while(0)
 
-#define PL_ANTIASSERT_NOT_EQUAL(lhs, rhs) \
+#define GL_ANTIASSERT_NOT_EQUAL(lhs, rhs) \
     do { if (!do_antiassert_not_equal(lhs, rhs)) { return false; } } while(0)
 
-#define PL_ASSERT_LESS(lhs, rhs) \
+#define GL_ASSERT_LESS(lhs, rhs) \
     do { if (!do_assert_less(lhs, rhs)) { return false; } } while(0)
 
-#define PL_ANTIASSERT_LESS(lhs, rhs) \
+#define GL_ANTIASSERT_LESS(lhs, rhs) \
     do { if (!do_antiassert_less(lhs, rhs)) { return false; } } while(0)
 
-#define PL_ASSERT_LESS_EQUAL(lhs, rhs) \
+#define GL_ASSERT_LESS_EQUAL(lhs, rhs) \
     do { if (!do_assert_less_equal(lhs, rhs)) { return false; } } while(0)
 
-#define PL_ANTIASSERT_LESS_EQUAL(lhs, rhs) \
+#define GL_ANTIASSERT_LESS_EQUAL(lhs, rhs) \
     do { if (!do_antiassert_less_equal(lhs, rhs)) { return false; } } while(0)
 
-#define PL_ASSERT_GREATER(lhs, rhs) \
+#define GL_ASSERT_GREATER(lhs, rhs) \
     do { if (!do_assert_greater(lhs, rhs)) { return false; } } while(0)
 
-#define PL_ANTIASSERT_GREATER(lhs, rhs) \
+#define GL_ANTIASSERT_GREATER(lhs, rhs) \
     do { if (!do_antiassert_greater(lhs, rhs)) { return false; } } while(0)
 
-#define PL_ASSERT_GREATER_EQUAL(lhs, rhs) \
+#define GL_ASSERT_GREATER_EQUAL(lhs, rhs) \
     do { if (!do_assert_greater_equal(lhs, rhs)) { return false; } } while(0)
 
-#define PL_ANTIASSERT_GREATER_EQUAL(lhs, rhs) \
+#define GL_ANTIASSERT_GREATER_EQUAL(lhs, rhs) \
     do { if (!do_antiassert_greater_equal(lhs, rhs)) { return false; } } while(0)
 
 // TODO: Predicate [P, v... => P(v...)], Throws, NaN, INF, no-throw, fail w/ message, skip, report, warn
@@ -666,4 +666,4 @@ bool do_antiassert_greater_equal(T* lhs, U* rhs)
     return r;
 }
 
-#endif // PAWLIB_GOLDILOCKS_ASSERT_HPP
+#endif // GOLDILOCKS_ASSERT_HPP
