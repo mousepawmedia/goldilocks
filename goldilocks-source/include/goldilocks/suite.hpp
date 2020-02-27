@@ -51,9 +51,18 @@
 class TestManager;
 
 class Suite
-{
+    // Allow TestManager to access everything in this class.
     friend class TestManager;
+
 protected:
+    /** The list of tests to run. This should always be a subset
+     * of tests_load. */
+    std::vector<testname_t> tests_run;
+
+    /** Tracks whether we've already loaded this suite, to prevent
+     * loading multiple times into one testmanager. */
+    bool loaded;
+
     /** Stores all of the test pointers for access-by-name-string. */
     std::map<testname_t, testptr_t> tests;
 
@@ -64,8 +73,7 @@ protected:
 public:
     Suite() : loaded(false) {}
 
-    /** Load all of the tests into the testsystem and suite.
-     */
+    /// Load all of the tests into the testsystem and suite.
     virtual void load_tests() = 0;
 
     virtual testdoc_t get_title() = 0;
@@ -162,14 +170,6 @@ protected:
             return;
         }
     }
-
-    /** The list of tests to run. This should always be a subset
-     * of tests_load. */
-    std::vector<testname_t> tests_run;
-
-    /** Tracks whether we've already loaded this suite, to prevent
-     * loading multiple times into one testmanager. */
-    bool loaded;
 
 /* The Suite smart pointer type shall henceforth be known
  * as "suiteptr_t".*/
