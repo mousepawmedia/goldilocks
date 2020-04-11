@@ -127,7 +127,7 @@ elseif(COMPILERTYPE STREQUAL "clang")
     #set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} ")
 endif()
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/../../bin/$<CONFIG>")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/../../bin/${CMAKE_BUILD_TYPE}")
 
 include_directories(include)
 
@@ -143,7 +143,7 @@ add_executable(${TARGET_NAME}
 )
 
 # CHANGEME: Link against dependencies.
-target_link_libraries(${TARGET_NAME} ${CMAKE_HOME_DIRECTORY}/../goldilocks-source/lib/$<CONFIG>/libgoldilocks.a)
+target_link_libraries(${TARGET_NAME} ${CMAKE_HOME_DIRECTORY}/../goldilocks-source/lib/${CMAKE_BUILD_TYPE}/libgoldilocks.a)
 target_link_libraries(${TARGET_NAME} ${PAWLIB_DIR}/lib/libpawlib.a)
 
 if(COMPILERTYPE STREQUAL "clang")
