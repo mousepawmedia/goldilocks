@@ -143,7 +143,6 @@ add_executable(${TARGET_NAME}
 )
 
 # CHANGEME: Link against dependencies.
-target_link_libraries(${TARGET_NAME} ${CMAKE_HOME_DIRECTORY}/../goldilocks-source/lib/${CMAKE_BUILD_TYPE}/libgoldilocks.a)
 target_link_libraries(${TARGET_NAME} ${PAWLIB_DIR}/lib/libpawlib.a)
 
 if(COMPILERTYPE STREQUAL "clang")

@@ -7,7 +7,7 @@ What Is GoldilocksShell?
 ==================================================
 
 What good are tests without a way to run them? While you can certainly
-write your own class for interacting with Golidlocks, we wanted to provide
+write your own class for interacting with Goldilocks, we wanted to provide
 a quick and easy way to run your tests and suites interactively.
 
 Assuming you have one or more Suites configured
@@ -47,7 +47,7 @@ suite in quotes: this name will be what is used to idenfity it in the shell.
     shell->register_suite<Suite_TimeRotor>("s-timerotor");
     shell->register_suite<Suite_CloisterBell>("s-cloisterbell");
 
-That is it! We are now ready to use GolidlocksShell.
+That is it! We are now ready to use GoldilocksShell.
 
 ..  _goldilocksshell_interactive:
 
@@ -185,7 +185,7 @@ You can also run an entire suite in one step::
 Benchmarking
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Golidlocks supports *comparative benchmarking*. There are two ways to run
+Goldilocks supports *comparative benchmarking*. There are two ways to run
 such a benchmark.
 
 The first method requires a comparative test to be specified within a suite

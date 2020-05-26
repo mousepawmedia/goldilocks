@@ -45,11 +45,27 @@
 #define GOLDILOCKS_TEST_HPP
 
 #include "goldilocks/types.hpp"
+#include "goldilocks/expect.hpp"
+
+#define REQUIRE(expect) \
+    do { if (!this->report(expect)) { return false; } } while(0)
+
+#define UNLESS(expect) \
+    do { if (this->report(expect)) { return false; } } while(0)
+
+#define CHECK(expect) \
+    do { this->report(expect) } while(0)
 
 /** All tests are derived from this base
  * class.*/
 class Test
 {
+protected:
+    /** Check and report outcome of expectation; return success. */
+    bool report(Expect expect) final
+    {
+        // TODO: Broadcast using signal.
+    }
 public:
     /**A Test should perform most setup tasks, such as dynamic allocation,
      * in `pre()`, so `prefail()`, `post()`, and `postmortem()` can handle
@@ -67,16 +83,17 @@ public:
 
     /**Set up for the test. Called only once, even if test is
      * repeated multiple times.
-     * If undefined, calls janitor()
+     * If undefined, always returns true.
      * \return true if successful, false if it fails.*/
-    virtual bool pre() { return this->janitor(); }
+    virtual bool pre() { return true; }
 
     /**Clean up from a failed pre-test.
      * If undefined, always returns true.
      * \return true if successful, false if it fails.*/
     virtual bool prefail() { return true; }
 
-    /**Clean up between successful runs, in preparation for a repeat.
+    /** Clean up between successful runs, in preparation for a repeat.
+     * Always executed before run() or run_optimized(), even on the first pass.
      * If undefined, always returns true.
      * \return true if successful, false if it fails.*/
     virtual bool janitor() { return true; }
@@ -86,16 +103,10 @@ public:
     virtual bool run() = 0;
 
     /** Benchmark-optimized form of the test. May be needed if the
-         * validity testing will throw off the benchmark.
-         * If undefined, always returns true.
-         * \return true if successful, false if it fails (error). */
+     * validity testing will throw off the benchmark.
+     * If undefined, executes run()
+     * \return true if successful, false if it fails (error). */
     virtual bool run_optimized() { return run(); }
-
-    /** Verify test success.
-     * If undefined, always returns true.
-     * \return true if successful, false if the test fails.
-     */
-    virtual bool verify() { return true; }
 
     /**Clean up after successful test.
      * If undefined, always returns true.
@@ -111,7 +122,7 @@ public:
      * Cleanup should be handled by `prefail()`, `post()`, and
      * `postmortem()`, depending on the test's success.
      * In short, THIS SHOULD ALWAYS BE EMPTY!*/
-    virtual ~Test() {}
+    virtual ~Test() = default;
 };
 
 /* The Test smart pointer type shall henceforth be known

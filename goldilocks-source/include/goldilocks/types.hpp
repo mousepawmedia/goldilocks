@@ -42,6 +42,15 @@
 #ifndef GOLDILOCKS_TYPES_HPP
 #define GOLDILOCKS_TYPES_HPP
 
+#include <string>
+#include <tuple>
+
+class Nothing
+{
+public:
+	Nothing() {}
+};
+
 /* The type we use for storing test names. */
 typedef std::string testname_t;
 /* The type we use for storing suite names. Alias of testname_t.*/
@@ -49,20 +58,82 @@ typedef testname_t suitename_t;
 /* The type we use for storing documentation strings. Alias of testname_t.*/
 typedef testname_t testdoc_t;
 
-enum class GolidlocksItemType
-{
-    test,
-    comparative,
-    suite
+enum class Item { Test, Comparative, Suite };
+
+enum class Mode { Test, Benchmark, Verify };
+
+enum class Status { OK, Prefail, Warn, Fail, Postfail, Confused };
+
+/* 
+ * A comment after the enum value indicates
+ * an outcome method has been made in outcomes.hpp,
+ * if a That type is being added, please create the function
+ * and comment.
+ */
+enum class That {
+	IsTrue,          // check_true()
+	IsFalse,         // check_false()
+	IsEqual,         // check_eq()
+	IsNotEqual,      // check_not_eq()
+	IsLess,          // check_less ()
+	IsLessEqual,     // check_less_eq()
+	IsGreater,       // check_greater()
+	IsGreaterEqual,  // check_greater_eq()
+	PtrIsNull,       // check_nullptr()
+	PtrIsNotNull,    // check_not_nullptr()
+	PtrIsEqual,      // check_ptr_equal()
+	PtrIsNotEqual,   // check_ptr_not_equal()
+	FuncReturns,     // check_func_returns()
+	FuncThrows       // check_func_throws()
 };
 
-enum class TestStatus
-{
-    OK,
-    PREFAIL,
-    FAIL,
-    POSTFAIL,
-    CONFUSED
-};
+enum class Should { Pass, Fail };
 
-#endif //GOLDILOCKS_TYPES_HPP
+// TODO: Can we ultimately move this to IOSqueak?
+std::string stringify(const That& op)
+{
+	switch (op) {
+		case That::IsTrue:
+			return "== true";
+		case That::IsFalse:
+			return "== false";
+		case That::IsEqual:
+			return "==";
+		case That::IsNotEqual:
+			return "!=";
+		case That::IsLess:
+			return "<";
+		case That::IsLessEqual:
+			return "<=";
+		case That::IsGreater:
+			return ">";
+		case That::IsGreaterEqual:
+			return ">=";
+		case That::PtrIsNull:
+			return "== nullptr";
+		case That::PtrIsNotNull:
+			return "!= nullptr";
+		case That::PtrIsEqual:
+			return "==";
+		case That::PtrIsNotEqual:
+			return "!=";
+		case That::FuncReturns:
+			return "==>";
+		case That::FuncThrows:
+			return "~~>";
+	}
+}
+
+// TODO: Can we ultimately move this to IOSqueak?
+std::string stringify(const Should& op)
+{
+	switch (op) {
+		case Should::Pass:
+			return "";
+		case Should::Fail:
+			return "[Should Fail]";
+	}
+	return "";
+}
+
+#endif  // GOLDILOCKS_TYPES_HPP

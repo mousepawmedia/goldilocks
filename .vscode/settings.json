@@ -2,7 +2,8 @@
     "workbench.colorCustomizations": {
         "statusBar.background": "#703f2e",
         "statusBarItem.hoverBackground": "#94533d",
-        "statusBar.foreground": "#e7e7e7"
+        "statusBar.foreground": "#e7e7e7",
+        "statusBar.border": "#703f2e"
     },
     "peacock.color": "#703F2E",
     "restructuredtext.confPath": "${workspaceFolder}/docs/source",
@@ -55,6 +56,19 @@
         "typeinfo": "cpp",
         "bit": "cpp",
         "deque": "cpp",
-        "map": "cpp"
+        "map": "cpp",
+        "cstring": "cpp",
+        "bitset": "cpp",
+        "condition_variable": "cpp",
+        "cuchar": "cpp",
+        "list": "cpp",
+        "iostream": "cpp",
+        "mutex": "cpp",
+        "typeindex": "cpp",
+        "complex": "cpp",
+        "future": "cpp",
+        "compare": "cpp",
+        "concepts": "cpp",
+        "stop_token": "cpp"
     }
 }

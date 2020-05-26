@@ -8,7 +8,8 @@
                 "${workspaceRoot}/../libdeps/libs/include",
                 "${workspaceRoot}/../pawlib/pawlib/include",
                 "${workspaceRoot}/../iosqueak/iosqueak/include",
-                "${workspaceRoot}/goldilocks-source/include"
+                "${workspaceRoot}/goldilocks-source/include",
+                "${workspaceRoot}/goldilocks-source/include/goldilocks"
             ],
             "defines": [],
             "intelliSenseMode": "clang-x64",
@@ -69,7 +70,7 @@
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": ""
             },
-            "compilerPath": "/usr/bin/clang-7",
+            "compilerPath": "/usr/bin/clang-9",
             "cStandard": "c11",
             "cppStandard": "c++17"
         },

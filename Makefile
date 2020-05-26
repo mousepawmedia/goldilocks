@@ -118,17 +118,15 @@ docs_pdf:
 	$(ECHO) "-------------"
 
 goldilocks:
-	$(MAKE) release -C goldilocks-source
 	$(ECHO) "-------------"
 	$(ECHO) "<<<<<<< FINISHED >>>>>>>"
-	$(ECHO) "Goldilocks is in 'goldilocks-source/lib/Release'."
+	$(ECHO) "Goldilocks is in 'goldilocks-source/include'."
 	$(ECHO) "-------------"
 
 goldilocks_debug:
-	$(MAKE) debug -C goldilocks-source
 	$(ECHO) "-------------"
 	$(ECHO) "<<<<<<< FINISHED >>>>>>>"
-	$(ECHO)  on "Goldilocks is in 'goldilocks-source/lib/Debug'."
+	$(ECHO)  on "Goldilocks is in 'goldilocks-source/include'."
 	$(ECHO) "-------------"
 
 ready: goldilocks
@@ -137,7 +135,6 @@ ready: goldilocks
 	$(MK_DIR) goldilocks
 	$(ECHO) "Copying Goldilocks..."
 	$(CP_DIR) goldilocks-source/include/ goldilocks/include/
-	$(CP_DIR) goldilocks-source/lib/Release/ goldilocks/lib/
 	$(ECHO) "Copying README and LICENSE..."
 	$(CP) README.md goldilocks/README.md
 	$(CP) LICENSE.md goldilocks/LICENSE.md
