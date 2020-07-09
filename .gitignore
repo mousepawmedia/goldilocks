@@ -21,3 +21,4 @@ codealike.json
 .DS_Store
 *.kdev4
 .vscode/ipch
+.vscode/settings.json

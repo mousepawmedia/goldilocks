@@ -8,31 +8,21 @@ Structure
 ==================================================
 
 Every Goldilocks test is derived from the Test abstract class, which has
-six functions that may be overloaded.
+multiple functions that may be overloaded.
 
 ..  index::
-    single: test; get_title()
+    single: test; TEST()
 
-``get_title()``
+``Test()``
 --------------------------------------------------
+This is the class's construtor. Derived class must call the Test 
+constructor and pass the name and docstring as follows:
 
-Returns a string (of type ``testdoc_t``) with the title of the test.
-This is a required function for any test.
+..  code-block:: c++
 
-..  NOTE:: The title is separate from the ID (name) of the test used to
-    register the test with the TestManager. You use the ID (name) to refer
-    to the test; the title is displayed on the screen before running
-    the test.
-
-..  index::
-    single: test; get_docs()
-
-``get_docs()``
---------------------------------------------------
-
-Returns a string (of type ``testdoc_t``) with the documentation
-string for the test. This should describe what the test does.
-This is a required function for any test.
+    SomeTest()
+    : Test("test_name", "Some test documentation string here.")
+    {}
 
 ..  index::
     single: test; pre()
@@ -56,10 +46,7 @@ This is an optional function that tears down the test after a failed call to
 will not be called under any other circumstances. It has no fail handler
 itself, so ``prefail()`` must succeed in any reasonable circumstance.
 
-The function should return a boolean indicating whether the tear-down was
-successful or not.
-
-..  NOTE:: Goldilocks currently ignores ``prefail()``'s return.
+The function returns nothing. 
 
 ``run()``
 --------------------------------------------------
@@ -89,33 +76,35 @@ The function should return true if the test succeeded, and false if it failed.
 This is called after each repeat of ``run()`` during benchmarking and
 comparative benchmarking. It is designed to perform cleanup in between
 ``run()`` calls, but not to perform first time setup (``pre())`` or end of
-testing (``post()``) cleanup. It returns a boolean indicating success.
+testing (``post()``) cleanup. Must returns a boolean indicating success.
+
+Janitor is always called before each call to ``run()`` or ``run_optimized()``, 
+including before the first ``run()`` call.
 
 ``post()``
 --------------------------------------------------
 
 This is an optional function which is called at the end of a test's normal
 lifetime. It is the primary teardown function, generally responsible for
-cleaning up whatever was created in ``pre()`` and ``run()``. It is normally
-only if ``run()`` returns true, although it will be called at the end of
-benchmarking regardless of ``run()``'s success.
+cleaning up whatever was created in ``pre()``, ``janitor()`` and ``run()``.
+It is normally only if ``run()`` returns true, although it will be called 
+at the end of benchmarking regardless of ``run()``'s success.
 
-This function should return a boolean indicating success. It has no fail
-handler itself, so ``post()`` should succeed in all reasonable circumstances.
+This function returns nothing. It has no fail handler itself, 
+so ``post()`` should succeed in all reasonable circumstances.
 
-..  NOTE:: Goldilocks currently ignores ``post()``'s return.
 
 ``postmortem()``
 --------------------------------------------------
 
 This is an optional teardown function which is usually called if a test fails
-(``run()`` returns false). It is responsible for cleaning up whatever was
-created in ``pre()`` and ``run()``, much like ``post()`` is, but again only
-for those scenarios where ``run()`` fails.
+(``run()`` or ``run_optimized()`` returns ``false``). It is responsible for cleaning 
+up whatever was created in ``pre()`` and ``run()``, much like ``post()`` is, but 
+again only for those scenarios where ``run()`` fails.
 
-This function should return a boolean indicating success. It has no fail
-handler itself, so ``postmortem()`` should succeed in all reasonable
-circumstances.
+This function returns nothing. If not defined, calls ``post()``. 
+It has no fail handler itself, so ``postmortem()`` should succeed 
+in all reasonable circumstances.
 
 ..  index::
     single: test; creating

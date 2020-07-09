@@ -69,6 +69,11 @@
         "future": "cpp",
         "compare": "cpp",
         "concepts": "cpp",
-        "stop_token": "cpp"
+        "stop_token": "cpp",
+        "set": "cpp",
+        "unordered_set": "cpp",
+        "ranges": "cpp",
+        "valarray": "cpp",
+        "variant": "cpp"
     }
 }

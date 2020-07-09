@@ -3,7 +3,7 @@
  *
  * The base class for all Goldilocks tests.
  *
- * Author(s): Jason C. McDonald
+ * Author(s): Wilfrantz DEDE, Jason C. McDonald
  */
 
 /* LICENSE (BSD-3-Clause)
@@ -60,26 +60,17 @@
  * class.*/
 class Test
 {
-protected:
-    /** Check and report outcome of expectation; return success. */
-    bool report(Expect expect) final
-    {
-        // TODO: Broadcast using signal.
-    }
+private:
+    testdoc_t test_name;
+    testdoc_t doc_string;
+    
 public:
     /**A Test should perform most setup tasks, such as dynamic allocation,
      * in `pre()`, so `prefail()`, `post()`, and `postmortem()` can handle
-     * cleanup depending on the test's success.
-     */
-    Test() = default;
-
-    /**Get the human-readable name of the test.
-     * \return a string of the name. */
-    virtual testdoc_t get_title() = 0;
-
-    /**Get the documentation for the test.
-     * \return the test's documentation string. */
-    virtual testdoc_t get_docs() = 0;
+     * cleanup depending on the test's success. */
+    Test (testdoc_t test_name, testdoc_t doc_string)
+    : test_name(test_name), doc_string(doc_string)
+    {}
 
     /**Set up for the test. Called only once, even if test is
      * repeated multiple times.
@@ -88,14 +79,12 @@ public:
     virtual bool pre() { return true; }
 
     /**Clean up from a failed pre-test.
-     * If undefined, always returns true.
-     * \return true if successful, false if it fails.*/
-    virtual bool prefail() { return true; }
+     * If undefined, calls post. */
+    virtual void prefail() {this->post();}
 
     /** Clean up between successful runs, in preparation for a repeat.
      * Always executed before run() or run_optimized(), even on the first pass.
-     * If undefined, always returns true.
-     * \return true if successful, false if it fails.*/
+     * If undefined, always returns true.*/
     virtual bool janitor() { return true; }
 
     /**Run test.
@@ -106,17 +95,15 @@ public:
      * validity testing will throw off the benchmark.
      * If undefined, executes run()
      * \return true if successful, false if it fails (error). */
-    virtual bool run_optimized() { return run(); }
+    virtual bool run_optimized() { return this->run(); }
 
     /**Clean up after successful test.
-     * If undefined, always returns true.
-     * \return true if successful, false if it fails.*/
-    virtual bool post() { return true; }
+     * If undefined, returns nothing.*/
+    virtual void post() {}
 
     /**Clean up after a failed test.
-     * If undefined, calls post()
-     * \return true if successful, false if it fails.*/
-    virtual bool postmortem() { return this->post(); }
+     * If undefined, calls post() */
+    virtual void postmortem() {this->post();}
 
     /**Like the constructor, a destructor is unnecessary for a Test.
      * Cleanup should be handled by `prefail()`, `post()`, and
