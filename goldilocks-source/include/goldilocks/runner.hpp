@@ -3,7 +3,7 @@
  *
  * A Runner executes the actual tests.
  *
- * Author(s): Jason C. McDonald
+ * Author(s): Wilfrantz Dede, Jason C. McDonald
  */
 
 /* LICENSE (BSD-3-Clause)
@@ -44,9 +44,46 @@
 #ifndef GOLDILOCKS_RUNNER_HPP
 #define GOLDILOCKS_RUNNER_HPP
 
+#include <cstdint>  
+
 #include "goldilocks/test.hpp"
 #include "goldilocks/types.hpp"
 
+class Runner {
+protected:
+	Test* test;
+	uint16_t iterations;
+
+public:
+	// cppcheck-suppress noExplicitConstructor
+	Runner(Test* test, uint16_t iterations = 1)
+	: test(test), iterations(iterations)
+	{}
+
+	void run() {
+		// run pre() from test. If it fails, call prefail()
+		if(!this->test->pre()) {
+			this->test->prefail();
+			return;
+		}
+
+		for (uint16_t i = 0; i < this->iterations; ++i) {
+			// run janitor() from test. If fails, call postmortem()
+			if (!this->test->janitor()) {
+				this->test->postmortem() return;
+			}
+
+			// run run() from test. If fails && test exits on failure, run
+			// posrtmortem()
+			if (!this->test->run) {return;}  // TODO: If exit on fail.
+		}
+
+		this->test->post();
+	}
+
+	~Runner() = default;
+};
+
+#endif  // GOLDILOCKS_RUNNER_HPP
 
 
-#endif // GOLDILOCKS_RUNNER_HPP
