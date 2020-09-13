@@ -64,7 +64,7 @@ public:
 		// run pre() from test. If it fails, call prefail()
 		if(!this->test->pre()) {
 			this->test->prefail();
-			return;
+			return; 
 		}
 
 		for (uint16_t i = 0; i < this->iterations; ++i) {
@@ -75,7 +75,7 @@ public:
 
 			// run run() from test. If fails && test exits on failure, run
 			// posrtmortem()
-			if (!this->test->run) {return;}  // TODO: If exit on fail.
+			if (!this->test->run()) {return;}  // TODO: If exit on fail.
 		}
 
 		this->test->post();
