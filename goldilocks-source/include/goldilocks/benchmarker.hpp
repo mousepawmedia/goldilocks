@@ -53,6 +53,7 @@ protected:
 	uint16_t iterations;
 
 public:
+	// cppcheck-suppress noExplicitConstructor
 	Benchmarker(Test* test, uint16_t iterations = 1)
 	: test(test), iterations(iterations)
 	{}
