@@ -175,7 +175,7 @@
 		return;
 	}
 
-	inline uint64_t clock(Test* test)
+	inline uint64_t clock(Test* test = 0)
 	{
 		return;
 	}

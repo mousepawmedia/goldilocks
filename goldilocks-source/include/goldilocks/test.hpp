@@ -60,9 +60,6 @@
  * class.*/
 class Test
 {
-private:
-    testdoc_t test_name;
-    testdoc_t doc_string;
     
 public:
     /**A Test should perform most setup tasks, such as dynamic allocation,
@@ -72,7 +69,11 @@ public:
     : test_name(test_name), doc_string(doc_string)
     {}
 
-    /**Set up for the test. Called only once, even if test is
+    testdoc_t test_name;
+
+    testdoc_t doc_string;
+
+	/**Set up for the test. Called only once, even if test is
      * repeated multiple times.
      * If undefined, always returns true.
      * \return true if successful, false if it fails.*/
@@ -90,6 +91,18 @@ public:
     /**Run test.
      * \return true if successful, false if it fails (error).*/
     virtual bool run() = 0;
+
+    /** Benchmark-optimized form of the test. May be needed if the
+         * validity testing will throw off the benchmark.
+         * If undefined, always returns true.
+         * \return true if successful, false if it fails (error). */
+    virtual bool run_optimized() { return run(); }
+
+    /** Verify test success.
+     * If undefined, always returns true.
+         * \return true if successful, false if the test fails.
+         */
+    virtual bool verify() { return true; }
 
     /** Benchmark-optimized form of the test. May be needed if the
      * validity testing will throw off the benchmark.

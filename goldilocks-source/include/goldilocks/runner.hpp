@@ -70,7 +70,8 @@ public:
 		for (uint16_t i = 0; i < this->iterations; ++i) {
 			// run janitor() from test. If fails, call postmortem()
 			if (!this->test->janitor()) {
-				this->test->postmortem() return;
+				this->test->postmortem();
+				return;
 			}
 
 			// run run() from test. If fails && test exits on failure, run
