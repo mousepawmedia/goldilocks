@@ -1,11 +1,13 @@
-/** Types and Enums [Goldilocks]
+/** Assert [Goldilocks]
  * Version: 2.0
+ *
+ * Assert functionality for Goldilocks.
  *
  * Author(s): Jason C. McDonald
  */
 
 /* LICENSE (BSD-3-Clause)
- * Copyright (c) 2016-2019 MousePaw Media.
+ * Copyright (c) 2016-2021 MousePaw Media.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,38 +41,52 @@
  * on how to contribute to our projects.
  */
 
-#ifndef GOLDILOCKS_TYPES_HPP
-#define GOLDILOCKS_TYPES_HPP
+#ifndef GOLDILOCKS_EXPECT_HPP
+#define GOLDILOCKS_EXPECT_HPP
 
-/// Represents that no exception is thrown.
-class Nothing
+#include <iostream>
+
+#include "goldilocks/expect/outcomes.hpp"
+#include "goldilocks/expect/should.hpp"
+#include "goldilocks/expect/that.hpp"
+#include "goldilocks/types.hpp"
+#include "iosqueak/stringify.hpp"
+
+/// The smallest unit of a test, representing a single check.
+template<typename H, Should S = Should::Pass>
+class Expect
 {
+protected:
+	/// The outcome of the check.
+	OutcomePtr outcome;
+
 public:
-	Nothing() {}
+	/// Default constructor, which also executes the check.
+	template<typename... Ts>
+	// cppcheck-suppress noExplicitConstructor
+	Expect(Ts... ts) : outcome(H::eval(ts...))
+	{
+	}
+
+	/** Represent the outcome of the check as a string.
+	 * \return a string representing the outcome
+	 */
+	testdoc_t compose() const
+	{
+		/* Conversion to a string should take place on demand,
+		 * not at the time of testing. */
+		// Create the string representation of the outcome.
+		return this->outcome->compose(S, H::str);
+	}
 };
 
-// NOTE: We don't need to represent a void return; it never needs to be tested!
-
-std::ostream& operator<<(std::ostream& out, const Nothing&)
+/// Insert the string representation of an expectation outcome into a stream.
+template<typename H, Should S = Should::Pass>
+std::ostream& operator<<(std::ostream& out, const Expect<H, S>& expect)
 {
-	out << "[Nothing]";
+	// Insert the string representing the outcome into the stream.
+	out << expect.compose();
 	return out;
 }
 
-/// The type we use for storing test names.
-typedef std::string testname_t;
-/// The type we use for storing suite names. Alias of testname_t.
-typedef testname_t suitename_t;
-/// The type we use for storing documentation strings. Alias of testname_t.
-typedef testname_t testdoc_t;
-
-/// Types of runnable objects in Goldilocks
-enum class Item { Test, Comparative, Suite };
-
-/// Run modes for runnable objects.
-enum class Mode { Test, Benchmark, Verify };
-
-/// Status of runnable objects.
-enum class Status { OK, Prefail, Warn, Fail, Postfail, Confused };
-
-#endif  // GOLDILOCKS_TYPES_HPP
+#endif

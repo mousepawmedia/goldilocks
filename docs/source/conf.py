@@ -20,7 +20,7 @@
 # -- Project information -----------------------------------------------------
 
 project = u'Goldilocks'
-copyright = u'2020, MousePaw Media'
+copyright = u'MousePaw Media'
 author = u'MousePaw Media'
 
 # The short X.Y version
@@ -100,7 +100,7 @@ html_static_path = ['.static']
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
-html_logo = "goldilocks.png"
+html_logo = "goldilocks.svg"
 
 
 # -- Options for HTMLHelp output ---------------------------------------------

@@ -9,22 +9,22 @@ approach. It may also be used in conjunction with other testing systems.
 
 The core idea of Goldilocks is that tests ship in the final code,
 and can be loaded and executed within normal program execution via
-a custom interface. A major advantage of this system is that benchmarks
-may be performed on many systems without the need for additional
-software.
+a custom interface. A major advantage of this system is that tests and
+benchmarks may be performed on many systems without the need for harnesses,
+debug flags, or additional software.
 
-The fatest way to run tests in Goldilocks is with the :ref:`goldilocksshell`.
+The fastest way to run tests in Goldilocks is with the :ref:`shell`.
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+..  toctree::
+    :maxdepth: 2
+    :caption: Contents:
 
-    manager
     test
-    asserts
+    expect
     suite
-    shell
+    manager
     benchmarker
+    shell
 
 Indices and tables
 ==================

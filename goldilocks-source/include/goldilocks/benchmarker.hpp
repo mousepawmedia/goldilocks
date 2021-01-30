@@ -7,7 +7,7 @@
  */
 
 /* LICENSE (BSD-3-Clause)
- * Copyright (c) 2016-2020 MousePaw Media.
+ * Copyright (c) 2016-2021 MousePaw Media.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -56,9 +56,11 @@ public:
 	// cppcheck-suppress noExplicitConstructor
 	Benchmarker(Test* test, uint16_t iterations = 1)
 	: test(test), iterations(iterations)
-	{}
+	{
+	}
 
-	void benchmark(){
+	void benchmark()
+	{
 		if (!this->test->pre()) {
 			this->test->prefail();
 			return;
@@ -92,7 +94,6 @@ public:
 				this->test->postmortem();
 				return;
 			}
-
 		}
 
 		this->test->post();

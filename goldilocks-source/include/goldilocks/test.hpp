@@ -44,23 +44,33 @@
 #ifndef GOLDILOCKS_TEST_HPP
 #define GOLDILOCKS_TEST_HPP
 
+#include "goldilocks/expect/expect.hpp"
 #include "goldilocks/types.hpp"
-#include "goldilocks/expect.hpp"
 
-#define REQUIRE(expect) \
-    do { if (!this->report(expect)) { return false; } } while(0)
+#define REQUIRE(expect)              \
+	do {                             \
+		if (!this->report(expect)) { \
+			return false;            \
+		}                            \
+	} while (0)
 
-#define UNLESS(expect) \
-    do { if (this->report(expect)) { return false; } } while(0)
+#define UNLESS(expect)              \
+	do {                            \
+		if (this->report(expect)) { \
+			return false;           \
+		}                           \
+	} while (0)
 
-#define CHECK(expect) \
-    do { this->report(expect) } while(0)
+#define CHECK(expect)        \
+	do {                     \
+		this->report(expect) \
+	} while (0)
 
 /** All tests are derived from this base
  * class.*/
 class Test
 {
-    
+
 public:
     /**A Test should perform most setup tasks, such as dynamic allocation,
      * in `pre()`, so `prefail()`, `post()`, and `postmortem()` can handle
@@ -129,4 +139,4 @@ public:
  * as "testptr_t".*/
 typedef std::unique_ptr<Test> testptr_t;
 
-#endif //GOLDILOCKS_TEST_HPP
+#endif  // GOLDILOCKS_TEST_HPP

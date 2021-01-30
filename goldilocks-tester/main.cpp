@@ -1,10 +1,10 @@
 /** Goldilocks Tester
-  * Version: 2.0
-  *
-  * Allows running tests and custom code for Goldilocks.
-  *
-  * Author(s): Jason C. McDonald
-  */
+ * Version: 2.0
+ *
+ * Allows running tests and custom code for Goldilocks.
+ *
+ * Author(s): Jason C. McDonald
+ */
 
 /* LICENSE (BSD-3-Clause)
  * Copyright (c) 2016-2019 MousePaw Media.
@@ -43,18 +43,15 @@
 
 ////#include "goldilocks/goldilocks_shell.hpp"
 #include <iostream>
+
+#include "goldilocks/expect/expect.hpp"
 #include "iosqueak/channel.hpp"
-#include "goldilocks/expect.hpp"
 
-bool griffon(std::string, int)
-{
-    return true;
-}
+bool griffon(std::string, int) { return true; }
 
-bool explosion()
-{
-    throw std::runtime_error("Foo");
-}
+bool explosion() { throw std::runtime_error("Foo"); }
+
+void black_hole(int) { return; }
 
 /** Temporary test code goes in this function ONLY.
  * All test code that is needed long term should be
@@ -62,49 +59,58 @@ bool explosion()
  */
 void test_code()
 {
-    std::cout << Expect<That::IsEqual>(40 + 2, 42) << std::endl;
-    //std::cout << Expect<That::FuncReturns>(true, "griffon", griffon, "Gallus", 2) << std::endl;
-    //std::cout << Expect<That::FuncThrows>(std::overflow_error(""), "explosion", explosion) << std::endl;
+	std::cout << Expect<That::IsTrue>(true) << std::endl;
+	std::cout << Expect<That::IsFalse>(true) << std::endl;  // will fail!
+	std::cout << Expect<That::IsEqual>(40 + 2, 42) << std::endl;
+	std::cout << Expect<That::IsEqual>(40, 42) << std::endl;  // will fail!
+	std::cout << Expect<That::IsNotEqual, Should::Fail>(40, 40) << std::endl;
+	std::cout
+		<< Expect<That::FuncReturns>(true, "griffon", griffon, "Gallus", 2)
+		<< std::endl;
+	std::cout << Expect<That::FuncThrows>(std::overflow_error(""),
+										  "explosion",
+										  explosion)
+			  << std::endl;
 }
 
 /////// WARNING: DO NOT ALTER BELOW THIS POINT! ///////
 
 int main(int argc, char* argv[])
 {
-    // Return code.
-    int r = 0;
+	// Return code.
+	int r = 0;
 
-    //Set up signal handling.
-    out.configure_echo(IOEchoMode::cout);
+	// Set up signal handling.
+	channel.configure_echo(IOEchoMode::cout);
 
-    /****
-    GoldilocksShell* shell = new GoldilocksShell(">> ");
-    //shell->register_suite<Suite_CoreTypes>("P-sB01");
+	/****
+	GoldilocksShell* shell = new GoldilocksShell(">> ");
+	//shell->register_suite<Suite_CoreTypes>("P-sB01");
 
-    // If we got command-line arguments.
-    if(argc > 1)
-    {
-        r = shell->command(argc, argv);
-    }
-    else
-    {
-        out << IOFormatTextAttr::bold << IOFormatTextFG::blue
-            << "===== Goldilocks Tester =====\n" << IOCtrl::endl;
+	// If we got command-line arguments.
+	if(argc > 1)
+	{
+		r = shell->command(argc, argv);
+	}
+	else
+	{
+		out << IOFormatTextAttr::bold << IOFormatTextFG::blue
+			<< "===== Goldilocks Tester =====\n" << IOCtrl::endl;
 
-        test_code();
+		test_code();
 
-        // Shift control to the interactive console.
-        shell->interactive();
-    }
+		// Shift control to the interactive console.
+		shell->interactive();
+	}
 
-    // Delete our GoldilocksShell.
-    delete shell;
-    ****/
+	// Delete our GoldilocksShell.
+	delete shell;
+	****/
 
-   // HACK: Remove me before final commit.
-   (void)argc;
-   (void)argv;
-   test_code();
+	// HACK: Remove me before final commit.
+	(void)argc;
+	(void)argv;
+	test_code();
 
-    return r;
+	return r;
 }

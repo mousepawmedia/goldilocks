@@ -1,11 +1,7 @@
+.. _test:
+
 Tests
-##################################################
-
-..  index::
-    single: test; structure
-
-Structure
-==================================================
+######################################################
 
 Every Goldilocks test is derived from the Test abstract class, which has
 multiple functions that may be overloaded.
@@ -15,7 +11,7 @@ multiple functions that may be overloaded.
 
 ``Test()``
 --------------------------------------------------
-This is the class's construtor. Derived class must call the Test 
+This is the class's construtor. Derived class must call the Test
 constructor and pass the name and docstring as follows:
 
 ..  code-block:: c++
@@ -46,7 +42,7 @@ This is an optional function that tears down the test after a failed call to
 will not be called under any other circumstances. It has no fail handler
 itself, so ``prefail()`` must succeed in any reasonable circumstance.
 
-The function returns nothing. 
+The function returns nothing.
 
 ``run()``
 --------------------------------------------------
@@ -76,9 +72,9 @@ The function should return true if the test succeeded, and false if it failed.
 This is called after each repeat of ``run()`` during benchmarking and
 comparative benchmarking. It is designed to perform cleanup in between
 ``run()`` calls, but not to perform first time setup (``pre())`` or end of
-testing (``post()``) cleanup. Must returns a boolean indicating success.
+testing (``post()``) cleanup. Must return a boolean indicating success.
 
-Janitor is always called before each call to ``run()`` or ``run_optimized()``, 
+Janitor is always called before each call to ``run()`` or ``run_optimized()``,
 including before the first ``run()`` call.
 
 ``post()``
@@ -87,10 +83,10 @@ including before the first ``run()`` call.
 This is an optional function which is called at the end of a test's normal
 lifetime. It is the primary teardown function, generally responsible for
 cleaning up whatever was created in ``pre()``, ``janitor()`` and ``run()``.
-It is normally only if ``run()`` returns true, although it will be called 
+It is normally only called if ``run()`` returns true, although it will be called
 at the end of benchmarking regardless of ``run()``'s success.
 
-This function returns nothing. It has no fail handler itself, 
+This function returns nothing. It has no fail handler itself,
 so ``post()`` should succeed in all reasonable circumstances.
 
 
@@ -98,12 +94,12 @@ so ``post()`` should succeed in all reasonable circumstances.
 --------------------------------------------------
 
 This is an optional teardown function which is usually called if a test fails
-(``run()`` or ``run_optimized()`` returns ``false``). It is responsible for cleaning 
-up whatever was created in ``pre()`` and ``run()``, much like ``post()`` is, but 
+(``run()`` or ``run_optimized()`` returns ``false``). It is responsible for cleaning
+up whatever was created in ``pre()`` and ``run()``, much like ``post()`` is, but
 again only for those scenarios where ``run()`` fails.
 
-This function returns nothing. If not defined, calls ``post()``. 
-It has no fail handler itself, so ``postmortem()`` should succeed 
+This function returns nothing. If not defined, calls ``post()``.
+It has no fail handler itself, so ``postmortem()`` should succeed
 in all reasonable circumstances.
 
 ..  index::
@@ -236,6 +232,3 @@ Once a test is registered with Goldilocks, running it is quite easy.
 
     //Benchmark TestFoo on 100 repetitions.
     testmanager.run_benchmark("TestFoo", 100);
-
-    //Compare TestFoo and TestBar on 100 repetitions.
-    testmanager.run_compare("TestFoo", "TestBar", 100);

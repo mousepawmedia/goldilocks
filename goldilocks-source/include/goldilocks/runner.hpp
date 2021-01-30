@@ -7,7 +7,7 @@
  */
 
 /* LICENSE (BSD-3-Clause)
- * Copyright (c) 2016-2020 MousePaw Media.
+ * Copyright (c) 2016-2021 MousePaw Media.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,12 +44,13 @@
 #ifndef GOLDILOCKS_RUNNER_HPP
 #define GOLDILOCKS_RUNNER_HPP
 
-#include <cstdint>  
+#include <cstdint>
 
 #include "goldilocks/test.hpp"
 #include "goldilocks/types.hpp"
 
-class Runner {
+class Runner
+{
 protected:
 	Test* test;
 	uint16_t iterations;
@@ -58,13 +59,15 @@ public:
 	// cppcheck-suppress noExplicitConstructor
 	Runner(Test* test, uint16_t iterations = 1)
 	: test(test), iterations(iterations)
-	{}
+	{
+	}
 
-	void run() {
+	void run()
+	{
 		// run pre() from test. If it fails, call prefail()
-		if(!this->test->pre()) {
+		if (!this->test->pre()) {
 			this->test->prefail();
-			return; 
+			return;
 		}
 
 		for (uint16_t i = 0; i < this->iterations; ++i) {
@@ -76,7 +79,9 @@ public:
 
 			// run run() from test. If fails && test exits on failure, run
 			// posrtmortem()
-			if (!this->test->run()) {return;}  // TODO: If exit on fail.
+			if (!this->test->run()) {
+				return;
+			}  // TODO: If exit on fail.
 		}
 
 		this->test->post();
@@ -86,5 +91,3 @@ public:
 };
 
 #endif  // GOLDILOCKS_RUNNER_HPP
-
-
