@@ -1,13 +1,13 @@
 /** Test [Goldilocks]
- * Version: 2.0
+ * Version: 1.3
  *
- * The base class for all Goldilocks tests.
+ * Base class for Goldilocks tests.
  *
- * Author(s): Wilfrantz DEDE, Jason C. McDonald
+ * Author(s): Jason C. McDonald
  */
 
 /* LICENSE (BSD-3-Clause)
- * Copyright (c) 2016-2019 MousePaw Media.
+ * Copyright (c) 2016-2021 MousePaw Media.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,58 +44,44 @@
 #ifndef GOLDILOCKS_TEST_HPP
 #define GOLDILOCKS_TEST_HPP
 
-#include "goldilocks/expect/expect.hpp"
 #include "goldilocks/types.hpp"
-
-#define REQUIRE(expect)              \
-	do {                             \
-		if (!this->report(expect)) { \
-			return false;            \
-		}                            \
-	} while (0)
-
-#define UNLESS(expect)              \
-	do {                            \
-		if (this->report(expect)) { \
-			return false;           \
-		}                           \
-	} while (0)
-
-#define CHECK(expect)        \
-	do {                     \
-		this->report(expect) \
-	} while (0)
 
 /** All tests are derived from this base
  * class.*/
 class Test
 {
-
 public:
-    /**A Test should perform most setup tasks, such as dynamic allocation,
-     * in `pre()`, so `prefail()`, `post()`, and `postmortem()` can handle
-     * cleanup depending on the test's success. */
-    Test (testdoc_t test_name, testdoc_t doc_string)
-    : test_name(test_name), doc_string(doc_string)
-    {}
+    /**A Test generally should not have a constructor.
+     * Instead, setup tasks (such as dynamic allocation)
+     * should be performed by `pre()`, so `prefail()`, `post()`,
+     * and `postmortem()` can handle cleanup depending on the
+     * test's success.
+     * In short, THIS SHOULD ALWAYS BE EMPTY!
+     */
+    Test() {}
 
-    testdoc_t test_name;
+    /**Get the human-readable name of the test.
+     * \return a string of the name. */
+    virtual testdoc_t get_title() = 0;
 
-    testdoc_t doc_string;
+    /**Get the documentation for the test.
+     * \return the test's documentation string. */
+    virtual testdoc_t get_docs() = 0;
 
-	/**Set up for the test. Called only once, even if test is
+    /**Set up for the test. Called only once, even if test is
      * repeated multiple times.
-     * If undefined, always returns true.
+     * If undefined, calls janitor()
      * \return true if successful, false if it fails.*/
-    virtual bool pre() { return true; }
+    virtual bool pre() { return this->janitor(); }
 
     /**Clean up from a failed pre-test.
-     * If undefined, calls post. */
-    virtual void prefail() {this->post();}
+     * If undefined, always returns true.
+     * \return true if successful, false if it fails.*/
+    virtual bool prefail() { return true; }
 
-    /** Clean up between successful runs, in preparation for a repeat.
-     * Always executed before run() or run_optimized(), even on the first pass.
-     * If undefined, always returns true.*/
+    /**Clean up between successful runs, in preparation for a repeat.
+     * If undefined, always returns true.
+     * \return true if successful, false if it fails.*/
     virtual bool janitor() { return true; }
 
     /**Run test.
@@ -114,29 +100,21 @@ public:
          */
     virtual bool verify() { return true; }
 
-    /** Benchmark-optimized form of the test. May be needed if the
-     * validity testing will throw off the benchmark.
-     * If undefined, executes run()
-     * \return true if successful, false if it fails (error). */
-    virtual bool run_optimized() { return this->run(); }
-
     /**Clean up after successful test.
-     * If undefined, returns nothing.*/
-    virtual void post() {}
+     * If undefined, always returns true.
+     * \return true if successful, false if it fails.*/
+    virtual bool post() { return true; }
 
     /**Clean up after a failed test.
-     * If undefined, calls post() */
-    virtual void postmortem() {this->post();}
+     * If undefined, calls post()
+     * \return true if successful, false if it fails.*/
+    virtual bool postmortem() { return this->post(); }
 
     /**Like the constructor, a destructor is unnecessary for a Test.
      * Cleanup should be handled by `prefail()`, `post()`, and
      * `postmortem()`, depending on the test's success.
      * In short, THIS SHOULD ALWAYS BE EMPTY!*/
-    virtual ~Test() = default;
+    virtual ~Test() {}
 };
 
-/* The Test smart pointer type shall henceforth be known
- * as "testptr_t".*/
-typedef std::unique_ptr<Test> testptr_t;
-
-#endif  // GOLDILOCKS_TEST_HPP
+#endif // GOLDILOCKS_TEST_HPP

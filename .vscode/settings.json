@@ -57,6 +57,10 @@
         "variant": "cpp"
     },
     "cSpell.words": [
+        "iosqueak",
         "nullptr"
+    ],
+    "cSpell.ignoreWords": [
+        "endl"
     ]
 }

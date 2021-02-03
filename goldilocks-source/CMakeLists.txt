@@ -1,6 +1,6 @@
 # CMake Config for Executable (MousePaw Media Build System)
 # Version: 2.1.0
-# Tailored For: Goldilocks
+# Tailored For: Anari
 #
 # Author(s): Jason C. McDonald
 
@@ -38,17 +38,15 @@
 # See https://www.mousepawmedia.com/developers for information
 # on how to contribute to our projects.
 
-# Specify the verison being used as well as the language.
+# Specify the verison being used.
 cmake_minimum_required(VERSION 3.1)
 
 # CHANGEME: Name your project here
-project("Goldilocks Tester")
-set(TARGET_NAME "goldilocks-tester")
+project("Goldilocks")
+set(TARGET_NAME "goldilocks")
 
 message("Using ${CONFIG_FILENAME}.config")
 include(${CMAKE_HOME_DIRECTORY}/../${CONFIG_FILENAME}.config)
-
-# Compiler and Version check...
 
 # Compiler and Version check...
 # Allow Clang 3.4
@@ -114,7 +112,7 @@ if(COMPILERTYPE STREQUAL "gcc")
     # Set debug flags. -g is a default.
     #set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ")
     # Set release flags. -O3 is a default.
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -s -fexpensive-optimizations")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
 elseif(COMPILERTYPE STREQUAL "clang")
     # Use libc++ if requested.
     if(LLVM)
@@ -127,21 +125,34 @@ elseif(COMPILERTYPE STREQUAL "clang")
     #set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} ")
 endif()
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/../../bin/${CMAKE_BUILD_TYPE}")
+if(LD)
+    message("Using ${LD} linker...")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fuse-ld=${LD}")
+endif()
+
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/../../lib/${CMAKE_BUILD_TYPE}")
 
 include_directories(include)
 
 # CHANGEME: Include headers of dependencies.
-include_directories(../goldilocks-source/include)
 include_directories(${IOSQUEAK_DIR}/include)
 
 # CHANGEME: Include files to compile.
-add_executable(${TARGET_NAME}
-    main.cpp
+add_library(${TARGET_NAME} STATIC
+    include/goldilocks/assertions.hpp
+    include/goldilocks/goldilocks.hpp
+    include/goldilocks/manager.hpp
+    include/goldilocks/shell.hpp
+    include/goldilocks/suite.hpp
+    include/goldilocks/test.hpp
+    include/goldilocks/types.hpp
+
+    src/manager.cpp
+    src/shell.cpp
+    src/suite.cpp
 )
 
 # CHANGEME: Link against dependencies.
-target_link_libraries(${TARGET_NAME} ${CMAKE_HOME_DIRECTORY}/../goldilocks-source/lib/${CMAKE_BUILD_TYPE}/libgoldilocks.a)
 target_link_libraries(${TARGET_NAME} ${IOSQUEAK_DIR}/lib/libiosqueak.a)
 
 if(COMPILERTYPE STREQUAL "clang")

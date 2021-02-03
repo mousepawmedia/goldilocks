@@ -50,7 +50,7 @@ LN = @cmake -E create_symlink
 none: help
 
 help:
-	$(ECHO) "=== Goldilocks 2.0 ==="
+	$(ECHO) "=== Goldilocks 1.3 ==="
 	$(ECHO) "Select a build target:"
 	$(ECHO) "  make ready         Build Goldilocks and bundles it for distribution."
 	$(ECHO) "  make clean         Clean up Goldilocks and Tester."
@@ -118,15 +118,31 @@ docs_pdf:
 	$(ECHO) "-------------"
 
 goldilocks:
+	$(MAKE) release -C goldilocks-source
 	$(ECHO) "-------------"
 	$(ECHO) "<<<<<<< FINISHED >>>>>>>"
-	$(ECHO) "Goldilocks is in 'goldilocks-source/include'."
+	$(ECHO) "Goldilocks is in 'goldilocks-source/lib/Release'."
 	$(ECHO) "-------------"
 
 goldilocks_debug:
+	$(MAKE) debug -C goldilocks-source
 	$(ECHO) "-------------"
 	$(ECHO) "<<<<<<< FINISHED >>>>>>>"
-	$(ECHO)  on "Goldilocks is in 'goldilocks-source/include'."
+	$(ECHO)  on "Goldilocks is in 'goldilocks-source/lib/Debug'."
+	$(ECHO) "-------------"
+
+minimal:
+	$(RM_DIR) goldilocks
+	$(ECHO) "Creating file structure..."
+	$(MK_DIR) goldilocks/include/goldilocks
+	$(ECHO) "Copying Goldilocks Minimal..."
+	$(CP) goldilocks-source/include/goldilocks/core_types.hpp goldilocks/include/goldilocks/core_types.hpp
+	$(ECHO) "Copying README and LICENSE..."
+	$(CP) README.md goldilocks/README.md
+	$(CP) LICENSE.md goldilocks/LICENSE.md
+	$(ECHO) "-------------"
+	$(ECHO) "<<<<<<< FINISHED >>>>>>>"
+	$(ECHO) "The header-only library is in 'goldilocks'."
 	$(ECHO) "-------------"
 
 ready: goldilocks
@@ -135,6 +151,7 @@ ready: goldilocks
 	$(MK_DIR) goldilocks
 	$(ECHO) "Copying Goldilocks..."
 	$(CP_DIR) goldilocks-source/include/ goldilocks/include/
+	$(CP_DIR) goldilocks-source/lib/Release/ goldilocks/lib/
 	$(ECHO) "Copying README and LICENSE..."
 	$(CP) README.md goldilocks/README.md
 	$(CP) LICENSE.md goldilocks/LICENSE.md

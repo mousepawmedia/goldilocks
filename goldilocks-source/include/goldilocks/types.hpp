@@ -1,11 +1,13 @@
-/** Types and Enums [Goldilocks]
- * Version: 2.0
+/** Types [Goldilocks]
+ * Version: 1.3
+ *
+ * Type aliases and enumerations for Goldilocks.
  *
  * Author(s): Jason C. McDonald
  */
 
 /* LICENSE (BSD-3-Clause)
- * Copyright (c) 2016-2019 MousePaw Media.
+ * Copyright (c) 2016-2021 MousePaw Media.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,35 +44,29 @@
 #ifndef GOLDILOCKS_TYPES_HPP
 #define GOLDILOCKS_TYPES_HPP
 
-/// Represents that no exception is thrown.
-class Nothing
-{
-public:
-	Nothing() {}
-};
+// std::unique_ptr
+#include <memory>
+// std::vector (we will use this here)
+#include <vector>
 
-// NOTE: We don't need to represent a void return; it never needs to be tested!
+class Test;
+class TestSuite;
+class TestManager;
 
-std::ostream& operator<<(std::ostream& out, const Nothing&)
-{
-	out << "[Nothing]";
-	return out;
-}
+/* The Test smart pointer type shall henceforth be known
+ * as "testptr_t".*/
+typedef std::unique_ptr<Test> testptr_t;
+/* The TestSuite smart pointer type shall henceforth be known
+ * as "testsuiteptr_t".*/
+typedef std::unique_ptr<TestSuite> testsuiteptr_t;
 
-/// The type we use for storing test names.
+/* The type we use for storing test names. */
 typedef std::string testname_t;
-/// The type we use for storing suite names. Alias of testname_t.
-typedef testname_t suitename_t;
-/// The type we use for storing documentation strings. Alias of testname_t.
+/* The type we use for storing suite names. Alias of testname_t.*/
+typedef testname_t testsuitename_t;
+/* The type we use for storing documentation strings. Alias of testname_t.*/
 typedef testname_t testdoc_t;
 
-/// Types of runnable objects in Goldilocks
-enum class Item { Test, Comparative, Suite };
+enum class GolidlocksItemType { test, comparative, suite };
 
-/// Run modes for runnable objects.
-enum class Mode { Test, Benchmark, Verify };
-
-/// Status of runnable objects.
-enum class Status { OK, Prefail, Warn, Fail, Postfail, Confused };
-
-#endif  // GOLDILOCKS_TYPES_HPP
+#endif // GOLDILOCKS_TYPES_HPP

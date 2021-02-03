@@ -47,7 +47,7 @@ IncludeBlocks: Regroup
 IncludeCategories:
   - Regex: '^<.*'
     Priority: 1
-  - Regex: '^(<|")(cairo|cpgf|cinder|eigen|eventpp|opus|pugixml|sdl2)'
+  - Regex: '^(<|")(cairo|cpgf|eigen|eventpp|opus|pugixml|sdl2)'
     Priority: 2
   - Regex: '^(<|")(anari|goldilocks|iosqueak|pawlib|ratscript|simplexpress|stormsound|trailcrest)'
     Priority: 3

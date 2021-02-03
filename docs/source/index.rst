@@ -19,11 +19,7 @@ The fastest way to run tests in Goldilocks is with the :ref:`shell`.
     :maxdepth: 2
     :caption: Contents:
 
-    test
-    expect
-    suite
-    manager
-    benchmarker
+    goldilocks
     shell
 
 Indices and tables

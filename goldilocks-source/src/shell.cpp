@@ -1,9 +1,9 @@
-#include "goldilocks/goldilocks_shell.hpp"
+#include "goldilocks/shell.hpp"
 
 #define CLI_ARGCHECK(X) \
     if(i+X >= args) \
     { \
-        out << "ERROR: " << tokens[i] << " requires " << X << " argument(s). " \
+        channel << "ERROR: " << tokens[i] << " requires " << X << " argument(s). " \
             << IOCtrl::n << "See --help" << IOCtrl::endl; \
         continue; \
     }
@@ -57,15 +57,15 @@ int GoldilocksShell::command(int argc_s, char* argv[], unsigned int skip)
         if(tokens[i] == "--help")
         {
             // Display CLI help
-            out << "Usage: ./goldilocks-tester [command] [argument]" << IOCtrl::n;
-            out << "    --help          | Show this screen. "  << IOCtrl::n;
-            out << "    --list          | List all tests. "  << IOCtrl::n;
-            out << "    --listsuites    | List all suites. "  << IOCtrl::n;
-            out << "    --load [suite]  | Load the suite [suite]. "
+            channel << "Usage: ./executable [command] [argument]" << IOCtrl::n;
+            channel << "    --help          | Show this screen. "  << IOCtrl::n;
+            channel << "    --list          | List all tests. "  << IOCtrl::n;
+            channel << "    --listsuites    | List all suites. "  << IOCtrl::n;
+            channel << "    --load [suite]  | Load the suite [suite]. "
                 << "If unspecified, all suites will be loaded." << IOCtrl::n;
-            out << "    --run [item]    | Run the test or suite [item]. "  << IOCtrl::n;
-            out << "    --benchmark [item]    | Runs the benchmark for [item]. " << IOCtrl::n;
-            out << IOCtrl::endl;
+            channel << "    --run [item]    | Run the test or suite [item]. "  << IOCtrl::n;
+            channel << "    --benchmark [item]    | Runs the benchmark for [item]. " << IOCtrl::n;
+            channel << IOCtrl::endl;
         }
         // If load flag and subsequent argument are provided...
         else if(tokens[i] == "--load")
@@ -141,6 +141,16 @@ int GoldilocksShell::command(int argc_s, char* argv[], unsigned int skip)
             // If run item succeeds, set the return code to 0, else 1 (error).
             r = this->testmanager->run(tokens[++i]) ? 0 : 1;
         }
+        // If runall flag is provided...
+        else if(tokens[i] == "--runall")
+        {
+            // Load all the suites first.
+            this->testmanager->load_suite();
+            loaded = true;
+
+            // If run item succeeds, set the return code to 0, else 1 (error).
+            r = this->testmanager->runall() ? 0 : 1;
+        }
         // If benchmark flag and subsequent argument are provided...
         else if(tokens[i] == "--benchmark")
         {
@@ -164,8 +174,8 @@ int GoldilocksShell::command(int argc_s, char* argv[], unsigned int skip)
         else
         {
             // Throw error and help prompt.
-            out << "ERROR: Invalid command " << tokens[i] << IOCtrl::n;
-            out << "See --help" << IOCtrl::endl;
+            channel << "ERROR: Invalid command " << tokens[i] << IOCtrl::n;
+            channel << "See --help" << IOCtrl::endl;
         }
 
         // If the return code is greater than 0...
@@ -188,11 +198,11 @@ void GoldilocksShell::interactive()
     std::vector<std::string> tokens;
 
     // Display banner and help prompt.
-    out << IOFormatTextAttr::bold << "Goldilocks Test Shell" << IOCtrl::endl;
-    out << "Type 'help' for a list of commands." << IOCtrl::endl;
+    channel << IOFormatTextAttr::bold << "Goldilocks Test Shell" << IOCtrl::endl;
+    channel << "Type 'help' for a list of commands." << IOCtrl::endl;
 
     // Display typing prompt.
-    out << this->prompt << IOCtrl::end;
+    channel << this->prompt << IOCtrl::end;
     // Get what the user typed.
     getline(std::cin, buffer);
     // Split the line into space-delimited tokens.
@@ -239,21 +249,21 @@ void GoldilocksShell::interactive()
         }
         else if(tokens[0] == "suite")
         {
-            out << IOFormatTextFG::yellow << IOFormatTextAttr::bold << IOCat::warning
+            channel << IOFormatTextFG::yellow << IOFormatTextAttr::bold << IOCat::warning
             << "[Deprecated] Use 'run [suite]' instead."
             << IOCtrl::endl;
             run(tokens);
         }
         else if(tokens[0] == "test")
         {
-            out << IOFormatTextFG::yellow << IOFormatTextAttr::bold << IOCat::warning
+            channel << IOFormatTextFG::yellow << IOFormatTextAttr::bold << IOCat::warning
                 << "[Deprecated] Use 'run [test] (number)' instead."
                 << IOCtrl::endl;
             run(tokens);
         }
         else
         {
-            out << IOFormatTextAttr::bold << IOCat::warning
+            channel << IOFormatTextAttr::bold << IOCat::warning
                 << "Unrecognized command. Type 'help' for help." << IOCtrl::endl;
         }
 
@@ -261,7 +271,7 @@ void GoldilocksShell::interactive()
         // Clear the tokens vector to make room for new results.
         tokens.clear();
         // Display the prompt.
-        out << this->prompt << IOCtrl::end;
+        channel << this->prompt << IOCtrl::end;
         // Get the line the user just typed.
         getline(std::cin, buffer);
         // Split the line into space-delimited tokens.
@@ -272,51 +282,51 @@ void GoldilocksShell::interactive()
 
 void GoldilocksShell::help()
 {
-    out << "-- HELP --" << IOCtrl::endl;
-    out << "[SYNTAX: command [required param] (optional param)\n" << IOCtrl::endl;
-    out << "----" << IOCtrl::endl;
+    channel << "-- HELP --" << IOCtrl::endl;
+    channel << "[SYNTAX: command [required param] (optional param)\n" << IOCtrl::endl;
+    channel << "----" << IOCtrl::endl;
 
-    out << IOFormatTextAttr::bold << this->prompt << "about [test]" << IOCtrl::endl;
-    out << "Display the documentation for [test].\n" << IOCtrl::endl;
-    out << "----" << IOCtrl::endl;
+    channel << IOFormatTextAttr::bold << this->prompt << "about [test]" << IOCtrl::endl;
+    channel << "Display the documentation for [test].\n" << IOCtrl::endl;
+    channel << "----" << IOCtrl::endl;
 
-    out << IOFormatTextAttr::bold << this->prompt << "benchmark [test] (number)" << IOCtrl::endl;
-    out << "Runs a benchmark on [test] with (number) repetitions.\n" << IOCtrl::endl;
-    out << "----" << IOCtrl::endl;
+    channel << IOFormatTextAttr::bold << this->prompt << "benchmark [test] (number)" << IOCtrl::endl;
+    channel << "Runs a benchmark on [test] with (number) repetitions.\n" << IOCtrl::endl;
+    channel << "----" << IOCtrl::endl;
 
-    out << IOFormatTextAttr::bold << this->prompt << "compare [test1] [test2] (number)" << IOCtrl::endl;
-    out << "Runs a comparative benchmark between [test1] and [test2] with (number) reps.\n" << IOCtrl::endl;
-    out << "----" << IOCtrl::endl;
+    channel << IOFormatTextAttr::bold << this->prompt << "compare [test1] [test2] (number)" << IOCtrl::endl;
+    channel << "Runs a comparative benchmark between [test1] and [test2] with (number) reps.\n" << IOCtrl::endl;
+    channel << "----" << IOCtrl::endl;
 
-    out << IOFormatTextAttr::bold << this->prompt << "help" << IOCtrl::endl;
-    out << "Displays the help screen.\n" << IOCtrl::endl;
-    out << "----" << IOCtrl::endl;
+    channel << IOFormatTextAttr::bold << this->prompt << "help" << IOCtrl::endl;
+    channel << "Displays the help screen.\n" << IOCtrl::endl;
+    channel << "----" << IOCtrl::endl;
 
-    out << IOFormatTextAttr::bold << this->prompt << "list" << IOCtrl::endl;
-    out << "Displays the available tests.\n" << IOCtrl::endl;
-    out << "----" << IOCtrl::endl;
+    channel << IOFormatTextAttr::bold << this->prompt << "list" << IOCtrl::endl;
+    channel << "Displays the available tests.\n" << IOCtrl::endl;
+    channel << "----" << IOCtrl::endl;
 
-    out << IOFormatTextAttr::bold << this->prompt << "listsuites" << IOCtrl::endl;
-    out << "Displays the available suites.\n" << IOCtrl::endl;
-    out << "----" << IOCtrl::endl;
+    channel << IOFormatTextAttr::bold << this->prompt << "listsuites" << IOCtrl::endl;
+    channel << "Displays the available suites.\n" << IOCtrl::endl;
+    channel << "----" << IOCtrl::endl;
 
-    out << IOFormatTextAttr::bold << this->prompt << "load" << IOCtrl::endl;
-    out << "Loads all suites.\n" << IOCtrl::endl;
-    out << "----" << IOCtrl::endl;
+    channel << IOFormatTextAttr::bold << this->prompt << "load" << IOCtrl::endl;
+    channel << "Loads all suites.\n" << IOCtrl::endl;
+    channel << "----" << IOCtrl::endl;
 
-    out << IOFormatTextAttr::bold << this->prompt << "load [suite]" << IOCtrl::endl;
-    out << "Loads the tests from [suite].\n" << IOCtrl::endl;
-    out << "----" << IOCtrl::endl;
+    channel << IOFormatTextAttr::bold << this->prompt << "load [suite]" << IOCtrl::endl;
+    channel << "Loads the tests from [suite].\n" << IOCtrl::endl;
+    channel << "----" << IOCtrl::endl;
 
-    out << IOFormatTextAttr::bold << this->prompt << "run [suite]" << IOCtrl::endl;
-    out << "Runs all tests in [suite].\n" << IOCtrl::endl;
-    out << "----" << IOCtrl::endl;
+    channel << IOFormatTextAttr::bold << this->prompt << "run [suite]" << IOCtrl::endl;
+    channel << "Runs all tests in [suite].\n" << IOCtrl::endl;
+    channel << "----" << IOCtrl::endl;
 
-    out << IOFormatTextAttr::bold << this->prompt << "run [test] (number)" << IOCtrl::endl;
-    out << "Runs [test] with (number) repetitions.\n" << IOCtrl::endl;
-    out << "----" << IOCtrl::endl;
+    channel << IOFormatTextAttr::bold << this->prompt << "run [test] (number)" << IOCtrl::endl;
+    channel << "Runs [test] with (number) repetitions.\n" << IOCtrl::endl;
+    channel << "----" << IOCtrl::endl;
 
-    out << "Back to you, Bob!\n" << IOCtrl::endl;
+    channel << "Back to you, Bob!\n" << IOCtrl::endl;
 }
 
 void GoldilocksShell::about(stringvector& tokens)
@@ -343,7 +353,7 @@ void GoldilocksShell::benchmark(stringvector& tokens)
         }
         catch(const std::invalid_argument&)
         {
-            out << IOFormatTextFG::red << IOFormatTextAttr::bold << IOCat::error
+            channel << IOFormatTextFG::red << IOFormatTextAttr::bold << IOCat::error
             << "ERROR: " << tokens[2] << " is not a valid integer. "
             << "Please specify a valid number of reptitions for "
             << "the benchmark." << IOCtrl::endl;
@@ -367,7 +377,7 @@ void GoldilocksShell::compare(stringvector& tokens)
         }
         catch(const std::invalid_argument&)
         {
-            out << IOFormatTextFG::red << IOFormatTextAttr::bold << IOCat::error
+            channel << IOFormatTextFG::red << IOFormatTextAttr::bold << IOCat::error
             << "ERROR: " << tokens[3] << " is not a valid integer. "
             << "Please specify a valid number of reptitions for "
             << "the benchmark." << IOCtrl::endl;
@@ -422,7 +432,7 @@ void GoldilocksShell::run(stringvector& tokens)
         }
         catch(const std::invalid_argument&)
         {
-            out << IOFormatTextFG::red << IOFormatTextAttr::bold << IOCat::error
+            channel << IOFormatTextFG::red << IOFormatTextAttr::bold << IOCat::error
             << "ERROR: " << tokens[2] << " is not a valid integer. "
             << "Please specify a valid number of reptitions for "
             << "the test." << IOCtrl::endl;
@@ -445,14 +455,14 @@ uint8_t GoldilocksShell::validate_arguments(stringvector& tokens,
     // If there are not enough arguments, throw error and return 0.
     if(args < min)
     {
-        out << IOFormatTextFG::red << IOFormatTextAttr::bold << IOCat::error
+        channel << IOFormatTextFG::red << IOFormatTextAttr::bold << IOCat::error
             << "ERROR: Not enough arguments." << IOCtrl::endl;
         return 0;
     }
     // Else if there are too many arguments, throw error and return 0.
     else if(args > max)
     {
-        out << IOFormatTextFG::red << IOFormatTextAttr::bold << IOCat::error
+        channel << IOFormatTextFG::red << IOFormatTextAttr::bold << IOCat::error
             << "ERROR: Too many arguments." << IOCtrl::endl;
         return 0;
     }

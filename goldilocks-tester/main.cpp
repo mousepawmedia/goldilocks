@@ -44,14 +44,8 @@
 ////#include "goldilocks/goldilocks_shell.hpp"
 #include <iostream>
 
-#include "goldilocks/expect/expect.hpp"
+#include "goldilocks/goldilocks.hpp"
 #include "iosqueak/channel.hpp"
-
-bool griffon(std::string, int) { return true; }
-
-bool explosion() { throw std::runtime_error("Foo"); }
-
-void black_hole(int) { return; }
 
 /** Temporary test code goes in this function ONLY.
  * All test code that is needed long term should be
@@ -59,18 +53,7 @@ void black_hole(int) { return; }
  */
 void test_code()
 {
-	std::cout << Expect<That::IsTrue>(true) << std::endl;
-	std::cout << Expect<That::IsFalse>(true) << std::endl;  // will fail!
-	std::cout << Expect<That::IsEqual>(40 + 2, 42) << std::endl;
-	std::cout << Expect<That::IsEqual>(40, 42) << std::endl;  // will fail!
-	std::cout << Expect<That::IsNotEqual, Should::Fail>(40, 40) << std::endl;
-	std::cout
-		<< Expect<That::FuncReturns>(true, "griffon", griffon, "Gallus", 2)
-		<< std::endl;
-	std::cout << Expect<That::FuncThrows>(std::overflow_error(""),
-										  "explosion",
-										  explosion)
-			  << std::endl;
+
 }
 
 /////// WARNING: DO NOT ALTER BELOW THIS POINT! ///////
@@ -83,7 +66,6 @@ int main(int argc, char* argv[])
 	// Set up signal handling.
 	channel.configure_echo(IOEchoMode::cout);
 
-	/****
 	GoldilocksShell* shell = new GoldilocksShell(">> ");
 	//shell->register_suite<Suite_CoreTypes>("P-sB01");
 
@@ -105,11 +87,7 @@ int main(int argc, char* argv[])
 
 	// Delete our GoldilocksShell.
 	delete shell;
-	****/
 
-	// HACK: Remove me before final commit.
-	(void)argc;
-	(void)argv;
 	test_code();
 
 	return r;

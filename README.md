@@ -36,7 +36,6 @@ Authors
 Dependencies
 ----------------------------------------
 
-* PawLIB Minimal 2.0
 * IOSqueak 2.0
 
 Building
