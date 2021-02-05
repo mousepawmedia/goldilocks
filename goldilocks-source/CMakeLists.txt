@@ -1,6 +1,6 @@
 # CMake Config for Executable (MousePaw Media Build System)
 # Version: 2.1.0
-# Tailored For: Anari
+# Tailored For: Goldilocks
 #
 # Author(s): Jason C. McDonald
 
@@ -136,6 +136,8 @@ include_directories(include)
 
 # CHANGEME: Include headers of dependencies.
 include_directories(${IOSQUEAK_DIR}/include)
+include_directories(${EVENTPP_DIR}/include)
+include_directories(${ARCTICTERN_DIR}/include)
 
 # CHANGEME: Include files to compile.
 add_library(${TARGET_NAME} STATIC
@@ -149,7 +151,6 @@ add_library(${TARGET_NAME} STATIC
 
     src/manager.cpp
     src/shell.cpp
-    src/suite.cpp
 )
 
 # CHANGEME: Link against dependencies.

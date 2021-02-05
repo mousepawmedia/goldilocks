@@ -206,7 +206,7 @@ void GoldilocksShell::interactive()
     // Get what the user typed.
     getline(std::cin, buffer);
     // Split the line into space-delimited tokens.
-    stringy::stdsplit(buffer, " ", tokens);
+    stringy::split_string(buffer, " ", tokens);
 
     // Loop while command is not the pseudocommand "exit"...
     while(tokens[0] != "exit")
@@ -275,7 +275,7 @@ void GoldilocksShell::interactive()
         // Get the line the user just typed.
         getline(std::cin, buffer);
         // Split the line into space-delimited tokens.
-        stringy::stdsplit(buffer, " ", tokens);
+        stringy::split_string(buffer, " ", tokens);
     }
     // Once the command (first token) is "exit", we quit.
 }

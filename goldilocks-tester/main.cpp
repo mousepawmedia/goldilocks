@@ -44,7 +44,7 @@
 ////#include "goldilocks/goldilocks_shell.hpp"
 #include <iostream>
 
-#include "goldilocks/goldilocks.hpp"
+#include "goldilocks/shell.hpp"
 #include "iosqueak/channel.hpp"
 
 /** Temporary test code goes in this function ONLY.
@@ -76,7 +76,7 @@ int main(int argc, char* argv[])
 	}
 	else
 	{
-		out << IOFormatTextAttr::bold << IOFormatTextFG::blue
+		channel << IOFormatTextAttr::bold << IOFormatTextFG::blue
 			<< "===== Goldilocks Tester =====\n" << IOCtrl::endl;
 
 		test_code();

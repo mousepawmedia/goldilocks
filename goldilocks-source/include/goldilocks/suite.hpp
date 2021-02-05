@@ -49,6 +49,7 @@
 
 #include "goldilocks/test.hpp"
 #include "goldilocks/types.hpp"
+#include "iosqueak/channel.hpp"
 
 /**A TestSuite is responsible for registering a batch of Tests with
  * Goldilocks Test Manager on demand. This is primarily useful if an
@@ -73,7 +74,7 @@ public:
 	/** Run all of the tests in the suite.
 	 * \return true if all the tests run, else false
 	 */
-	bool run_tests();
+	bool run_tests();  // HACK: Definition necessarily in manager.cpp.
 
 	/** Check if the testsuite was already loaded, or mark it as loaded.
 	 * Used directly by Goldilocks.
@@ -97,7 +98,11 @@ protected:
 	 * \param the pointer to the test (declare "new" for this argument)
 	 * \param whether to run the test on suite run (default true)
 	 */
-	void register_test(testname_t, Test*, bool = true, Test* = 0);
+	void register_test(
+		testname_t test_name,
+		Test* test,
+		bool will_run = true,
+		Test* compare = 0);  // HACK: Definition necessarily in manager.cpp.
 
 	/// The list of tests to load. Mainly here for reference right now.
 	std::vector<testname_t> tests_load;
@@ -120,7 +125,7 @@ private:
 	 * from the derived classes and end-developer (intentionally).
 	 * \param the pointer to the TestManager controlling the suite.
 	 */
-	void backregister(TestManager*);
+	void backregister(TestManager* tm) { testmanager = tm; }
 };
 
 #endif  // GOLDILOCKS_SUITE_HPP
