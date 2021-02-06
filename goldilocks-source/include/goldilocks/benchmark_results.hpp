@@ -6,8 +6,6 @@
 #include <cstdint>
 #include <vector>
 
-#include "pawlib/flex_array.hpp"
-
 enum class BenchmarkVerdict {
 	/// No result yet
 	none,
@@ -123,10 +121,10 @@ public:
 	 * \param the clock measurement for result A
 	 * \param the clock measurement for result B
 	 */
-	inline void add_measurement(uint64_t measurment_a, uint64_t measurment_b)
+	inline void add_measurement(uint64_t measurement_a, uint64_t measurement_b)
 	{
-		results.push_back(measurment_a);
-		results.push_back(measurment_b);
+		results.push_back(measurement_a);
+		results.push_back(measurement_b);
 	}
 
 	~BenchmarkResult();

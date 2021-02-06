@@ -17,11 +17,40 @@
 # "-DCONFIG_FILENAME=foo" would build using "foo.config".
 
 ##### THIRD-PARTY DEPENDENCIES #####
+#
+# This sets the path to eventpp.
+# The build system will look for 'include/' at this location.
+#
+# The default for it is '${CMAKE_HOME_DIRECTORY}/../../libdeps/libs', which
+# assumes a copy of the lib-git repository in the same directory as this
+# repository folder.
+#
+# 'make eventpp' or 'make all' would need to be run in libdeps first.
+
+set(EVENTPP_DIR
+	${CMAKE_HOME_DIRECTORY}/../../libdeps/libs
+)
+
+##### ARCTIC TERN #####
+#
+# This sets the path to Arctic Tern.
+# The build system will look for 'include/' at this location.
+#
+# The default is '${CMAKE_HOME_DIRECTORY}/../../arctic-tern/arctic-tern', which
+# assumes a copy of the Arctic Tern git repository in the same directory as
+# this repository folder.
+#
+# 'make ready' would need to be run in that repository to generate the library.
+
+set(ARCTICTERN_DIR
+	${CMAKE_HOME_DIRECTORY}/../../arctic-tern/arctic-tern
+)
+
 
 ##### IOSQUEAK #####
 #
 # This sets the path to IOSqueak.
-# The build system will look for 'include/' at this location.
+# The build system will look for 'include/' and 'lib/' at this location.
 #
 # The default is '${CMAKE_HOME_DIRECTORY}/../../iosqueak/iosqueak', which
 # assumes a copy of the IOSqueak git repository in the same directory as this
@@ -32,24 +61,6 @@
 
 set(IOSQUEAK_DIR
 	${CMAKE_HOME_DIRECTORY}/../../iosqueak/iosqueak
-)
-
-##### PAWLIB MINIMAL #####
-#
-# This sets the path to PawLIB Minimal.
-# The build system will look for 'include/' at this location.
-# Because PawLIB depends on IOSqueak for the full library, we only depend
-# on the header-only library core.
-#
-# The default is '${CMAKE_HOME_DIRECTORY}/../../pawlib/pawlib', which
-# assumes a copy of the PawLIB git repository in the same directory as this
-# repository folder.
-#
-# 'make minimal' would need to be run in that repository to generate the
-# minimal version of the library.
-
-set(PAWLIB_DIR
-	${CMAKE_HOME_DIRECTORY}/../../pawlib/pawlib
 )
 
 

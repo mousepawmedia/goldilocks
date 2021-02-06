@@ -6,7 +6,7 @@
                 "/usr/include/**",
                 "/usr/local/include/**",
                 "${workspaceRoot}/../libdeps/libs/include/**",
-                "${workspaceRoot}/../pawlib/pawlib/include/**",
+                "${workspaceRoot}/../arctic-tern/arctic-tern/include/**",
                 "${workspaceRoot}/../iosqueak/iosqueak/include/**",
                 "${workspaceRoot}/goldilocks-source/include/**"
             ],
@@ -17,7 +17,7 @@
                     "/usr/include",
                     "/usr/local/include",
                     "${workspaceRoot}/../libdeps/libs/include",
-                    "${workspaceRoot}/../pawlib/pawlib/include",
+                    "${workspaceRoot}/../arctic-tern/arctic-tern/include",
                     "${workspaceRoot}/../iosqueak/iosqueak/include",
                     "${workspaceRoot}"
                 ],
@@ -41,7 +41,7 @@
                 "/usr/lib/gcc/x86_64-linux-gnu/**",
                 "/usr/include/**",
                 "${workspaceRoot}/../libdeps/libs/include/**",
-                "${workspaceRoot}/../pawlib/pawlib/include/**",
+                "${workspaceRoot}/../arctic-tern/arctic-tern/include/**",
                 "${workspaceRoot}/../iosqueak/iosqueak/include/**",
                 "${workspaceRoot}/goldilocks-source/include/**"
             ],
@@ -54,7 +54,7 @@
                     "/usr/local/include",
                     "/usr/include",
                     "${workspaceRoot}/../libdeps/libs/include",
-                    "${workspaceRoot}/../pawlib/pawlib/include",
+                    "${workspaceRoot}/../arctic-tern/arctic-tern/include",
                     "${workspaceRoot}/../iosqueak/iosqueak/include",
                     "${workspaceRoot}"
                 ],

@@ -103,22 +103,16 @@ public:
     virtual bool run() = 0;
 
     /** Benchmark-optimized form of the test. May be needed if the
-         * validity testing will throw off the benchmark.
-         * If undefined, always returns true.
-         * \return true if successful, false if it fails (error). */
-    virtual bool run_optimized() { return run(); }
+     * validity testing will throw off the benchmark.
+     * If undefined, executes run()
+     * \return true if successful, false if it fails (error). */
+    virtual bool run_optimized() { return this->run(); }
 
     /** Verify test success.
      * If undefined, always returns true.
          * \return true if successful, false if the test fails.
          */
     virtual bool verify() { return true; }
-
-    /** Benchmark-optimized form of the test. May be needed if the
-     * validity testing will throw off the benchmark.
-     * If undefined, executes run()
-     * \return true if successful, false if it fails (error). */
-    virtual bool run_optimized() { return this->run(); }
 
     /**Clean up after successful test.
      * If undefined, returns nothing.*/

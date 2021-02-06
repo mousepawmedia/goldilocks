@@ -36,7 +36,8 @@ Authors
 Dependencies
 ----------------------------------------
 
-* PawLIB Minimal 2.0
+* Arctic Tern
+* eventpp
 * IOSqueak 2.0
 
 Building

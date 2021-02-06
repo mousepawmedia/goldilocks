@@ -52,7 +52,7 @@
 // If we're on a 64-bit system...
 #if defined __LP64__
 
-void calibrate()
+inline void calibrate()
 {
 	/* According to Intel's documentation, we must "warms up"
 	 * the instruction cache that we'll be using for measurement,
@@ -120,7 +120,7 @@ inline uint64_t clock(Test* test = 0)
  * difference between the 32-bit and 64-bit versions is in which
  * registers we are clobbering. On x86 (32-bit), we clobber %eax-%edx,
  * while on x64, we clobber %rax-%rdx.*/
-void calibrate()
+inline void calibrate()
 {
 	uint32_t low, high;
 
@@ -169,7 +169,7 @@ inline uint64_t clock(Test* test = 0)
 #else
 
 // TODO Non-GCC clock functions.
-void calibrate() { return; }
+inline void calibrate() { return; }
 
 inline uint64_t clock(Test* test = 0) { return; }
 
