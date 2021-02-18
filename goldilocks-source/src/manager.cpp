@@ -427,7 +427,10 @@ bool TestManager::runall()
 		 it != suites.end();
 		 ++it) {
 		// Run each suite.
-		run_suite(it->first);
+		if (!run_suite(it->first)) {
+			// Abort on first failure.
+			return false;
+		}
 	}
 	return true;
 }
