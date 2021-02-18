@@ -134,8 +134,8 @@ include_directories(include)
 # CHANGEME: Include headers of dependencies.
 include_directories(../goldilocks-source/include)
 include_directories(${IOSQUEAK_DIR}/include)
-include_directories(${EVENTPP_DIR}/include)
 include_directories(${ARCTICTERN_DIR}/include)
+include_directories(${EVENTPP_DIR}/include)
 
 # CHANGEME: Include files to compile.
 add_executable(${TARGET_NAME}
