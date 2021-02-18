@@ -58,5 +58,6 @@
     },
     "cSpell.words": [
         "nullptr"
-    ]
+    ],
+    "cmake.configureOnOpen": false,
 }
