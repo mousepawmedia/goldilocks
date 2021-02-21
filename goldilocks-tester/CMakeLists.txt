@@ -1,5 +1,5 @@
 # CMake Config for Executable (MousePaw Media Build System)
-# Version: 2.1.0
+# Version: 2.2.1
 # Tailored For: Goldilocks
 #
 # Author(s): Jason C. McDonald
@@ -38,17 +38,17 @@
 # See https://www.mousepawmedia.com/developers for information
 # on how to contribute to our projects.
 
-# Specify the verison being used as well as the language.
-cmake_minimum_required(VERSION 3.1)
+# Specify the verison being used.
+cmake_minimum_required(VERSION 3.8)
 
 # CHANGEME: Name your project here
-project("Goldilocks Tester")
-set(TARGET_NAME "goldilocks-tester")
+project("Sandbox Tester")
+
+# CHANGEME: Specify output binary name
+set(TARGET_NAME "sandbox-tester")
 
 message("Using ${CONFIG_FILENAME}.config")
 include(${CMAKE_HOME_DIRECTORY}/../${CONFIG_FILENAME}.config)
-
-# Compiler and Version check...
 
 # Compiler and Version check...
 # Allow Clang 3.4
@@ -58,12 +58,6 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     endif()
     set(COMPILERTYPE "clang")
     message("Clang 3.4 or later detected. Proceeding...")
-# Allow AppleClang
-elseif(CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
-    if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS "5")
-        message(FATAL_ERROR "Clang is too old. >= v5.x required. Aborting build.")
-    endif()
-    set(COMPILERTYPE "clang")
 # Allow GCC 5.x
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS "5")
@@ -84,7 +78,7 @@ endif()
 
 # Target C++17
 set(CMAKE_CXX_STANDARD 17)
-# Disable extensions (turns gnu++17 to c++17)
+# Disable extensions (turns gnu++14 to c++14)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Target 32-bit or 64-bit, based on ARCH variable.
@@ -102,19 +96,14 @@ else()
 endif()
 
 # Our global compiler flags.
-add_definitions(-Wall -Wextra -Werror -Wpedantic)
+add_definitions(-Wall -Wextra -Werror)
+#add_definitions(-Wall -Wextra)
 
 if(COMPILERTYPE STREQUAL "gcc")
-    # -Wimplicit-fallthrough=0 is required for
-    # GCC 7.x and onward. That is, until we switch
-    # to C++17
-    if(CMAKE_CXX_COMPILER_VERSION VERSION_EQUAL "7" OR CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "7")
-        add_definitions(-Wimplicit-fallthrough)
-    endif()
     # Set debug flags. -g is a default.
     #set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ")
     # Set release flags. -O3 is a default.
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -s -fexpensive-optimizations")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -s")
 elseif(COMPILERTYPE STREQUAL "clang")
     # Use libc++ if requested.
     if(LLVM)
@@ -127,6 +116,8 @@ elseif(COMPILERTYPE STREQUAL "clang")
     #set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} ")
 endif()
 
+# CHANGEME: Select appropriate output (lib or bin)
+#set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/../../lib/${CMAKE_BUILD_TYPE}")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/../../bin/${CMAKE_BUILD_TYPE}")
 
 include_directories(include)
@@ -137,14 +128,17 @@ include_directories(${IOSQUEAK_DIR}/include)
 include_directories(${ARCTICTERN_DIR}/include)
 include_directories(${EVENTPP_DIR}/include)
 
-# CHANGEME: Include files to compile.
+#CHANGEME: Select appropriate format.
+#add_library(${TARGET_NAME}
 add_executable(${TARGET_NAME}
+    # CHANGEME: Include files to compile.
     main.cpp
 )
 
 # CHANGEME: Link against dependencies.
 target_link_libraries(${TARGET_NAME} ${CMAKE_HOME_DIRECTORY}/../goldilocks-source/lib/${CMAKE_BUILD_TYPE}/libgoldilocks.a)
 target_link_libraries(${TARGET_NAME} ${IOSQUEAK_DIR}/lib/libiosqueak.a)
+
 
 if(COMPILERTYPE STREQUAL "clang")
     if(SAN STREQUAL "address")
@@ -156,13 +150,9 @@ if(COMPILERTYPE STREQUAL "clang")
         set_property(TARGET ${TARGET_NAME} APPEND_STRING PROPERTY LINK_FLAGS " -fsanitize=leak")
         message("Compiling with LeakSanitizer.")
     elseif(SAN STREQUAL "memory")
-        if(LLVM)
-            add_definitions(-O1 -fsanitize=memory -fno-optimize-sibling-calls -fno-omit-frame-pointer -fsanitize-memory-track-origins)
-            set_property(TARGET ${TARGET_NAME} APPEND_STRING PROPERTY LINK_FLAGS " -fsanitize=memory")
-            message("Compiling with MemorySanitizer.")
-        else()
-            message("Skipping MemorySanitizer: requires libc++")
-        endif()
+        add_definitions(-O1 -fsanitize=memory -fno-optimize-sibling-calls -fno-omit-frame-pointer)
+        set_property(TARGET ${TARGET_NAME} APPEND_STRING PROPERTY LINK_FLAGS " -fsanitize=memory")
+        message("Compiling with MemorySanitizer.")
     elseif(SAN STREQUAL "thread")
         add_definitions(-O1 -fsanitize=thread)
         set_property(TARGET ${TARGET_NAME} APPEND_STRING PROPERTY LINK_FLAGS " -fsanitize=thread")

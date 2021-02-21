@@ -62,5 +62,7 @@
     ],
     "cSpell.ignoreWords": [
         "endl"
-    ]
+    ],
+    "cmake.configureOnOpen": false,
+    "restructuredtext.languageServer.disabled": true
 }

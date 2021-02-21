@@ -1,5 +1,7 @@
 #include "goldilocks/manager.hpp"
 
+#include <algorithm>  // std::sort
+
 // MACRO IF we are using a GCC-style compiler.
 // NOTE: We're assuming Intel/AMD. What about PowerPC and ARM?
 #if defined __GNUC__ || __MINGW32__ || __MINGW64__

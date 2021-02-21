@@ -44,10 +44,8 @@
 #ifndef GOLDILOCKS_MANAGER_HPP
 #define GOLDILOCKS_MANAGER_HPP
 
-// uint64_t and friends
-#include <cstdlib>
-// std::map
-#include <map>
+#include <cstdlib>  // uint64_t and friends
+#include <map>  // std::map
 
 // Output
 #include "iosqueak/channel.hpp"

@@ -33,11 +33,9 @@
         {
             "name": "Linux",
             "includePath": [
-                "/usr/include/c++/**",
-                "/usr/include/x86_64-linux-gnu/**",
+                "/usr/include/**",
                 "/usr/local/include/**",
                 "/usr/lib/gcc/x86_64-linux-gnu/**",
-                "/usr/include/**",
                 "${workspaceRoot}/../libdeps/libs/include/**",
                 "${workspaceRoot}/../iosqueak/iosqueak/include/**",
                 "${workspaceRoot}/goldilocks-source/include/**"
@@ -46,10 +44,9 @@
             "intelliSenseMode": "clang-x64",
             "browse": {
                 "path": [
-                    "/usr/include/c++",
-                    "/usr/include/x86_64-linux-gnu",
-                    "/usr/local/include",
                     "/usr/include",
+                    "/usr/local/include",
+                    "/usr/include/x86_64-linux-gnu",
                     "${workspaceRoot}/../libdeps/libs/include",
                     "${workspaceRoot}/../iosqueak/iosqueak/include",
                     "${workspaceRoot}"

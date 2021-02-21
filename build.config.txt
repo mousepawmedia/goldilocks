@@ -16,6 +16,20 @@
 # file name (before the .config). For example, passing the argument
 # "-DCONFIG_FILENAME=foo" would build using "foo.config".
 
+##### THIRD-PARTY DEPENDENCIES #####
+#
+# This sets the path to eventpp.
+# The build system will look for 'include/' at this location.
+#
+# The default for all is '${CMAKE_HOME_DIRECTORY}/../../libdeps/libs', which
+# assumes a copy of the libdeps repository in the same directory as this
+# repository folder.
+#
+# 'make <library>' or 'make all' would need to be run in libdeps first.
+
+set(EVENTPP_DIR
+	${CMAKE_HOME_DIRECTORY}/../../libdeps/libs
+)
 
 ##### IOSQUEAK #####
 #
@@ -45,21 +59,3 @@ set(IOSQUEAK_DIR
 # Set the option to either `true` or `false` below.
 
 set(LLVM false)
-
-
-##### LINKER (LD) #####
-#
-# This option asks the compiler to use the specified linker instead of the
-# default for your system. This assumes that the requested linker is
-# installed on your system.
-#
-# Valid options:
-#   -> "bfd" for the BFD linker
-#   -> "gold" for Gold linker
-#   -> "lld" for LLVM linker (only works on Clang)
-#
-# Uncomment the desired line below, or leave all commented to use default.
-
-# set(LLD "bfd")
-# set(LLD "gold")
-# set(LLD "lld")
