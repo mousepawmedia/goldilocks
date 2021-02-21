@@ -7,7 +7,7 @@
                 "/usr/local/include/**",
                 "${workspaceRoot}/../libdeps/libs/include/**",
                 "${workspaceRoot}/../iosqueak/iosqueak/include/**",
-                "${workspaceRoot}/goldilocks-source/include/**"
+                "${workspaceRoot}/**"
             ],
             "defines": [],
             "intelliSenseMode": "clang-x64",
@@ -38,7 +38,7 @@
                 "/usr/lib/gcc/x86_64-linux-gnu/**",
                 "${workspaceRoot}/../libdeps/libs/include/**",
                 "${workspaceRoot}/../iosqueak/iosqueak/include/**",
-                "${workspaceRoot}/goldilocks-source/include/**"
+                "${workspaceRoot}/**"
             ],
             "defines": [],
             "intelliSenseMode": "clang-x64",
@@ -62,7 +62,9 @@
             "name": "Win32",
             "includePath": [
                 "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include",
-                "${workspaceRoot}"
+                "${workspaceRoot}/../libdeps/libs/include/**",
+                "${workspaceRoot}/../iosqueak/iosqueak/include/**",
+                "${workspaceRoot}/**"
             ],
             "defines": [
                 "_DEBUG",
@@ -72,6 +74,8 @@
             "browse": {
                 "path": [
                     "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include/*",
+                    "${workspaceRoot}/../libdeps/libs/include",
+                    "${workspaceRoot}/../iosqueak/iosqueak/include",
                     "${workspaceRoot}"
                 ],
                 "limitSymbolsToIncludedHeaders": true,

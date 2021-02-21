@@ -1,11 +1,10 @@
-# CMake Config for Executable (MousePaw Media Build System)
-# Version: 2.2.1
-# Tailored For: Goldilocks
+# CMake Config (MousePaw Media Build System)
+# Version: 3.0.0
 #
 # Author(s): Jason C. McDonald
 
-# LICENSE (BSD-3-Clause)
-# Copyright (c) 2018 MousePaw Media.
+# LICENSE
+# Copyright (c) 2021 MousePaw Media.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -38,17 +37,20 @@
 # See https://www.mousepawmedia.com/developers for information
 # on how to contribute to our projects.
 
-# Specify the verison being used.
-cmake_minimum_required(VERSION 3.8)
-
 # CHANGEME: Name your project here
 project("Goldilocks")
 
-# CHANGEME: Specify output binary name
-set(TARGET_NAME "goldilocks")
+# WARNING: Don't modify this file to configure project! See project.conf
 
+# Specify the verison being used.
+cmake_minimum_required(VERSION 3.8)
+
+# Import user-specified library path configuration
 message("Using ${CONFIG_FILENAME}.config")
 include(${CMAKE_HOME_DIRECTORY}/../${CONFIG_FILENAME}.config)
+
+# Import project configuration
+include(${CMAKE_HOME_DIRECTORY}/project.conf)
 
 # Compiler and Version check...
 # Allow Clang 3.4
@@ -117,35 +119,23 @@ elseif(COMPILERTYPE STREQUAL "clang")
 endif()
 
 # CHANGEME: Select appropriate output (lib or bin)
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/../../lib/${CMAKE_BUILD_TYPE}")
-#set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/../../bin/${CMAKE_BUILD_TYPE}")
+if(ARTIFACT_TYPE STREQUAL "library")
+    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/../../lib/${CMAKE_BUILD_TYPE}")
+elseif(ARTIFACT_TYPE STREQUAL "executable")
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/../../bin/${CMAKE_BUILD_TYPE}")
+endif()
 
 include_directories(include)
 
-# CHANGEME: Include headers of dependencies.
-include_directories(${IOSQUEAK_DIR}/include)
-include_directories(${ARCTICTERN_DIR}/include)
-include_directories(${EVENTPP_DIR}/include)
+include_directories(${INCLUDE_LIBS})
 
-#CHANGEME: Select appropriate format.
-add_library(${TARGET_NAME}
-#add_executable(${TARGET_NAME}
-    # CHANGEME: Include files to compile.
-    include/goldilocks/assertions.hpp
-    include/goldilocks/goldilocks.hpp
-    include/goldilocks/manager.hpp
-    include/goldilocks/shell.hpp
-    include/goldilocks/suite.hpp
-    include/goldilocks/test.hpp
-    include/goldilocks/types.hpp
+if(ARTIFACT_TYPE STREQUAL "library")
+    add_library(${TARGET_NAME} ${FILES})
+elseif(ARTIFACT_TYPE STREQUAL "executable")
+    add_executable(${TARGET_NAME} ${FILES})
+endif()
 
-    src/manager.cpp
-    src/shell.cpp
-)
-
-# CHANGEME: Link against dependencies.
-target_link_libraries(${TARGET_NAME} ${IOSQUEAK_DIR}/lib/libiosqueak.a)
-
+target_link_libraries(${TARGET_NAME} ${LINK_LIBS})
 
 if(COMPILERTYPE STREQUAL "clang")
     if(SAN STREQUAL "address")
@@ -169,4 +159,6 @@ if(COMPILERTYPE STREQUAL "clang")
         set_property(TARGET ${TARGET_NAME} APPEND_STRING PROPERTY LINK_FLAGS " -fsanitize=undefined")
         message("Compiling with UndefiniedBehaviorSanitizer.")
     endif()
+elseif(NOT SAN MATCHES "")
+    message("${SAN} is not available with compiler ${COMPILERTYPE}.")
 endif()
