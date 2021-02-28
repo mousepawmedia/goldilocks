@@ -57,6 +57,11 @@
         "variant": "cpp"
     },
     "cSpell.words": [
+        "cmake",
+        "eventpp",
+        "goldilocks",
+        "iosqueak",
+        "mousepaw",
         "nullptr"
     ],
     "cmake.configureOnOpen": false,
