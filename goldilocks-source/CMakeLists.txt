@@ -24,6 +24,7 @@ set(ARTIFACT_TYPE "library")
 set(INCLUDE_LIBS
     ${IOSQUEAK_DIR}/include
     ${ARCTICTERN_DIR}/include
+    ${ONESTRING_DIR}/include
     ${EVENTPP_DIR}/include
 )
 

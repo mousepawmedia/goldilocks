@@ -25,6 +25,7 @@ set(INCLUDE_LIBS
     include_directories(../goldilocks-source/include)
     ${IOSQUEAK_DIR}/include
     ${ARCTICTERN_DIR}/include
+    ${ONESTRING_DIR}/include
     ${EVENTPP_DIR}/include
 )
 
