@@ -3,7 +3,7 @@
  *
  * Raw clocking functions for benchmarking.
  *
- * Author(s): Wilfrantz Dede, Jason C. McDonald
+ * Author(s): Wilfrantz DEDE, Jason C. McDonald
  */
 
 /* LICENSE (BSD-3-Clause)
@@ -93,8 +93,9 @@ inline uint64_t clock(Test* test = 0)
 
 	/* If we have a test, run it. (If there is no test, we will just
 	 * wind up measuring the measurement instructions by themselves.*/
-	if (test != NULL)
-		test->run();
+	if (test != NULL) {
+		test->run_optimized();
+	}
 
 	/* Get the second timestamp. DO NOT SERIALIZE! The CPUID instruction
 	 * is too unpredictable in terms of execution size. We can just
@@ -149,8 +150,9 @@ inline uint64_t clock(Test* test = 0)
 				 "mov %%eax, %1;"
 				 : "=r"(high), "=r"(low)::"%eax", "%edx");
 	cyc1 = ((uint64_t)high << 32) | low;
-	if (test != NULL)
+	if (test != NULL) {
 		test->run_optimized();
+	}
 	asm volatile(/*"cpuid;"*/
 				 "rdtsc;"
 				 "mov %%edx, %0;"

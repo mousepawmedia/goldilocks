@@ -53,16 +53,16 @@ class Runner
 {
 protected:
 	Test* test;
+	Test* comparative;
 	uint16_t iterations;
 
 public:
-	// cppcheck-suppress noExplicitConstructor
-	Runner(Test* test, uint16_t iterations = 1)
-	: test(test), iterations(iterations)
+	Runner(Test* test, Test* comparative, uint16_t iterations = 1)
+	: test(test), comparative(comparative), iterations(iterations)
 	{
 	}
 
-	void run();
+	virtual void run();
 
 	~Runner() = default;
 };

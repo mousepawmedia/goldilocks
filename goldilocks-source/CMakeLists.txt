@@ -35,6 +35,7 @@ set(FILES
     include/goldilocks/expect/that.hpp
 
     include/goldilocks/benchmark_results.hpp
+    include/goldilocks/benchmark_runner.hpp
     include/goldilocks/benchmarker.hpp
     include/goldilocks/clock.hpp
     include/goldilocks/runner.hpp
@@ -43,6 +44,8 @@ set(FILES
 
     src/benchmarker.cpp
     src/runner.cpp
+    src/benchmark_runner.cpp
+    src/benchmark_results.cpp
 )
 
 # CHANGE: Link against dependencies.
