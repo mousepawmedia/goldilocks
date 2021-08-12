@@ -44,6 +44,8 @@
 #ifndef GOLDILOCKS_OUTCOMES_HPP
 #define GOLDILOCKS_OUTCOMES_HPP
 
+#include <stdexcept> // std::domain_error
+
 #include "goldilocks/expect/should.hpp"
 #include "goldilocks/types.hpp"
 #include "iosqueak/stringify.hpp"
@@ -78,6 +80,8 @@ public:
 			case Should::Fail_Silent:
 				// Report the inverse of the evaluation's success state.
 				return !pass;
+			default:
+				throw std::domain_error("Unknown Should:: value in Expect.");
 		}
 	}
 

@@ -59,18 +59,10 @@ void black_hole(int) { return; }
  */
 void test_code()
 {
-	std::cout << Expect<That::IsTrue>(true) << std::endl;
-	std::cout << Expect<That::IsFalse>(true) << std::endl;  // will fail!
-	std::cout << Expect<That::IsEqual>(40 + 2, 42) << std::endl;
-	std::cout << Expect<That::IsEqual>(40, 42) << std::endl;  // will fail!
-	std::cout << Expect<That::IsNotEqual, Should::Fail>(40, 40) << std::endl;
-	std::cout
-		<< Expect<That::FuncReturns>(true, "griffon", griffon, "Gallus", 2)
-		<< std::endl;
-	std::cout << Expect<That::FuncThrows>(std::overflow_error(""),
-										  "explosion",
-										  explosion)
-			  << std::endl;
+	std::cout << Expect<That::IsInRange>(2, 1, 5) << std::endl;
+	std::cout << Expect<That::IsInRange>(0.5f, 1, 2.5f) << std::endl;
+	std::cout << Expect<That::IsNotInRange>(1, 2, 3) << std::endl;
+	std::cout << Expect<That::IsNotInRange>(3.5f, 2, 6) << std::endl;
 }
 
 /////// WARNING: DO NOT ALTER BELOW THIS POINT! ///////

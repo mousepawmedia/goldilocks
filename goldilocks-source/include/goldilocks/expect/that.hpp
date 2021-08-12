@@ -44,6 +44,8 @@
 #ifndef GOLDILOCKS_THAT_HPP
 #define GOLDILOCKS_THAT_HPP
 
+#include <string> // std::toString
+
 #include "goldilocks/expect/outcomes.hpp"
 
 // The namespace creates the desired syntax That::IsWhatever
@@ -613,6 +615,76 @@ struct FuncThrows {
 		}
 
 		return build_outcome(true, target, Nothing());
+	}
+};
+
+// Expects value to be in the inclusive range defined by lower and upper.
+struct IsInRange {
+	/// The string representation of the comparison taking place.
+	static constexpr auto str{" ∈ "};
+	
+	/** Performs the evaluation.
+	 * \param value: the reference to the value operand to check.
+	 * \param lower: the pointer to minimum range defined.
+	 * \param upper: the pointer to maximum range defined.
+	 * \return the outcome
+	 */
+	template <typename T, typename U, typename V>
+	static OutcomePtr eval(const T& value, const U& lower, const V& upper) {
+		return build_outcome(value >= lower && value <= upper, 
+			value, 
+			"{" + std::to_string(lower) + ", " + std::to_string(upper) + "}");
+	}
+
+	/** Performs the evaluation.
+	 * \param value: the reference to the value operand to check.
+	 * \param lower: the minimum range defined.
+	 * \param upper: the maximum range defined.
+	 * \return the outcome
+	 */
+	template<typename T, typename U, typename V>
+	static OutcomePtr eval(const T* value, const U& lower, const V& upper) {
+		if (value == nullptr) {
+			return build_outcome(false, 
+			nullptr, 
+			"{" + std::to_string(lower) + ", " + std::to_string(upper) + "}");
+		}
+		return eval(*value, lower, upper);
+	}
+};
+
+// Expects value to be outside the inclusive range defined by lower and upper.
+struct IsNotInRange {
+	/// The string representation of the comparison taking place.
+	static constexpr auto str{" ∉ "};
+
+	/** Performs the evaluation.
+	 * \param value: the reference to the value operand to check.
+	 * \param lower: the pointer to minimum range defined.
+	 * \param upper: the pointer to maximum range defined.
+	 * \return the outcome
+	 */
+	template<typename T, typename U, typename V>
+	static OutcomePtr eval(const T& value, const U& lower, const V& upper) {
+		return build_outcome(value < lower || value > upper, 
+		value, 
+		"{" + std::to_string(lower) + ", " + std::to_string(upper) + "}");
+	}
+
+	/** Performs the evaluation.
+	 * \param value: the reference to the value operand to check.
+	 * \param lower: the minimum range defined.
+	 * \param upper: the maximum range defined.
+	 * \return the outcome
+	 */
+	template<typename T, typename U, typename V>
+	static OutcomePtr eval(const T* value, const U& lower, const V& upper) {
+		if (value == nullptr) {
+			return build_outcome(false, 
+			nullptr, 
+			"{" + std::to_string(lower) + ", " + std::to_string(upper) + "}");
+		}
+		return eval(*value, lower, upper);
 	}
 };
 

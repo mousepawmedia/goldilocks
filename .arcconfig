@@ -1,5 +1,5 @@
 {
-	"phabricator.uri" : "https://phabricator.mousepawmedia.net",
+	"phabricator.uri" : "https://phab.mousepawmedia.com",
 	"repository.callsign" : "G",
 	"load" : [
 		".arclibs/cppcheck"

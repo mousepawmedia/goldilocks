@@ -1,6 +1,7 @@
 #include "goldilocks/benchmark_results.hpp"
 
 #include <algorithm>  // std::sort
+#include <cmath> // sqrt
 
 void BenchmarkResult::finalize(const BenchmarkResult &result1, const BenchmarkResult &result2)
 {
@@ -12,7 +13,7 @@ void BenchmarkResult::finalize(const BenchmarkResult &result1, const BenchmarkRe
 
 	/* Calculate the accumulator (grand total).
 	 * For each item in the array...*/
-	for (int i = 0; i < this->repeat; i++) {
+	for (uint64_t i = 0; i < this->repeat; i++) {
 		// Add the value to the accumulator.
 		this->acc += results.at(i);
 	}
@@ -37,7 +38,7 @@ void BenchmarkResult::finalize(const BenchmarkResult &result1, const BenchmarkRe
 	// cppcheck-suppress unreadVariable
 	int64_t temp = 0;
 	// We'll loop to create the summation. For each value...
-	for (int i = 0; i < repeat; i++) {
+	for (uint64_t i = 0; i < repeat; i++) {
 		// Add (arr[i] - mean)^2 to the accumulator.
 		temp = results[i] - this->mean;
 		v_acc += (temp * temp);
@@ -96,7 +97,7 @@ void BenchmarkResult::finalize(const BenchmarkResult &result1, const BenchmarkRe
 	int upper_cutoff = repeat - 1;
 
 	// For each item (ascending)
-	for (int i = 0; i < repeat; i++) {
+	for (uint64_t i = 0; i < repeat; i++) {
 		// If the item is smaller than the inner fence value...
 		if (results[i] < this->lif) {
 			// If the item is also smaller than the outer fence value...
