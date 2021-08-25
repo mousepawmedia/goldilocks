@@ -554,15 +554,15 @@ struct FuncReturns {
 	 * \return the outcome
 	 */
 	template<typename T, typename U, typename... Args>
-	static OutcomePtr eval(const T& target,
+	static FuncOutcomePtr eval(const T& target,
 						   const char* name_hint,
 						   const U func,
 						   const Args... args)
 	{
-		(void)name_hint;  // TODO: Process name hint
+		// (void)name_hint;  // TODO: Process name hint
 		auto ret = func(args...);
 		// TODO: Store function call data in outcome!
-		return build_outcome(ret == target, ret, target);
+		return build_funcoutcome(ret == target, target, ret, name_hint, args...);
 	}
 };
 
@@ -580,7 +580,7 @@ struct FuncThrows {
 	 * \return the outcome
 	 */
 	template<typename T, typename U, typename... Args>
-	static OutcomePtr eval(const T& target,
+	static FuncOutcomePtr eval(const T& target,
 						   const char* name_hint,
 						   const U func,
 						   const Args... args)
@@ -590,19 +590,19 @@ struct FuncThrows {
 			func(args...);
 		} catch (const T& e) {
 			// TODO: Store function call data in outcome!
-			return build_outcome(true, target, e);
+			return build_funcoutcome(true, target, e, name_hint, args...);
 		} catch (const std::exception& e) {
-			return build_outcome(false, target, e);
+			return build_funcoutcome(false, target, e, name_hint, args...);
 		} catch (...) {
-			return build_outcome(false, target, Nothing());
+			return build_funcoutcome(false, target, Nothing(), name_hint, args...);
 		}
 
-		return build_outcome(false, target, Nothing());
+		return build_funcoutcome(false, target, Nothing(), name_hint, args...);
 	}
 
 	// "Throw Nothing" version of eval()
 	template<typename U, typename... Args>
-	static OutcomePtr eval(const Nothing& target,
+	static FuncOutcomePtr eval(const Nothing& target,
 						   const char* name_hint,
 						   const U func,
 						   const Args... args)
@@ -611,10 +611,10 @@ struct FuncThrows {
 		try {
 			func(args...);
 		} catch (...) {
-			return build_outcome(false, Nothing(), target);
+			return build_funcoutcome(false, Nothing(), target, name_hint, args...);
 		}
 
-		return build_outcome(true, target, Nothing());
+		return build_funcoutcome(true, target, Nothing(), name_hint, args...);
 	}
 };
 

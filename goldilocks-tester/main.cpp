@@ -57,12 +57,14 @@ void black_hole(int) { return; }
  * All test code that is needed long term should be
  * moved to a dedicated Goldilocks Test and Suite.
  */
+
+int add (int a, int b) {
+	return a + b;
+}
+
 void test_code()
 {
-	std::cout << Expect<That::IsInRange>(2, 1, 5) << std::endl;
-	std::cout << Expect<That::IsInRange>(0.5f, 1, 2.5f) << std::endl;
-	std::cout << Expect<That::IsNotInRange>(1, 2, 3) << std::endl;
-	std::cout << Expect<That::IsNotInRange>(3.5f, 2, 6) << std::endl;
+	std::cout << Expect<That::FuncReturns>(2, "add", add, 2, 3) << std::endl;
 }
 
 /////// WARNING: DO NOT ALTER BELOW THIS POINT! ///////
