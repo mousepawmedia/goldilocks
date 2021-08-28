@@ -63,7 +63,7 @@ All contributions are licensed to us under the
 License
 ----------------------------------------
 
-IOSqueak is licensed under the BSD-3 License. (See LICENSE.md)
+Goldilocks is licensed under the BSD-3 License. (See LICENSE.md)
 
 The project is owned and maintained by [MousePaw Media](https://mousepawmedia.com/developers).
 
