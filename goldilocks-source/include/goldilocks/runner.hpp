@@ -45,11 +45,22 @@
 #define GOLDILOCKS_RUNNER_HPP
 
 #include <cstdint>
+#include <variant>
 
+#include "goldilocks/suite.hpp"
 #include "goldilocks/test.hpp"
 #include "goldilocks/types.hpp"
 
-class Runner
+#include "goldilocks/clock.hpp"
+#include "goldilocks/benchmark_results.hpp"
+
+// Empty runner to allow for specialization
+template <typename T>
+class Runner;
+
+// Runner for Tests
+template <>
+class Runner<Test>
 {
 protected:
 	Test* test;
@@ -57,14 +68,159 @@ protected:
 	uint16_t iterations;
 
 public:
+	/* Ctor, stores test information
+	 * \param test The test to run
+	 * \param comparative The test to compare to
+	 * \param iterations The number of times to repeat the test
+	 */ 
 	Runner(Test* test, Test* comparative, uint16_t iterations = 1)
 	: test(test), comparative(comparative), iterations(iterations)
 	{
 	}
 
-	virtual void run();
+	// TODO: Add Reports
+	/* Runs the test
+	 * \return bool True if the test is succesful, false if not
+	 */
+	virtual bool run()
+	{
+		// run pre() from test. If it fails, call prefail()
+		if (!this->test->pre()) {
+			this->test->prefail();
+			return false;
+		}
+
+		for (uint16_t i = 0; i < this->iterations; ++i) {
+			// run janitor() from test. If fails, call postmortem()
+			if (!this->test->janitor()) {
+				this->test->postmortem();
+				return false;
+			}
+
+			// run run() from test. If fails && test exits on failure, run
+			// posrtmortem()
+			if (!this->test->run()) {
+				return false;
+			}  // TODO: If exit on fail.
+		}
+
+		this->test->post();
+		return true;
+	}
 
 	~Runner() = default;
 };
 
+class BenchmarkRunner final : public Runner<Test>
+{
+protected:
+	BenchmarkResult results;
+
+public:
+	/* Ctor for the BenchmarkRunner
+	 * \param test The test to run
+	 * \param comparative The test to compare it to
+	 * \param iterations The number of times to run the test
+	 */
+	BenchmarkRunner(Test* test, Test* comparative, uint16_t iterations = 1)
+	: Runner(test, comparative, iterations), results() {}
+
+	/* Runs the test
+	 * \return bool True if the test is succesful, false if not
+	 */
+	bool run() override {
+		// Initialize test
+		if (!this->test->pre()) {
+			this->test->prefail();
+			return false;
+		}
+		// Validate that test runs.
+		if (!this->test->run_optimized()) {
+			this->test->postmortem();
+			return false;
+		}
+		// Initialize comparative
+		if (!this->comparative->pre()) {
+			this->comparative->prefail();
+			this->test->post();
+			return false;
+		}
+
+		if (!this->comparative->run_optimized()) {
+			this->comparative->postmortem();
+			this->test->post();
+			return false;
+		}
+
+		// Actual benchmarking
+		for (uint16_t i = 0; i < this->iterations; ++i) {
+			if (!this->test->janitor()) {
+				this->test->postmortem();
+				this->comparative->post();
+				return false;
+			}
+
+			if (!this->comparative->janitor()) {
+				this->comparative->postmortem();
+				this->test->post();
+				return false;
+			}
+
+			// clock() calls test->run_optimized() and comparative->run_optimized()
+			this->results.add_measurement(clock(this->test),
+										clock(this->comparative));
+		}
+
+		this->test->post();
+		this->comparative->post();
+		return true;
+	}
+
+	~BenchmarkRunner() = default;
+};
+
+/* Runs the given item, to be used by the runner
+ * \param arg A Runnable, either a suite or a test
+ * \return bool True if the test is succesful, false if not
+ */
+template <typename T>
+bool run_item(T arg) {
+		using Type = std::decay_t<decltype(arg)>;
+		if constexpr (std::is_same_v<Type, TestSuite*>) {
+			for (auto items : arg->runnables) {
+				run_item(items.second);
+			}
+		} else if constexpr (std::is_same_v<Type, Test*>) {
+			return arg->run();
+		}
+}
+
+template <>
+class Runner<TestSuite>
+{
+protected:
+	TestSuite* suite;
+	uint16_t iterations;
+
+public:
+	/* Ctor To run either a suite or a test 
+	 * \param suite The suite to run
+	 * \param iterations The number of time to run the suite
+	 */
+	explicit Runner(TestSuite* suite, uint16_t iterations = 1) : suite(suite), iterations(iterations) {};
+
+	/* Runs the suite a given amount of time
+	 */
+	void run()
+	{
+		for (uint16_t i = 0; i <= iterations; i++)
+		{
+			for (auto suite_pair : suite->runnables)
+			{
+				// TODO: Do something with the result (i.e, generate a report)
+				bool res = std::visit([](auto arg) {return run_item(arg);}, suite_pair.second);
+			}
+		}
+	}
+};
 #endif  // GOLDILOCKS_RUNNER_HPP

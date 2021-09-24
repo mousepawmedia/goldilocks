@@ -120,7 +120,7 @@ void BenchmarkResult::finalize(const BenchmarkResult &result1, const BenchmarkRe
 	}
 
 	// For each item (descending)
-	for (int i = (repeat - 1); i >= 0; i--) {
+	for (uint64_t i = (repeat - 1); i != 0; i--) {
 		// If the item is larger than the inner fence value...
 		if (results[i] > this->uif) {
 			// If the item is also larger than the outer fence value...

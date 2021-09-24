@@ -1,11 +1,13 @@
-/** Types and Enums [Goldilocks]
+/** Suite [Goldilocks]
  * Version: 2.0
  *
- * Author(s): Jason C. McDonald
+ * Base class for Goldilocks suites, which are collections of tests.
+ *
+ * Author(s): Jason C. McDonald, Manuel E. Mateo
  */
-
+	
 /* LICENSE (BSD-3-Clause)
- * Copyright (c) 2016-2019 MousePaw Media.
+ * Copyright (c) 2016-2021 MousePaw Media.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,45 +41,47 @@
  * on how to contribute to our projects.
  */
 
-#ifndef GOLDILOCKS_TYPES_HPP
-#define GOLDILOCKS_TYPES_HPP
+#ifndef GOLDILOCKS_SUITE_HPP
+#define GOLDILOCKS_SUITE_HPP
 
-#include <memory>
-/// Represents that no exception is thrown.
-class Nothing
-{
-public:
-	Nothing() {}
-};
+#include <vector>
+#include <unordered_map>
+#include <variant>
+#include <stdexcept>
 
-// NOTE: We don't need to represent a void return; it never needs to be tested!
+#include "goldilocks/test.hpp"
+#include "goldilocks/types.hpp"
 
-std::ostream& operator<<(std::ostream& out, const Nothing&)
-{
-	out << "[Nothing]";
-	return out;
-}
+/**A TestSuite is responsible for registering a batch of Tests with
+ * Goldilocks Test Manager on demand. This is primarily useful if an
+ * interactive test console is implemented, as we can load batches of
+ * tests when, and only when, we need them. A TestSuite should also
+ * be able to report what tests it contains, for user reference while
+ * using the interactive test console.
+ */
 
-/// The type we use for storing test names.
-typedef std::string itemname_t;
-/// The type we use for storing documentation strings. Alias of itemname_t.
-typedef itemname_t testdoc_t;
-
-class Test;
 class TestSuite;
 
-/// The type we use for unique pointers of tests.
-typedef std::unique_ptr<Test> testptr_t;
-/// The type we use for unique pointers of suites.
-typedef std::unique_ptr<TestSuite> testsuiteptr_t;
+using Runnable = std::variant<Test*, TestSuite*>;
 
-/// Types of runnable objects in Goldilocks
-enum class Item { Test, Comparative, Suite };
+class TestSuite 
+{
+public:
+	itemname_t suite_name;
+	testdoc_t suite_desc;
+	std::unordered_map<itemname_t, Runnable> runnables;
+	std::unordered_map<itemname_t, Test*> compares;
 
-/// Run modes for runnable objects.
-enum class Mode { Test, Benchmark, Verify };
 
-/// Status of runnable objects.
-enum class Status { OK, Prefail, Warn, Fail, Postfail, Confused };
+	TestSuite(itemname_t suite_name, testdoc_t suite_desc):
+	suite_name(suite_name), suite_desc(suite_desc)
+	{}
 
-#endif  // GOLDILOCKS_TYPES_HPP
+	virtual void load() = 0;
+
+	virtual void register_item(itemname_t item_name, Test* test, Test* compare = nullptr);
+
+	virtual void register_item(itemname_t item_name, TestSuite* suite);
+};
+
+#endif  // GOLDILOCKS_SUITE_HPP

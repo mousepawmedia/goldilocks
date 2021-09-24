@@ -35,16 +35,16 @@ set(FILES
     include/goldilocks/expect/that.hpp
 
     include/goldilocks/benchmark_results.hpp
-    include/goldilocks/benchmark_runner.hpp
     include/goldilocks/benchmarker.hpp
     include/goldilocks/clock.hpp
+    include/goldilocks/report.hpp
     include/goldilocks/runner.hpp
+    include/goldilocks/suite.hpp
     include/goldilocks/test.hpp
     include/goldilocks/types.hpp
 
     src/benchmarker.cpp
-    src/runner.cpp
-    src/benchmark_runner.cpp
+    src/suite.cpp
     src/benchmark_results.cpp
 )
 
