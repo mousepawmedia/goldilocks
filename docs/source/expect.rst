@@ -321,6 +321,82 @@ pass the value ``Nothing()`` to ``target``.
 The argument ``name_hint`` is used only for displaying the name
 of the function in the test report.
 
+..  _expect_that_isapproxequal:
+
+IsApproxEqual
+-----------------------------------------------------
+
+``Expect<That::IsApproxEqual>(value, target, margin)``
+
+Expects value to be approximately equal to target, within the margin.
+
+..  code-block:: cpp
+
+    return ((value - target) < 0 ? ((value - target) * (-1.0)) < margin : (value - target) < margin));
+
+If value is a non-null pointer, dereferences value and evaluates. If value is nullptr, returns false.
+
+..  code-block:: cpp
+
+    return (value != nullptr && (*value - target) < 0 ? ((*value - target) * (-1.0)) < margin : (*value - target) < margin);
+
+..  _expect_that_isapproxnotequal:
+
+IsApproxNotEqual
+-----------------------------------------------------
+
+``Expect<That::IsApproxNotEqual>(value, target, margin)``
+
+Expects value to not be approximately equal to target, within the margin.
+
+..  code-block:: cpp
+
+    return ((value - target) < 0 ? ((value - target) * (-1.0)) > margin : (value - target) > margin);
+
+If value is a non-null pointer, dereferences value and evaluates. If value is nullptr, returns false.
+
+..  code-block:: cpp
+
+    return (value != nullptr && (*value - target) < 0 ? ((*value - target) * (-1.0)) > margin : (*value - target) > margin));
+
+..  _expect_that_isinrange:
+
+IsInRange
+-----------------------------------------------------
+
+``Expect<That::IsInRange>(value, lower, upper)``
+
+Expects value to be in the inclusive range defined by lower and upper.
+
+..  code-block:: cpp
+
+    return (value >= lower && value <= upper);
+
+If value is a non-null pointer, dereferences value and evaluates. If op is nullptr, returns false.
+
+.. code-block:: cpp
+
+    return (value != nullptr && *value >= lower && *value <= upper);
+
+..  _expect_that_isnotinrange:
+
+IsNotInRange
+-----------------------------------------------------
+
+``Expect<That::IsNotInRange>(value, lower, upper)``
+
+Expects value to be outside the inclusive range defined by lower and upper.
+
+.. code-block:: cpp
+
+    return (value < lower || value > upper);
+
+If value is a non-null pointer, dereferences value and evaluates. If op is nullptr, returns false.
+
+.. code-block:: cpp
+
+    return (value != nullptr && (*value < lower || *value > upper));
+
 ..  _expect_should:
 
 Should

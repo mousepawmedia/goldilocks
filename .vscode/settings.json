@@ -85,4 +85,5 @@
         "nullptr"
     ],
     "cmake.configureOnOpen": false,
+    "restructuredtext.languageServer.disabled": true,
 }

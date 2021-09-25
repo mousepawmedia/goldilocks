@@ -44,8 +44,7 @@
 #ifndef GOLDILOCKS_THAT_HPP
 #define GOLDILOCKS_THAT_HPP
 
-#include <string> // std::toString
-
+#include "iosqueak/stringify.hpp"
 #include "goldilocks/expect/outcomes.hpp"
 
 // The namespace creates the desired syntax That::IsWhatever
@@ -688,6 +687,76 @@ struct IsNotInRange {
 	}
 };
 
-}  // namespace That
+// Expects value to be approximately equal to target, within the margin.
+struct IsApproxEqual {
+	/// The string representation of the comparison taking place.
+	static constexpr auto str {" ≈≈ "};
+
+	/** Performs the evaluation.
+	 * \param value: the pointer to the value operand to check.
+	 * \param target: the pointer to the target operand to check.
+	 * \param margin: the maximum difference between two numbers.
+	 * \return the outcome
+	*/
+	template<typename T>
+	static OutcomePtr eval(const T& value, const T& target, const int& margin) {
+		if ((value - target) < 0) {
+			return build_outcome((value - target) * (-1.0) < margin, value, target, IOFormat() << IOFormatDecimalPlaces(margin + 1));
+		} else {
+			return build_outcome((value - target) < margin, value, target, IOFormat() << IOFormatDecimalPlaces(margin + 1));
+		}
+	}
+	
+	/** Performs the evaluation.
+	 * \param value: the pointer to the value operand to check.
+	 * \param target: the target operand to check.
+	 * \param margin: the maximum difference between two numbers.
+	 * \return the outcome
+	*/
+	template<typename T>
+	static OutcomePtr eval(const T* value, const T& target, const int& margin) {
+		if (value == nullptr) {
+			return build_outcome(false, nullptr, target, IOFormat() << IOFormatDecimalPlaces(margin + 1));
+		}
+		return eval(*value, target, margin);
+	}
+};
+
+// Expects value to not be approximately equal to target, within the margin.
+struct IsApproxNotEqual {
+	/// The string representation of the comparison taking place.
+	static constexpr auto str {" !≈ "};
+
+	/** Performs the evaluation.
+	 * \param value: the pointer to the value operand to check.
+	 * \param target: the pointer to the target operand to check.
+	 * \param margin: the maximum difference between two numbers.
+	 * \return the outcome
+	*/
+	template<typename T>
+	static OutcomePtr eval(const T& value, const T& target, const int& margin) {
+		if ((value - target) < 0) {
+			return build_outcome((value - target) * (-1.0) > margin, value, target, IOFormat() << IOFormatDecimalPlaces(margin + 1));
+		} else {
+			return build_outcome((value - target) > margin, value, target, IOFormat() << IOFormatDecimalPlaces(margin + 1));
+		}
+	}
+
+	/** Performs the evaluation.
+	 * \param value: the pointer to the value operand to check.
+	 * \param target: the target operand to check.
+	 * \param margin: the maximum difference between two numbers.
+	 * \return the outcome
+	*/
+	template<typename T>
+	static OutcomePtr eval(const T* value, const T& target, const int& margin) {
+		if (value == nullptr) {
+			return build_outcome(false, nullptr, target, IOFormat() << IOFormatDecimalPlaces(margin + 1));
+		}
+		return eval(*value, target, margin);
+	}
+};
+
+} // namespace That
 
 #endif

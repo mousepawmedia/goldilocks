@@ -64,7 +64,19 @@ int add (int a, int b) {
 
 void test_code()
 {
-	std::cout << Expect<That::FuncReturns>(2, "add", add, 2, 3) << std::endl;
+	///Checks if two float numbers are approximately within a margin
+	std::cout << Expect<That::IsApproxEqual>(10.003f, 10.001f, 3) << std::endl; 
+	std::cout << Expect<That::IsApproxEqual>(0.003f, 0.03f, 1) << std::endl;
+	std::cout << Expect<That::IsApproxEqual>(2.5f, 2.6f, 1) << std::endl;
+
+	///Checks if two float numbers are not approximately within a margin
+	std::cout << Expect<That::IsApproxNotEqual>(10.003f, 10.001f, 0) << std::endl;
+	std::cout << Expect<That::IsApproxNotEqual>(0.003f, 0.03f, 0) << std::endl;
+	std::cout << Expect<That::IsApproxNotEqual>(3.5f, 4.8f, 1) << std::endl;
+
+	//Testing if the rest of the features are working just fine with the new changes
+	std::cout << Expect<That::IsInRange>(5, 1, 2) << std::endl;
+	std::cout << Expect<That::FuncReturns>(5, "add", add, 2, 3) << std::endl;
 }
 
 /////// WARNING: DO NOT ALTER BELOW THIS POINT! ///////

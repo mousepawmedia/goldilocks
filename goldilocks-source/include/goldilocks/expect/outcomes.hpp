@@ -44,10 +44,9 @@
 #ifndef GOLDILOCKS_OUTCOMES_HPP
 #define GOLDILOCKS_OUTCOMES_HPP
 
-#include <stdexcept> // std::domain_error
-#include <iostream> // std::string
-#include <string> // std::to_string
 #include <tuple> // std::tuple
+#include <string> // std::to_string
+#include <stdexcept> // std::domain_error
 
 #include "goldilocks/expect/should.hpp"
 #include "goldilocks/types.hpp"
@@ -145,6 +144,8 @@ protected:
 	R returned;
 	/// The right-hand operand, or expected value.
 	X expected;
+	// Stores the type of IOFormat with want to use.
+	IOFormat ioformat;
 
 public:
 	/** Create a new outcome.
@@ -153,8 +154,8 @@ public:
 	 * \param returned: the actual value (or left-hand operand)
 	 * \return an outcome object
 	 */
-	Outcome<X, R>(const bool& passed, const R& returned, const X& expected)
-	: AbstractOutcome(passed), returned(returned), expected(expected)
+	Outcome<X, R>(const bool& passed, const R& returned, const X& expected, const IOFormat ioformat = IOFormat())
+	: AbstractOutcome(passed), returned(returned), expected(expected), ioformat(ioformat)
 	{
 	}
 
@@ -175,7 +176,13 @@ public:
 		}
 
 		// Compose a string from the value, comparison, and outcome strings.
-		return stringify(returned) + comparison + stringify(expected) + outcome;
+		if (&ioformat == 0) {
+			//if ioformat is an empty object it will call stringify with only one argument.
+			return stringify(this->returned) + comparison + stringify(this->expected) + outcome;
+		} else {
+			//if ioformat is not an empty object it will call stringify with its required number that needs to be formatted with the IOFormat.
+			return stringify(this->returned, this->ioformat) + comparison + stringify(this->expected, this->ioformat) + outcome;
+		}
 	}
 
 	~Outcome() = default;
@@ -190,9 +197,10 @@ public:
 template<typename X, typename R>
 inline OutcomePtr build_outcome(const bool& passed,
 								const R& returned,
-								const X& expected)
+								const X& expected,
+								const IOFormat ioformat = IOFormat())
 {
-	return std::make_shared<Outcome<X, R>>(passed, returned, expected);
+	return std::make_shared<Outcome<X, R>>(passed, returned, expected, ioformat);
 }
 
 typedef std::shared_ptr<AbstractOutcome> FuncOutcomePtr;
