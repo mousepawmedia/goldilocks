@@ -218,23 +218,6 @@ protected:
 	const char* name_hint;
 	// The arguments to passed to the function.
 	std::tuple <Args...> args;
-	// String of args.
-	std::string strOfArgs;
-
-	// Method to iterate through a tuple and convert the arguments to string.
-	template <size_t I = 0>
-	void convertTupleValToStr(std::tuple <Args...> tupArgs)
-	{	
-		// Appends last element to strOfArgs and stops recursion when I reaches the lenght of the tuple.
-		if constexpr(I == sizeof...(Args) - 1) {
- 			this->strOfArgs += std::to_string(std::get<I>(tupArgs));
-		} else {
-			// Get value from tuple and append it to strOfArgs.
- 			this->strOfArgs += std::to_string(std::get<I>(tupArgs)) + ",";
-			// Goes to the next element to the tuple by calling itself.
-			convertTupleValToStr<I + 1>(args);
-		}
-	}
 
 public:
 	/** Create a new outcome.
@@ -249,8 +232,6 @@ public:
 	const char* name_hint, Args... args) : AbstractOutcome(passed), returned(returned), 
 			expected(expected), name_hint(name_hint), args(std::make_tuple(args...))
 	{
-		//Convert args to strOfArgs.
-		convertTupleValToStr(this->args);
 	}
 
 	/** Create the string representation of the outcome.
@@ -270,7 +251,7 @@ public:
 		}
 
 		// Compose a string from the value, comparison, and outcome strings.
-		return stringify(name_hint) + "(" + this->strOfArgs + ")" + comparison + stringify(this->returned) + " == " + stringify(this->expected) + outcome;
+		return stringify(this->name_hint) + "(" + stringify(this->args) + ")" + comparison + stringify(this->returned) + " == " + stringify(this->expected) + outcome;
 	}
 
 	~FuncOutcome() = default;
