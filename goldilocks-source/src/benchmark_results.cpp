@@ -1,9 +1,10 @@
 #include "goldilocks/benchmark_results.hpp"
 
 #include <algorithm>  // std::sort
-#include <cmath> // sqrt
+#include <cmath>      // sqrt
 
-void BenchmarkResult::finalize(const BenchmarkResult &result1, const BenchmarkResult &result2)
+void BenchmarkResult::finalize(const BenchmarkResult& result1,
+							   const BenchmarkResult& result2)
 {
 	// Sort the array.
 	std::sort(results.begin(), results.end());
@@ -197,7 +198,7 @@ void BenchmarkResult::finalize(const BenchmarkResult &result1, const BenchmarkRe
 			this->verdict = BenchmarkVerdict::win;
 		} else if (difference_adj > 0) {
 			this->verdict = BenchmarkVerdict::loss;
-		} else if (difference_adj > std_dev_adj) { // TODO RSD too high
+		} else if (difference_adj > std_dev_adj) {  // TODO RSD too high
 			this->verdict = BenchmarkVerdict::questionable;
 		}
 	}

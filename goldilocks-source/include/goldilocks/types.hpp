@@ -43,6 +43,8 @@
 #define GOLDILOCKS_TYPES_HPP
 
 #include <memory>
+#include <string>
+
 /// Represents that no exception is thrown.
 class Nothing
 {

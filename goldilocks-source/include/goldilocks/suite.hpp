@@ -5,7 +5,7 @@
  *
  * Author(s): Jason C. McDonald, Manuel E. Mateo
  */
-	
+
 /* LICENSE (BSD-3-Clause)
  * Copyright (c) 2016-2021 MousePaw Media.
  * All rights reserved.
@@ -44,10 +44,10 @@
 #ifndef GOLDILOCKS_SUITE_HPP
 #define GOLDILOCKS_SUITE_HPP
 
-#include <vector>
+#include <stdexcept>
 #include <unordered_map>
 #include <variant>
-#include <stdexcept>
+#include <vector>
 
 #include "goldilocks/test.hpp"
 #include "goldilocks/types.hpp"
@@ -64,7 +64,7 @@ class TestSuite;
 
 using Runnable = std::variant<Test*, TestSuite*>;
 
-class TestSuite 
+class TestSuite
 {
 public:
 	itemname_t suite_name;
@@ -72,14 +72,16 @@ public:
 	std::unordered_map<itemname_t, Runnable> runnables;
 	std::unordered_map<itemname_t, Test*> compares;
 
-
-	TestSuite(itemname_t suite_name, testdoc_t suite_desc):
-	suite_name(suite_name), suite_desc(suite_desc)
-	{}
+	TestSuite(itemname_t suite_name, testdoc_t suite_desc)
+	: suite_name(suite_name), suite_desc(suite_desc)
+	{
+	}
 
 	virtual void load() = 0;
 
-	virtual void register_item(itemname_t item_name, Test* test, Test* compare = nullptr);
+	virtual void register_item(itemname_t item_name,
+							   Test* test,
+							   Test* compare = nullptr);
 
 	virtual void register_item(itemname_t item_name, TestSuite* suite);
 };

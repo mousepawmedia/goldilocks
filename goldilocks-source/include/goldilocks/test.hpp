@@ -70,63 +70,63 @@
  * class.*/
 class Test
 {
-
 public:
-    /**A Test should perform most setup tasks, such as dynamic allocation,
-     * in `pre()`, so `prefail()`, `post()`, and `postmortem()` can handle
-     * cleanup depending on the test's success. */
-    Test (testdoc_t test_name, testdoc_t doc_string)
-    : test_name(test_name), doc_string(doc_string)
-    {}
+	/**A Test should perform most setup tasks, such as dynamic allocation,
+	 * in `pre()`, so `prefail()`, `post()`, and `postmortem()` can handle
+	 * cleanup depending on the test's success. */
+	Test(testdoc_t test_name, testdoc_t doc_string)
+	: test_name(test_name), doc_string(doc_string)
+	{
+	}
 
-    testdoc_t test_name;
+	testdoc_t test_name;
 
-    testdoc_t doc_string;
+	testdoc_t doc_string;
 
 	/**Set up for the test. Called only once, even if test is
-     * repeated multiple times.
-     * If undefined, always returns true.
-     * \return true if successful, false if it fails.*/
-    virtual bool pre() { return true; }
+	 * repeated multiple times.
+	 * If undefined, always returns true.
+	 * \return true if successful, false if it fails.*/
+	virtual bool pre() { return true; }
 
-    /**Clean up from a failed pre-test.
-     * If undefined, calls post. */
-    virtual void prefail() {this->post();}
+	/**Clean up from a failed pre-test.
+	 * If undefined, calls post. */
+	virtual void prefail() { this->post(); }
 
-    /** Clean up between successful runs, in preparation for a repeat.
-     * Always executed before run() or run_optimized(), even on the first pass.
-     * If undefined, always returns true.*/
-    virtual bool janitor() { return true; }
+	/** Clean up between successful runs, in preparation for a repeat.
+	 * Always executed before run() or run_optimized(), even on the first pass.
+	 * If undefined, always returns true.*/
+	virtual bool janitor() { return true; }
 
-    /**Run test.
-     * \return true if successful, false if it fails (error).*/
-    virtual bool run() = 0;
+	/**Run test.
+	 * \return true if successful, false if it fails (error).*/
+	virtual bool run() = 0;
 
-    /** Benchmark-optimized form of the test. May be needed if the
-     * validity testing will throw off the benchmark.
-     * If undefined, executes run()
-     * \return true if successful, false if it fails (error). */
-    virtual bool run_optimized() { return this->run(); }
+	/** Benchmark-optimized form of the test. May be needed if the
+	 * validity testing will throw off the benchmark.
+	 * If undefined, executes run()
+	 * \return true if successful, false if it fails (error). */
+	virtual bool run_optimized() { return this->run(); }
 
-    /** Verify test success.
-     * If undefined, always returns true.
-     * \return true if successful, false if the test fails.
-     */
-    virtual bool verify() { return true; }
+	/** Verify test success.
+	 * If undefined, always returns true.
+	 * \return true if successful, false if the test fails.
+	 */
+	virtual bool verify() { return true; }
 
-    /**Clean up after successful test.
-     * If undefined, returns nothing.*/
-    virtual void post() {}
+	/**Clean up after successful test.
+	 * If undefined, returns nothing.*/
+	virtual void post() {}
 
-    /**Clean up after a failed test.
-     * If undefined, calls post() */
-    virtual void postmortem() {this->post();}
+	/**Clean up after a failed test.
+	 * If undefined, calls post() */
+	virtual void postmortem() { this->post(); }
 
-    /**Like the constructor, a destructor is unnecessary for a Test.
-     * Cleanup should be handled by `prefail()`, `post()`, and
-     * `postmortem()`, depending on the test's success.
-     * In short, THIS SHOULD ALWAYS BE EMPTY!*/
-    virtual ~Test() = default;
+	/**Like the constructor, a destructor is unnecessary for a Test.
+	 * Cleanup should be handled by `prefail()`, `post()`, and
+	 * `postmortem()`, depending on the test's success.
+	 * In short, THIS SHOULD ALWAYS BE EMPTY!*/
+	virtual ~Test() = default;
 };
 
 /* The Test smart pointer type shall henceforth be known

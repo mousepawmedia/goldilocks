@@ -53,8 +53,7 @@
 #include "iosqueak/stringify.hpp"
 
 /// The smallest unit of a test, representing a single check.
-template<typename H, Should S = Should::Pass>
-class Expect
+template<typename H, Should S = Should::Pass> class Expect
 {
 protected:
 	/// The outcome of the check.

@@ -86,4 +86,5 @@
     ],
     "cmake.configureOnOpen": false,
     "restructuredtext.languageServer.disabled": true,
+    "cmake.sourceDirectory": "${workspaceFolder}/goldilocks-source",
 }

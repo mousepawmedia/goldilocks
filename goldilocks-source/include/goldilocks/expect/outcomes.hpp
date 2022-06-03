@@ -44,9 +44,9 @@
 #ifndef GOLDILOCKS_OUTCOMES_HPP
 #define GOLDILOCKS_OUTCOMES_HPP
 
-#include <tuple> // std::tuple
-#include <string> // std::to_string
-#include <stdexcept> // std::domain_error
+#include <stdexcept>  // std::domain_error
+#include <string>     // std::to_string
+#include <tuple>      // std::tuple
 
 #include "goldilocks/expect/should.hpp"
 #include "goldilocks/types.hpp"
@@ -91,7 +91,8 @@ public:
 	 * \param should: how success should be interpreted.
 	 * \return a string stating if the test past or failed.
 	 */
-	virtual testdoc_t compose_outcome(const Should& should) const final {
+	virtual testdoc_t compose_outcome(const Should& should) const final
+	{
 		switch (should) {
 			case Should::Pass_Silent:
 				if (this->pass) {
@@ -136,8 +137,7 @@ public:
 typedef std::shared_ptr<AbstractOutcome> OutcomePtr;
 
 /// Outcome of evaluation for a typical binary expression.
-template<typename X, typename R>
-class Outcome : public AbstractOutcome
+template<typename X, typename R> class Outcome : public AbstractOutcome
 {
 protected:
 	/// The left-hand operand, or actual value.
@@ -154,8 +154,12 @@ public:
 	 * \param returned: the actual value (or left-hand operand)
 	 * \return an outcome object
 	 */
-	Outcome<X, R>(const bool& passed, const R& returned, const X& expected, const IOFormat ioformat = IOFormat())
-	: AbstractOutcome(passed), returned(returned), expected(expected), ioformat(ioformat)
+	Outcome<X, R>(const bool& passed,
+				  const R& returned,
+				  const X& expected,
+				  const IOFormat ioformat = IOFormat())
+	: AbstractOutcome(passed), returned(returned), expected(expected),
+	  ioformat(ioformat)
 	{
 	}
 
@@ -176,13 +180,8 @@ public:
 		}
 
 		// Compose a string from the value, comparison, and outcome strings.
-		if (&ioformat == 0) {
-			//if ioformat is an empty object it will call stringify with only one argument.
-			return stringify(this->returned) + comparison + stringify(this->expected) + outcome;
-		} else {
-			//if ioformat is not an empty object it will call stringify with its required number that needs to be formatted with the IOFormat.
-			return stringify(this->returned, this->ioformat) + comparison + stringify(this->expected, this->ioformat) + outcome;
-		}
+		return stringify(this->returned, this->ioformat) + comparison +
+			   stringify(this->expected, this->ioformat) + outcome;
 	}
 
 	~Outcome() = default;
@@ -200,12 +199,16 @@ inline OutcomePtr build_outcome(const bool& passed,
 								const X& expected,
 								const IOFormat ioformat = IOFormat())
 {
-	return std::make_shared<Outcome<X, R>>(passed, returned, expected, ioformat);
+	return std::make_shared<Outcome<X, R>>(passed,
+										   returned,
+										   expected,
+										   ioformat);
 }
 
 typedef std::shared_ptr<AbstractOutcome> FuncOutcomePtr;
 
-/// Outcomes of evaluation for Expect<That::FuncReturns> and Expect<That::FuncThrows>.
+/// Outcomes of evaluation for Expect<That::FuncReturns> and
+/// Expect<That::FuncThrows>.
 template<typename X, typename R, typename... Args>
 class FuncOutcome : public AbstractOutcome
 {
@@ -217,7 +220,7 @@ protected:
 	// The name of the function as a string.
 	const char* name_hint;
 	// The arguments to passed to the function.
-	std::tuple <Args...> args;
+	std::tuple<Args...> args;
 
 public:
 	/** Create a new outcome.
@@ -228,9 +231,13 @@ public:
 	 * \param args: The arguments to pass to the function
 	 * \return an outcome object
 	 */
-	FuncOutcome<X, R, Args...>(const bool& passed, const R& returned, const X& expected,
-	const char* name_hint, Args... args) : AbstractOutcome(passed), returned(returned), 
-			expected(expected), name_hint(name_hint), args(std::make_tuple(args...))
+	FuncOutcome<X, R, Args...>(const bool& passed,
+							   const R& returned,
+							   const X& expected,
+							   const char* name_hint,
+							   Args... args)
+	: AbstractOutcome(passed), returned(returned), expected(expected),
+	  name_hint(name_hint), args(std::make_tuple(args...))
 	{
 	}
 
@@ -251,7 +258,9 @@ public:
 		}
 
 		// Compose a string from the value, comparison, and outcome strings.
-		return stringify(this->name_hint) + "(" + stringify(this->args) + ")" + comparison + stringify(this->returned) + " == " + stringify(this->expected) + outcome;
+		return stringify(this->name_hint) + "(" + stringify(this->args) + ")" +
+			   comparison + stringify(this->returned) +
+			   " == " + stringify(this->expected) + outcome;
 	}
 
 	~FuncOutcome() = default;
@@ -267,12 +276,16 @@ public:
  */
 template<typename X, typename R, typename... Args>
 inline FuncOutcomePtr build_funcoutcome(const bool& passed,
-								const R& returned,
-								const X& expected,
-								const char* name_hint,
-								const Args... args)
+										const R& returned,
+										const X& expected,
+										const char* name_hint,
+										const Args... args)
 {
-	return std::make_shared<FuncOutcome<X, R, Args...>>(passed, returned, expected, name_hint, args...);
+	return std::make_shared<FuncOutcome<X, R, Args...>>(passed,
+														returned,
+														expected,
+														name_hint,
+														args...);
 }
 
 #endif

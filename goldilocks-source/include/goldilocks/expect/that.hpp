@@ -44,8 +44,8 @@
 #ifndef GOLDILOCKS_THAT_HPP
 #define GOLDILOCKS_THAT_HPP
 
-#include "iosqueak/stringify.hpp"
 #include "goldilocks/expect/outcomes.hpp"
+#include "iosqueak/stringify.hpp"
 
 // The namespace creates the desired syntax That::IsWhatever
 namespace That
@@ -59,8 +59,7 @@ struct IsTrue {
 	 * \param op: the operand to check
 	 * \return the outcome
 	 */
-	template<typename OP>
-	static OutcomePtr eval(const OP& op)
+	template<typename OP> static OutcomePtr eval(const OP& op)
 	{
 		return build_outcome(op == true, op, true);
 	}
@@ -69,8 +68,7 @@ struct IsTrue {
 	 * \param op: the pointer to the operand to check
 	 * \return the outcome
 	 */
-	template<typename OP>
-	static OutcomePtr eval(const OP* op)
+	template<typename OP> static OutcomePtr eval(const OP* op)
 	{
 		// If the operand pointer is null, the test fails.
 		// (We have separate checks for pointer values.)
@@ -91,8 +89,7 @@ struct IsFalse {
 	 * \param op: the operand to check
 	 * \return the outcome
 	 */
-	template<typename OP>
-	static OutcomePtr eval(const OP& op)
+	template<typename OP> static OutcomePtr eval(const OP& op)
 	{
 		return build_outcome(op == false, op, false);
 	}
@@ -101,8 +98,7 @@ struct IsFalse {
 	 * \param op: the pointer to the operand to check
 	 * \return the outcome
 	 */
-	template<typename OP>
-	static OutcomePtr eval(const OP* op)
+	template<typename OP> static OutcomePtr eval(const OP* op)
 	{
 		// If the operand pointer is null, the test fails.
 		// (We have separate checks for pointer values.)
@@ -482,8 +478,7 @@ struct PtrIsNull {
 	 * \param op: the pointer to check
 	 * \return the outcome
 	 */
-	template<typename OP>
-	static OutcomePtr eval(const OP* op)
+	template<typename OP> static OutcomePtr eval(const OP* op)
 	{
 		return build_outcome(op == nullptr, op, nullptr);
 	}
@@ -498,8 +493,7 @@ struct PtrIsNotNull {
 	 * \param op: the pointer to check
 	 * \return the outcome
 	 */
-	template<typename OP>
-	static OutcomePtr eval(const OP* op)
+	template<typename OP> static OutcomePtr eval(const OP* op)
 	{
 		return build_outcome(op != nullptr, op, nullptr);
 	}
@@ -554,14 +548,18 @@ struct FuncReturns {
 	 */
 	template<typename T, typename U, typename... Args>
 	static FuncOutcomePtr eval(const T& target,
-						   const char* name_hint,
-						   const U func,
-						   const Args... args)
+							   const char* name_hint,
+							   const U func,
+							   const Args... args)
 	{
 		// (void)name_hint;  // TODO: Process name hint
 		auto ret = func(args...);
 		// TODO: Store function call data in outcome!
-		return build_funcoutcome(ret == target, target, ret, name_hint, args...);
+		return build_funcoutcome(ret == target,
+								 target,
+								 ret,
+								 name_hint,
+								 args...);
 	}
 };
 
@@ -580,9 +578,9 @@ struct FuncThrows {
 	 */
 	template<typename T, typename U, typename... Args>
 	static FuncOutcomePtr eval(const T& target,
-						   const char* name_hint,
-						   const U func,
-						   const Args... args)
+							   const char* name_hint,
+							   const U func,
+							   const Args... args)
 	{
 		(void)name_hint;  // TODO: Process name_hint
 		try {
@@ -593,7 +591,11 @@ struct FuncThrows {
 		} catch (const std::exception& e) {
 			return build_funcoutcome(false, target, e, name_hint, args...);
 		} catch (...) {
-			return build_funcoutcome(false, target, Nothing(), name_hint, args...);
+			return build_funcoutcome(false,
+									 target,
+									 Nothing(),
+									 name_hint,
+									 args...);
 		}
 
 		return build_funcoutcome(false, target, Nothing(), name_hint, args...);
@@ -602,15 +604,19 @@ struct FuncThrows {
 	// "Throw Nothing" version of eval()
 	template<typename U, typename... Args>
 	static FuncOutcomePtr eval(const Nothing& target,
-						   const char* name_hint,
-						   const U func,
-						   const Args... args)
+							   const char* name_hint,
+							   const U func,
+							   const Args... args)
 	{
 		(void)name_hint;  // TODO: Process name_hint
 		try {
 			func(args...);
 		} catch (...) {
-			return build_funcoutcome(false, Nothing(), target, name_hint, args...);
+			return build_funcoutcome(false,
+									 Nothing(),
+									 target,
+									 name_hint,
+									 args...);
 		}
 
 		return build_funcoutcome(true, target, Nothing(), name_hint, args...);
@@ -621,18 +627,20 @@ struct FuncThrows {
 struct IsInRange {
 	/// The string representation of the comparison taking place.
 	static constexpr auto str{" ∈ "};
-	
+
 	/** Performs the evaluation.
 	 * \param value: the reference to the value operand to check.
 	 * \param lower: the pointer to minimum range defined.
 	 * \param upper: the pointer to maximum range defined.
 	 * \return the outcome
 	 */
-	template <typename T, typename U, typename V>
-	static OutcomePtr eval(const T& value, const U& lower, const V& upper) {
-		return build_outcome(value >= lower && value <= upper, 
-			value, 
-			"{" + std::to_string(lower) + ", " + std::to_string(upper) + "}");
+	template<typename T, typename U, typename V>
+	static OutcomePtr eval(const T& value, const U& lower, const V& upper)
+	{
+		return build_outcome(value >= lower && value <= upper,
+							 value,
+							 "{" + std::to_string(lower) + ", " +
+								 std::to_string(upper) + "}");
 	}
 
 	/** Performs the evaluation.
@@ -642,11 +650,13 @@ struct IsInRange {
 	 * \return the outcome
 	 */
 	template<typename T, typename U, typename V>
-	static OutcomePtr eval(const T* value, const U& lower, const V& upper) {
+	static OutcomePtr eval(const T* value, const U& lower, const V& upper)
+	{
 		if (value == nullptr) {
-			return build_outcome(false, 
-			nullptr, 
-			"{" + std::to_string(lower) + ", " + std::to_string(upper) + "}");
+			return build_outcome(false,
+								 nullptr,
+								 "{" + std::to_string(lower) + ", " +
+									 std::to_string(upper) + "}");
 		}
 		return eval(*value, lower, upper);
 	}
@@ -664,10 +674,12 @@ struct IsNotInRange {
 	 * \return the outcome
 	 */
 	template<typename T, typename U, typename V>
-	static OutcomePtr eval(const T& value, const U& lower, const V& upper) {
-		return build_outcome(value < lower || value > upper, 
-		value, 
-		"{" + std::to_string(lower) + ", " + std::to_string(upper) + "}");
+	static OutcomePtr eval(const T& value, const U& lower, const V& upper)
+	{
+		return build_outcome(value < lower || value > upper,
+							 value,
+							 "{" + std::to_string(lower) + ", " +
+								 std::to_string(upper) + "}");
 	}
 
 	/** Performs the evaluation.
@@ -677,11 +689,13 @@ struct IsNotInRange {
 	 * \return the outcome
 	 */
 	template<typename T, typename U, typename V>
-	static OutcomePtr eval(const T* value, const U& lower, const V& upper) {
+	static OutcomePtr eval(const T* value, const U& lower, const V& upper)
+	{
 		if (value == nullptr) {
-			return build_outcome(false, 
-			nullptr, 
-			"{" + std::to_string(lower) + ", " + std::to_string(upper) + "}");
+			return build_outcome(false,
+								 nullptr,
+								 "{" + std::to_string(lower) + ", " +
+									 std::to_string(upper) + "}");
 		}
 		return eval(*value, lower, upper);
 	}
@@ -690,33 +704,47 @@ struct IsNotInRange {
 // Expects value to be approximately equal to target, within the margin.
 struct IsApproxEqual {
 	/// The string representation of the comparison taking place.
-	static constexpr auto str {" ≈≈ "};
+	static constexpr auto str{" ≈≈ "};
 
 	/** Performs the evaluation.
 	 * \param value: the pointer to the value operand to check.
 	 * \param target: the pointer to the target operand to check.
 	 * \param margin: the maximum difference between two numbers.
 	 * \return the outcome
-	*/
+	 */
 	template<typename T>
-	static OutcomePtr eval(const T& value, const T& target, const int& margin) {
+	static OutcomePtr eval(const T& value, const T& target, const int& margin)
+	{
 		if ((value - target) < 0) {
-			return build_outcome((value - target) * (-1.0) < margin, value, target, IOFormat() << IOFormatDecimalPlaces(margin + 1));
+			return build_outcome((value - target) * (-1.0) < margin,
+								 value,
+								 target,
+								 IOFormat()
+									 << IOFormatDecimalPlaces(margin + 1));
 		} else {
-			return build_outcome((value - target) < margin, value, target, IOFormat() << IOFormatDecimalPlaces(margin + 1));
+			return build_outcome((value - target) < margin,
+								 value,
+								 target,
+								 IOFormat()
+									 << IOFormatDecimalPlaces(margin + 1));
 		}
 	}
-	
+
 	/** Performs the evaluation.
 	 * \param value: the pointer to the value operand to check.
 	 * \param target: the target operand to check.
 	 * \param margin: the maximum difference between two numbers.
 	 * \return the outcome
-	*/
+	 */
 	template<typename T>
-	static OutcomePtr eval(const T* value, const T& target, const int& margin) {
+	static OutcomePtr eval(const T* value, const T& target, const int& margin)
+	{
 		if (value == nullptr) {
-			return build_outcome(false, nullptr, target, IOFormat() << IOFormatDecimalPlaces(margin + 1));
+			return build_outcome(false,
+								 nullptr,
+								 target,
+								 IOFormat()
+									 << IOFormatDecimalPlaces(margin + 1));
 		}
 		return eval(*value, target, margin);
 	}
@@ -725,20 +753,29 @@ struct IsApproxEqual {
 // Expects value to not be approximately equal to target, within the margin.
 struct IsApproxNotEqual {
 	/// The string representation of the comparison taking place.
-	static constexpr auto str {" !≈ "};
+	static constexpr auto str{" !≈ "};
 
 	/** Performs the evaluation.
 	 * \param value: the pointer to the value operand to check.
 	 * \param target: the pointer to the target operand to check.
 	 * \param margin: the maximum difference between two numbers.
 	 * \return the outcome
-	*/
+	 */
 	template<typename T>
-	static OutcomePtr eval(const T& value, const T& target, const int& margin) {
+	static OutcomePtr eval(const T& value, const T& target, const int& margin)
+	{
 		if ((value - target) < 0) {
-			return build_outcome((value - target) * (-1.0) > margin, value, target, IOFormat() << IOFormatDecimalPlaces(margin + 1));
+			return build_outcome((value - target) * (-1.0) > margin,
+								 value,
+								 target,
+								 IOFormat()
+									 << IOFormatDecimalPlaces(margin + 1));
 		} else {
-			return build_outcome((value - target) > margin, value, target, IOFormat() << IOFormatDecimalPlaces(margin + 1));
+			return build_outcome((value - target) > margin,
+								 value,
+								 target,
+								 IOFormat()
+									 << IOFormatDecimalPlaces(margin + 1));
 		}
 	}
 
@@ -747,16 +784,21 @@ struct IsApproxNotEqual {
 	 * \param target: the target operand to check.
 	 * \param margin: the maximum difference between two numbers.
 	 * \return the outcome
-	*/
+	 */
 	template<typename T>
-	static OutcomePtr eval(const T* value, const T& target, const int& margin) {
+	static OutcomePtr eval(const T* value, const T& target, const int& margin)
+	{
 		if (value == nullptr) {
-			return build_outcome(false, nullptr, target, IOFormat() << IOFormatDecimalPlaces(margin + 1));
+			return build_outcome(false,
+								 nullptr,
+								 target,
+								 IOFormat()
+									 << IOFormatDecimalPlaces(margin + 1));
 		}
 		return eval(*value, target, margin);
 	}
 };
 
-} // namespace That
+}  // namespace That
 
 #endif

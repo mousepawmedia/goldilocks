@@ -2,7 +2,7 @@
 
 void TestSuite::register_item(itemname_t test_name, Test* test, Test* compare)
 {
-	//TODO Error Checking
+	// TODO Error Checking
 	if (test == nullptr)
 		throw std::invalid_argument("Test not valid");
 	runnables.emplace(test_name, test);

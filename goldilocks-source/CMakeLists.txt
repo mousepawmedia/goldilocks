@@ -37,6 +37,7 @@ set(FILES
     include/goldilocks/benchmark_results.hpp
     include/goldilocks/benchmarker.hpp
     include/goldilocks/clock.hpp
+    include/goldilocks/coordinator.hpp
     include/goldilocks/report.hpp
     include/goldilocks/runner.hpp
     include/goldilocks/suite.hpp
@@ -44,6 +45,7 @@ set(FILES
     include/goldilocks/types.hpp
 
     src/benchmarker.cpp
+    src/coordinator.cpp
     src/suite.cpp
     src/benchmark_results.cpp
 )

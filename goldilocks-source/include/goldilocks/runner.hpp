@@ -47,20 +47,17 @@
 #include <cstdint>
 #include <variant>
 
+#include "goldilocks/benchmark_results.hpp"
+#include "goldilocks/clock.hpp"
 #include "goldilocks/suite.hpp"
 #include "goldilocks/test.hpp"
 #include "goldilocks/types.hpp"
 
-#include "goldilocks/clock.hpp"
-#include "goldilocks/benchmark_results.hpp"
-
 // Empty runner to allow for specialization
-template <typename T>
-class Runner;
+template<typename T> class Runner;
 
 // Runner for Tests
-template <>
-class Runner<Test>
+template<> class Runner<Test>
 {
 protected:
 	Test* test;
@@ -72,7 +69,7 @@ public:
 	 * \param test The test to run
 	 * \param comparative The test to compare to
 	 * \param iterations The number of times to repeat the test
-	 */ 
+	 */
 	Runner(Test* test, Test* comparative, uint16_t iterations = 1)
 	: test(test), comparative(comparative), iterations(iterations)
 	{
@@ -123,12 +120,15 @@ public:
 	 * \param iterations The number of times to run the test
 	 */
 	BenchmarkRunner(Test* test, Test* comparative, uint16_t iterations = 1)
-	: Runner(test, comparative, iterations), results() {}
+	: Runner(test, comparative, iterations), results()
+	{
+	}
 
 	/* Runs the test
 	 * \return bool True if the test is succesful, false if not
 	 */
-	bool run() override {
+	bool run() override
+	{
 		// Initialize test
 		if (!this->test->pre()) {
 			this->test->prefail();
@@ -166,9 +166,10 @@ public:
 				return false;
 			}
 
-			// clock() calls test->run_optimized() and comparative->run_optimized()
+			// clock() calls test->run_optimized() and
+			// comparative->run_optimized()
 			this->results.add_measurement(clock(this->test),
-										clock(this->comparative));
+										  clock(this->comparative));
 		}
 
 		this->test->post();
@@ -183,42 +184,41 @@ public:
  * \param arg A Runnable, either a suite or a test
  * \return bool True if the test is succesful, false if not
  */
-template <typename T>
-bool run_item(T arg) {
-		using Type = std::decay_t<decltype(arg)>;
-		if constexpr (std::is_same_v<Type, TestSuite*>) {
-			for (auto items : arg->runnables) {
-				run_item(items.second);
-			}
-		} else if constexpr (std::is_same_v<Type, Test*>) {
-			return arg->run();
+template<typename T> bool run_item(T arg)
+{
+	using Type = std::decay_t<decltype(arg)>;
+	if constexpr (std::is_same_v<Type, TestSuite*>) {
+		for (auto items : arg->runnables) {
+			run_item(items.second);
 		}
+	} else if constexpr (std::is_same_v<Type, Test*>) {
+		return arg->run();
+	}
 }
 
-template <>
-class Runner<TestSuite>
+template<> class Runner<TestSuite>
 {
 protected:
 	TestSuite* suite;
 	uint16_t iterations;
 
 public:
-	/* Ctor To run either a suite or a test 
+	/* Ctor To run either a suite or a test
 	 * \param suite The suite to run
 	 * \param iterations The number of time to run the suite
 	 */
-	explicit Runner(TestSuite* suite, uint16_t iterations = 1) : suite(suite), iterations(iterations) {};
+	explicit Runner(TestSuite* suite, uint16_t iterations = 1)
+	: suite(suite), iterations(iterations){};
 
 	/* Runs the suite a given amount of time
 	 */
 	void run()
 	{
-		for (uint16_t i = 0; i <= iterations; i++)
-		{
-			for (auto suite_pair : suite->runnables)
-			{
+		for (uint16_t i = 0; i <= iterations; i++) {
+			for (auto suite_pair : suite->runnables) {
 				// TODO: Do something with the result (i.e, generate a report)
-				bool res = std::visit([](auto arg) {return run_item(arg);}, suite_pair.second);
+				bool res = std::visit([](auto arg) { return run_item(arg); },
+									  suite_pair.second);
 			}
 		}
 	}
