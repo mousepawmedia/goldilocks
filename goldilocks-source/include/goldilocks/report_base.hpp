@@ -54,18 +54,6 @@
 #include "goldilocks/expect/that.hpp"
 #include "goldilocks/test.hpp"
 #include "goldilocks/types.hpp"
-enum class BenchmarkVerdict {
-	/// No result yet
-	none,
-	/// Tests are roughly equal
-	draw,
-	/// Primary (Test A) wins
-	win,
-	/// Comparative (Test B) wins
-	loss,
-	/// RSD too high, result is unreliable.
-	questionable
-};
 
 class ReportBase{
 	public:
