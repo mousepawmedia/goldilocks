@@ -59,10 +59,8 @@ class ReportBase{
 	public:
 		ReportBase();
 		virtual void lap() = 0;
-
 		~ReportBase() = default;
 
-	protected:
 };
 
 #endif
