@@ -1,13 +1,14 @@
-/** Benchmark Results [Goldilocks]
+
+/** Report [Goldilocks]
  * Version: 2.0
  *
- * Class for storing results of benchmarking (clocking)
+ * Benchmark Report class 
  *
- * Author(s): Wilfrantz DEDE, Manuel Mateo, Jason C. McDonald
+ * Author(s): Wilfrantz DEDE
  */
 
 /* LICENSE (BSD-3-Clause)
- * Copyright (c) 2021 MousePaw Media.
+ * Copyright (c) 2016-2021 MousePaw Media.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,7 +25,7 @@
  * may be used to endorse or promote products derived from this software without
  * specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
  * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
@@ -41,25 +42,11 @@
  * on how to contribute to our projects.
  */
 
-#ifndef BENCHMARKRESULTS_HPP
-#define BENCHMARKRESULTS_HPP
-
+#ifndef BENCHMARK_REPORT_HPP
+#define BENCHMARK_REPORT_HPP
 #include "report_base.hpp"
 
-enum class BenchmarkVerdict {
-	/// No result yet
-	none,
-	/// Tests are roughly equal
-	draw,
-	/// Primary (Test A) wins
-	win,
-	/// Comparative (Test B) wins
-	loss,
-	/// RSD too high, result is unreliable.
-	questionable
-};
-
-class BenchmarkResult : public ReportBase
+class BenchmarkReport : public ReportBase
 {
 private:
 	BenchmarkVerdict verdict;
@@ -145,28 +132,13 @@ private:
 	/// The adjusted relative standard deviation
 	uint8_t rsd_adj = 0;
 
-public:
-	BenchmarkResult() : verdict(BenchmarkVerdict::none) {}
+    public:
 
-	/**Convert a raw array of clock measurements into a complete
-	 * benchmark result. This does all of our statistical computations.
-	 * \param the BenchmarkResult instance of result A (1)
-	 * \param the BenchmarkResult instance of result B (2)
-	 * Calculate the final verdict based on adjusted results.
-	 */
-	void finalize(const BenchmarkResult&, const BenchmarkResult&);
+    BenchmarkReport() : verdict(BenchmarkVerdict::none);
+    void lap() override;
+    ~BenchmarkReport() = default;
+    protected:
 
-	/*Adds in two numbers, one for each result A or B
-	 * \param the clock measurement for result A
-	 * \param the clock measurement for result B
-	 */
-	inline void add_measurement(uint64_t measurement_a, uint64_t measurement_b)
-	{
-		results.push_back(measurement_a);
-		results.push_back(measurement_b);
-	}
-
-	~BenchmarkResult();
 };
 
-#endif  // BENCHMARKRESULTS_HPP
+#endif // BENCHMARK_REPORT_HPP

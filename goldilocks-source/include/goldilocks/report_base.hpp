@@ -1,13 +1,13 @@
-/** Report [Goldilocks]
+/** Report Base [Goldilocks]
  * Version: 2.0
+ * // TODO
+ * Class for storing results of benchmarking (clocking)
  *
- * Report class for outputting result of tests.
- *
- * Author(s): Tianlin Fu, Wilfrantz DEDE
+ * Author(s): Wilfrantz DEDE, Manuel Mateo, Jason C. McDonald
  */
 
 /* LICENSE (BSD-3-Clause)
- * Copyright (c) 2016-2021 MousePaw Media.
+ * Copyright (c) 2021 MousePaw Media.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,7 +24,7 @@
  * may be used to endorse or promote products derived from this software without
  * specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
  * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
@@ -40,55 +40,27 @@
  * See https://www.mousepawmedia.com/developers for information
  * on how to contribute to our projects.
  */
+#ifndef REPORT_BASE_HPP
+#define REPORT_BASE_HPP
 
-#ifndef REPORT_HPP
-#define REPORT_HPP
+#include <cstdint>
+#include <cxxabi.h>
+#include <string>
+#include <vector>
 
-#include "report_base.hpp"
+#include "goldilocks/expect/expect.hpp"
+#include "goldilocks/expect/outcomes.hpp"
+#include "goldilocks/expect/should.hpp"
+#include "goldilocks/expect/that.hpp"
+#include "goldilocks/test.hpp"
+#include "goldilocks/types.hpp"
 
-class Report : public ReportBase
-{
+class ReportBase{
 	public:
-		// Init report
-		Report() {}
+		ReportBase();
+		virtual void lap() = 0;
+		~ReportBase() = default;
 
-		// Add outcome of a single test in the form of a expect object
-		template<typename H, Should S = Should::Pass>
-			void log(const Expect<H, S>& expect)
-			{
-				char* realname;
-				realname = abi::__cxa_demangle(typeid(H).name(), 0, 0, 0);
-				std::string name(realname);
-				reports.push_back("\nTesting: " + name + "\n");
-				reports.push_back(expect.compose() + "\n");
-			}
-
-		void lap() override;
-
-		// Add measurement from test
-		template<typename U> void log(const U& measurements)
-		{
-			std::string measure = std::to_string(measurements);
-			reports.push_back("Test measurement: " + measure + "\n\n");
-		}
-
-		// Ensures that the test run is complete
-		void lap() override { reports.push_back("End of test. \n"); }
-
-		// Prints out the reports for the test
-		void print_report()
-		{
-			int size = reports.size();
-			for (int i = 0; i < size; i++) {
-				std::cout << reports[i];
-			}
-		}
-		// Destructor
-		~Report() { reports.clear(); }
-	private:
-		std::vector<std::string> reports;
-
-	protected:
 };
 
-#endif  // REPORT_HPP
+#endif
