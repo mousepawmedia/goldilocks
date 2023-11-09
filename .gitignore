@@ -13,6 +13,10 @@ tester_debug
 /docs/_build/
 /docs/build/
 
+# Added by Jack Tolmie
+*.old
+build-goldilocks-source-Desktop-Debug
+
 # C/C++ compilation artifacts
 *.d
 *.elf
