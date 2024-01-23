@@ -21,13 +21,34 @@ void Coordinator::fill_tree(std::vector<std::shared_ptr<BaseNode>>& container, s
     }
 }
 
+
+// Delete after? Use Stringify (I think).
+std::deque<std::string> process_path(std::string& path)
+{
+	std::deque<std::string>     vec;
+	std::string                 word;
+
+	std::for_each(path.begin(), path.end(), [&vec, &word](char ch)
+				  {
+					  if(ch != '.') word.push_back(ch);
+					  else{
+						  vec.emplace_back(word);
+						  word = std::string();
+					  }
+				  });
+
+	vec.emplace_back(word);
+
+	return vec;
+}
+
 //void Coordinator::run_tests() {
 //    fill_tree(suite->suites_ctn, suite);
 //    fill_tree(suite->tests_ctn, suite);
 //    suite->print_tree();
 //}
 
-//void Coordinator::fill_tree(std::string_view name, Suites::suites_ctn& suites, Node<Suites>::shr_nodeptr node)
+//void Coordinator::fill_tree(std::string_view name, Suites::suites_ctn& suites, Node::shr_nodeptr node)
 //void Coordinator::fill_tree(std::string_view name, Suites::suites_ctn& suites, Suites::shr_suite node)
 //{
 //std::cout<<"Running fill_tree with three params\n";
@@ -88,7 +109,7 @@ void Coordinator::fill_tree(std::vector<std::shared_ptr<BaseNode>>& container, s
 
 //}
 
-//void Coordinator::fill_tree(Suites::tests_ctn& tests,  Node<Suites>::shr_nodeptr node)
+//void Coordinator::fill_tree(Suites::tests_ctn& tests,  Node::shr_nodeptr node)
 //{
 
 //    for(auto& test: tests){
@@ -100,27 +121,10 @@ void Coordinator::fill_tree(std::vector<std::shared_ptr<BaseNode>>& container, s
 
 //}
 
-std::deque<std::string> process_path(std::string& path)
-{
-    std::deque<std::string>     vec;
-    std::string                 word;
-
-    std::for_each(path.begin(), path.end(), [&vec, &word](char ch)
-    {
-        if(ch != '.') word.push_back(ch);
-        else{
-            vec.emplace_back(word);
-            word = std::string();
-        }
-     });
-
-    vec.emplace_back(word);
-
-    return vec;
-}
 
 
-////void Coordinator::fill_tree(std::string_view name, Node<Suites>::shr_nodeptr node)
+
+////void Coordinator::fill_tree(std::string_view name, Node::shr_nodeptr node)
 ////{
 
 ////    std::cout<<"Running fill_tree suites\n";

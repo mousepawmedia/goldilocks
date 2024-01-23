@@ -1,6 +1,6 @@
 #include "../include/goldilocks/goldilocks_shell.hpp"
 
-int Goldilocks_Shell::about(commands& options){
+int Goldilocks_Shell::about(Alias::commands& options){
     
     if(Goldilocks_Shell::check_tests(options)){
         std::cout<<"About running\n";

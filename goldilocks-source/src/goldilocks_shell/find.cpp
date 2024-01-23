@@ -3,7 +3,7 @@
 /* Takes the container of arguments/options, and sends it
  * to process_tests to be tokenized, then calls find_node
  * to check if the tests are loaded. */
-int Goldilocks_Shell::find(commands& options){
+int Goldilocks_Shell::find(Alias::commands& options){
     
     /* Create a string to hold the name of the
      * test to find. Fill the string with the

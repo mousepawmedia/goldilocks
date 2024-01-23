@@ -1,8 +1,8 @@
-#include "goldilocks/coordinator.hpp"
+#include "goldilocks/coordinator/coordinator.hpp"
 #include "iosqueak/stringy.hpp"
 #include <sstream>
 
-Coordinator::commands Coordinator::process_tests(commands& tests)
+Alias::commands Coordinator::process_tests(Alias::commands& tests)
 {
     /* A vector to copy the deque over to be processed
      * by stringy::split_string. */

@@ -47,8 +47,8 @@
 #include <iostream>
 #include <string_view>
 #include "iosqueak/blueshell.hpp"
-#include "goldilocks/coordinator.hpp"
-// #include "goldilocks/suites_tests/suites.hpp"
+#include "goldilocks/coordinator/coordinator.hpp"
+// #include "goldilocks/coordinator/suites.hpp"
 
 class Goldilocks_Shell: private Blueshell
 {
@@ -58,29 +58,29 @@ private:
     /* Coordinator object for accessing the tree. */
     Coordinator coordinate;
     
-    using _register = std::function<int(std::deque<std::string>&)>;
-    using commands = std::deque<std::string>&;
+//    using _register = std::function<int(std::deque<std::string>&)>;
+//    using commands  = std::deque<std::string>&;
     
     /* information about the a specific test */
-    int about(commands);
+    int about(Alias::commands);
     
     /* Runs a benchmark on [test], using its registered 
      * comparative, with (number) repetitions. */
-    int benchmark(commands);
+    int benchmark(Alias::commands);
     
     /* Function to check if the sent arguments and/or
      * options are valid. */
-    bool check_tests(commands, const std::string& test_name = __builtin_FUNCTION());
+    bool check_tests(Alias::commands, const std::string& test_name = __builtin_FUNCTION());
     
     /* Runs a comparative benchmark between [test1] and 
      * [test2] with (number) repetitions. This is seldom
      * used, as its prone to apples-and-oranges comparisons,
      * unlike benchmark, but it can be useful at times. */
-    int compare(commands);
+    int compare(Alias::commands);
     
     /* Function to register find_node on the shell. Used to
      * find tests that are currently loaded. */
-    int find(commands);
+    int find(Alias::commands);
 
     /* Testing for printing Suites containers. Delete of not
      * working or needed.*/
@@ -89,27 +89,27 @@ private:
     
     /* Displays the available suites. Passing an optional
      * (suite) will display all the tests in that suite. */
-    int list (commands);
+    int list (Alias::commands);
     
     /* Function that will display all the loaded Suites
      * and Tests. */
-    int list_loaded(commands);
+    int list_loaded(Alias::commands);
     
     /* Function to register load_node test to the shell.
      * Used to load all the suites, or the suites passed
      * as arguments. */
-    int load (commands);
+    int load(Alias::commands);
     
     /* Runs an [item], being a test or suite, with the
      * optional (number) of repetitions, default 1. */
-    int run(commands);
+    int run(Alias::commands);
     
     /* Runs a [test] as a "controlled crash", logging test
      * details to an external file on the way down. This is
      * the only way to run Fatality Tests, but is also
      * useful for Stress Tests, Edge Tests, and Fuzz Test
      * when a crash is occurring. */
-    int kamikaze(commands);
+    int kamikaze(Alias::commands);
     
     /* Register default commands to add to the container
      * of available commands. */

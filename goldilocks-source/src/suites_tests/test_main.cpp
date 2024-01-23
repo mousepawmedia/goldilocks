@@ -1,4 +1,4 @@
-#include "goldilocks/suites_tests/test_main.hpp"
+#include "goldilocks/coordinator/suites_tests/test_main.hpp"
 
 //Is this even used?!?!?!?!
 Test_Main::Test_Main(){

@@ -1,6 +1,6 @@
 #include "../include/goldilocks/goldilocks_shell.hpp"
 
-int Goldilocks_Shell::compare(commands& options)
+int Goldilocks_Shell::compare(Alias::commands& options)
 {
     if(Goldilocks_Shell::check_tests(options)){
         std::cout<<"Compare running\n";

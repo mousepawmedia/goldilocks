@@ -1,12 +1,12 @@
 #include "coordinator.hpp"
 
-void tree_things(std::shared_ptr<Node<Suites>> suite);
-//void tree_things(std::shared_ptr<Node<Suites>> suite);
-void test_things(std::shared_ptr<Node<Suites>> test);
-//void test_things(std::shared_ptr<Node<Suites>> test);
+void tree_things(std::shared_ptr<Node> suite);
+//void tree_things(std::shared_ptr<Node> suite);
+void test_things(std::shared_ptr<Node> test);
+//void test_things(std::shared_ptr<Node> test);
 
-//void Coordinator::print_tree(Node<Suites> node)
-//void Coordinator::print_tree(Node<Suites> node)
+//void Coordinator::print_tree(Node node)
+//void Coordinator::print_tree(Node node)
 //{
 //    for(auto& suite: node.children)
 //    {
@@ -22,7 +22,7 @@ void test_things(std::shared_ptr<Node<Suites>> test);
 //    }
 //}
 
-//void tree_things(std::shared_ptr<Node<Suites>> suite)
+//void tree_things(std::shared_ptr<Node> suite)
 //{
 //    if(suite == nullptr) return;
 
@@ -37,7 +37,7 @@ void test_things(std::shared_ptr<Node<Suites>> test);
 //    }
 //}
 
-//void test_things(std::shared_ptr<Node<Suites>> test)
+//void test_things(std::shared_ptr<Node> test)
 //{
 //    if(test == nullptr) return;
 //    std::cout<<"test name: "<<test->name<<'\n';
@@ -45,7 +45,7 @@ void test_things(std::shared_ptr<Node<Suites>> test);
 //}
 // Function to print the tree
 #include "node.hpp"
-void Coordinator::print_tree(const Node<Suites>::shr_nodeptr& node, int depth) {
+void Coordinator::print_tree(const Node::shr_nodeptr& node, int depth) {
     if (!node) {
         return;
     }

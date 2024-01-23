@@ -3,7 +3,7 @@
 /* Takes the container of arguments/options, and sends it
  * to process_tests to be tokenized, then calls load_node
  * to add the tests to be added. */
-int Goldilocks_Shell::load(commands& options){
+int Goldilocks_Shell::load(Alias::commands& options){
 
     auto processed_commands{coordinate.process_tests(options)};
     coordinate.add_node(processed_commands.front(), processed_commands, coordinate.root_node);

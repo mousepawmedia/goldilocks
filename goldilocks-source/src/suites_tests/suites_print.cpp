@@ -1,4 +1,4 @@
-#include "goldilocks/suites_tests/suites.hpp"
+#include "goldilocks/coordinator/suites_tests/suites.hpp"
 
 void Suites::print_container(Suites* suites){
 

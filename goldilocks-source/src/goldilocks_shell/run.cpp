@@ -2,7 +2,7 @@
 #include <numeric>
 #include <string>
 
-int Goldilocks_Shell::run(commands& options)
+int Goldilocks_Shell::run(Alias::commands& options)
 {
     if(Goldilocks_Shell::check_tests(options)){
         

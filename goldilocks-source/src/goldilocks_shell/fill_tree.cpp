@@ -27,7 +27,7 @@ void Coordinator::fill_tree(std::vector<std::shared_ptr<BaseNode>>& container, s
 //    suite->print_tree();
 //}
 
-//void Coordinator::fill_tree(std::string_view name, Suites::suites_ctn& suites, Node<Suites>::shr_nodeptr node)
+//void Coordinator::fill_tree(std::string_view name, Suites::suites_ctn& suites, Node::shr_nodeptr node)
 //void Coordinator::fill_tree(std::string_view name, Suites::suites_ctn& suites, Suites::shr_suite node)
 //{
 //std::cout<<"Running fill_tree with three params\n";
@@ -88,7 +88,7 @@ void Coordinator::fill_tree(std::vector<std::shared_ptr<BaseNode>>& container, s
 
 //}
 
-//void Coordinator::fill_tree(Suites::tests_ctn& tests,  Node<Suites>::shr_nodeptr node)
+//void Coordinator::fill_tree(Suites::tests_ctn& tests,  Node::shr_nodeptr node)
 //{
 
 //    for(auto& test: tests){
@@ -120,7 +120,7 @@ std::deque<std::string> process_path(std::string& path)
 }
 
 
-////void Coordinator::fill_tree(std::string_view name, Node<Suites>::shr_nodeptr node)
+////void Coordinator::fill_tree(std::string_view name, Node::shr_nodeptr node)
 ////{
 
 ////    std::cout<<"Running fill_tree suites\n";

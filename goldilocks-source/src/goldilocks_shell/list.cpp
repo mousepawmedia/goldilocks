@@ -1,6 +1,6 @@
 #include "../include/goldilocks/goldilocks_shell.hpp"
 
-int Goldilocks_Shell::list(commands& options){
+int Goldilocks_Shell::list(Alias::commands& options){
 std::cout<<"\nlist called with suites container size: "<< coordinate.coordinator_send_suites().size()<<" and tests containter size: "<< coordinate.coordinator_send_tests().size()<<'\n';
     for(auto& [name, suite]: coordinate.coordinator_send_suites())
     {

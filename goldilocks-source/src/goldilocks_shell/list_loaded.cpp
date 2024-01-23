@@ -4,7 +4,7 @@
 // std::string find_children(const std::shared_ptr<Node> node, const std::string& node_path);
 std::string find_children(const Node* node, const std::string& node_path);
 
-int Goldilocks_Shell::list_loaded (commands& options)
+int Goldilocks_Shell::list_loaded (Alias::commands& options)
 {
     channel << IOCtrl::endl;
     
