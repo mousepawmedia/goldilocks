@@ -8,7 +8,7 @@ Coordinator::Coordinator()
 
         std::cout<<"Starting to fill tree.\n";
 
-        for(auto& suite: root->children){
+        for(auto& suite: root_node->children){
 //            Coordinator::fill_tree(suite->children, root);
 //            Coordinator::fill_tree(suite->suites_container, root);
             std::cout<< suite->node_name << '\n';
@@ -18,6 +18,6 @@ Coordinator::Coordinator()
 //        Coordinator::fill_tree(suites_tests.main_suite.tests_container, root);
     }
 std::cout<<"Ending fill_tree\n";
-        Coordinator::print_tree(root);
+        Coordinator::print_tree(root_node);
 }
 

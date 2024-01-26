@@ -12,7 +12,10 @@ set(CMAKE_CXX_STANDARD 17)
 
 # Import user-specified library path configuration
 message("Using ${CONFIG_FILENAME}.config")
-include(${CMAKE_HOME_DIRECTORY}/../${CONFIG_FILENAME}.config)
+#include(${CMAKE_HOME_DIRECTORY}/../${CONFIG_FILENAME}.config)
+
+# Changed by Jack for running in QT Creator. Delete when done.
+include(${CMAKE_HOME_DIRECTORY}/../default.config)
 
 # CHANGE: Specify output binary name
 set(TARGET_NAME "goldilocks")
@@ -58,7 +61,8 @@ set(FILES
     include/goldilocks/coordinator/suites.hpp
     include/goldilocks/coordinator/tests.hpp
 
-
+    src/coordinator/add_find.cpp
+    src/coordinator/add_node.cpp
     src/coordinator/coordinator.cpp
     src/coordinator/node.cpp
     src/coordinator/process_tests.cpp
@@ -66,7 +70,7 @@ set(FILES
     src/coordinator/tests.cpp
 
     #    src/coordinator/add_children.cpp
-    #    src/coordinator/add_node.cpp
+    #
     #    src/coordinator/add_suite.cpp
     #    src/coordinator/find_child.cpp
     #    src/coordinator/find_node.cpp
@@ -88,7 +92,6 @@ set(FILES
     src/goldilocks_shell/run.cpp
     
 # For Suites/Tests. Delete when done.
-#    include/goldilocks/coordinator/suites_tests/func_rename.cpp
 #    include/goldilocks/coordinator/suites_tests/suite_first.hpp
 #    include/goldilocks/coordinator/suites_tests/suite_main.hpp
 #    include/goldilocks/coordinator/suites_tests/suite_second.hpp
@@ -116,3 +119,8 @@ set(LINK_LIBS
 
 # Imports build script. (Change if necessary to point to build.cmake)
 include(${CMAKE_HOME_DIRECTORY}/../build_system/build.cmake)
+
+target_sources(goldilocks
+  PRIVATE
+    src/coordinator/add_find.cpp
+)

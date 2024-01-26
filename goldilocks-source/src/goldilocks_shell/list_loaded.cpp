@@ -25,7 +25,7 @@ int Goldilocks_Shell::list_loaded (Alias::commands& options)
         // Check if the test is loaded.
         if(Goldilocks_Shell::check_tests(options)){
             // Find the node and print the children.
-            Coordinator::node_ptr searched_node{coordinate.find_node(processed_commands, coordinate.root_node)};
+            Alias::smrt_node searched_node{coordinate.find_node(processed_commands, coordinate.root_node.get())};
             if(searched_node != nullptr){
                 channel<< find_children(searched_node.get(), (searched_node->node_name + "->"))<< IOCtrl::endl;
             }

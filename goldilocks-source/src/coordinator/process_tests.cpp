@@ -2,7 +2,7 @@
 #include "iosqueak/stringy.hpp"
 #include <sstream>
 
-Alias::commands Coordinator::process_tests(Alias::commands& tests)
+std::deque<std::string>& Coordinator::process_tests(Alias::commands tests)
 {
     /* A vector to copy the deque over to be processed
      * by stringy::split_string. */

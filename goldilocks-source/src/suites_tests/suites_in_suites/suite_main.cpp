@@ -1,4 +1,4 @@
-#include "suite_main.hpp"
+#include "goldilocks/coordinator/suites_tests/suite_main.hpp"
 
 Suite_Main::Suite_Main(): Suites{"Suites_Main"}
 {

@@ -1,5 +1,5 @@
-#include "../include/goldilocks/goldilocks_shell.hpp"
-#include "iosqueak/stringy.hpp"
+#include "goldilocks/goldilocks_shell.hpp"
+//#include "iosqueak/stringy.hpp"
 
 bool Goldilocks_Shell::check_tests(Alias::commands& options, const std::string& test_name)
 {
@@ -26,9 +26,9 @@ bool Goldilocks_Shell::check_tests(Alias::commands& options, const std::string& 
             std::deque<std::string> test_name{options[i]};
             
             auto split_test_name{coordinate.process_tests(test_name)};
-                
+
             // Search for node containing test name.
-            auto find_test{coordinate.find_node(split_test_name, coordinate.root)};
+            auto find_test{coordinate.find_node(split_test_name, coordinate.root_node.get())};
             
             /* If node not found, clear the container and return. */
             if(find_test == nullptr){          

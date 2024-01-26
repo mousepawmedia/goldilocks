@@ -16,33 +16,23 @@ class Suites;
 
 class Alias{
 public:
+
+	// Smart pointers for the containers.
 	using node_vector	= std::vector<std::unique_ptr<Node>>;
-	using uniq_node		= std::unique_ptr<Node>;
-	using uniq_test		= std::unique_ptr<Tests>;
-	using uniq_suite	= std::unique_ptr<Suites>;
+	using smrt_node		= std::unique_ptr<Node>;
+	using smrt_test		= std::unique_ptr<Tests>;
+	using smrt_suite	= std::unique_ptr<Suites>;
 
 	// Vectors inside of the Suites class
-	using suites_ctn    = std::vector<uniq_suite>;
-	using tests_ctn     = std::vector<uniq_test>;
+	using suites_ctn    = std::vector<smrt_suite>;
+	using tests_ctn     = std::vector<smrt_test>;
 
     /* This will allow all functions signatures to
     * be added to the Node, and not just specific types.*/
     using func          = std::function<void(void)>;
 
 	// Used in Coordinator.hpp
-	using _register = std::function<int(std::deque<std::string>&)>;
-	using commands  = std::deque<std::string>&;
-
-//    using container_of_suites = std::vector<std::shared_ptr<Suites>>;
-//    using shr_suite = std::shared_ptr<Suites>;
-//    using shr_runnable = std::shared_ptr<Runnable>;
-//    using shr_test = std::shared_ptr<Tests>;
-//    using suites_tests = std::map<std::string, std::shared_ptr<Runnable>>;
-//    using shr_node = std::shared_ptr<Node>;
-//    using shr_nodeptr = std::shared_ptr<Derived>;
-//    using sent_node = std::pair<std::string_view, std::shared_ptr<Node>>;
-//	using shr_suiteptr  = std::shared_ptr<Suites>;
-//	using shr_testptr   = std::shared_ptr<Tests>;
-
+	using _register		= std::function<int(std::deque<std::string>&)>;
+	using commands		= std::deque<std::string>&;
 };
 #endif // ALIAS_HPP

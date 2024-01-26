@@ -18,8 +18,8 @@ int Goldilocks_Shell::find(Alias::commands& options){
     // Send container to be tokenized.
     auto processed_commands{coordinate.process_tests(options)};
 
-    // Check if the test is loaded or not.
-    Coordinator::node_ptr searched_node{coordinate.find_node(processed_commands, coordinate.root_node)};
+	// Check if the test is loaded or not.
+	auto searched_node{coordinate.find_node(processed_commands, coordinate.root_node.get())};
     
     // Print message if test was found or not.
     channel << IOCtrl::n << "Test "<< test_name << ((searched_node != nullptr)? " was found.": " was not found.") << IOCtrl::endl;

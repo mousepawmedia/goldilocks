@@ -43,12 +43,12 @@
 #ifndef GOLDILOCKS_SHELL_HPP
 #define GOLDILOCKS_SHELL_HPP
 
+#include "iosqueak/blueshell.hpp"
+#include "goldilocks/coordinator/coordinator.hpp"
+
 #include <algorithm>
 #include <iostream>
 #include <string_view>
-#include "iosqueak/blueshell.hpp"
-#include "goldilocks/coordinator/coordinator.hpp"
-// #include "goldilocks/coordinator/suites.hpp"
 
 class Goldilocks_Shell: private Blueshell
 {
@@ -57,10 +57,7 @@ private:
 
     /* Coordinator object for accessing the tree. */
     Coordinator coordinate;
-    
-//    using _register = std::function<int(std::deque<std::string>&)>;
-//    using commands  = std::deque<std::string>&;
-    
+
     /* information about the a specific test */
     int about(Alias::commands);
     

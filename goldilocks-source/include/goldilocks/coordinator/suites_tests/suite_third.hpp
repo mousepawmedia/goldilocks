@@ -2,8 +2,8 @@
 #define SUITE_THIRD_HPP
 
 #include "goldilocks/coordinator/suites.hpp"
-#include "suite1.hpp"
-#include "suite2.hpp"
+#include "goldilocks/coordinator/suites_tests/suite1.hpp"
+#include "goldilocks/coordinator/suites_tests/suite2.hpp"
 
 class Suite_Third: private Suites
 {

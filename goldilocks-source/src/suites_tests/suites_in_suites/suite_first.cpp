@@ -1,4 +1,4 @@
-#include "suite_first.hpp"
+#include "goldilocks/coordinator/suites_tests/suite_first.hpp"
 
 Suite_First::Suite_First():Suites{"Suite_First"}
 {

@@ -2,7 +2,7 @@
 #define SUITE2_HPP
 
 #include "goldilocks/coordinator/suites.hpp"
-#include "test2.hpp"
+#include "goldilocks/coordinator/suites_tests/test2.hpp"
 
 class Suite2: public Suites
 {

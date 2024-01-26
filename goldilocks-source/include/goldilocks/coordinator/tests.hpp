@@ -3,16 +3,15 @@
 
 #include "goldilocks/coordinator/node.hpp"
 #include "goldilocks/coordinator/runnable.hpp"
-#include "goldilocks/coordinator/alias.hpp"
 
-class Tests: private Node
+class Tests: public Node
 {
 public:
     Tests(std::string_view, Alias::func);
     virtual  ~Tests() = default;
 
-	std::string_view    name;
-	Alias::func			test;
+    std::string	name;
+    Runnable	test;
 };
 
 #endif // TESTS_HPP

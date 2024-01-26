@@ -6,7 +6,7 @@
 int Goldilocks_Shell::load(Alias::commands& options){
 
     auto processed_commands{coordinate.process_tests(options)};
-    coordinate.add_node(processed_commands.front(), processed_commands, coordinate.root_node);
+//    coordinate.add_node(processed_commands.front(), processed_commands, coordinate.root.get());
   
 //     for(auto& test: processed_commands){
 //         auto searched_map {coordinate.available_suites.find(test)};

@@ -2,9 +2,9 @@
 #define SUITE_MAIN_HPP
 
 #include "goldilocks/coordinator/suites.hpp"
-#include "suite_second.hpp"
-#include "suite_first.hpp"
-#include "test1.hpp"
+#include "goldilocks/coordinator/suites_tests/suite_second.hpp"
+#include "goldilocks/coordinator/suites_tests/suite_first.hpp"
+#include "goldilocks/coordinator/suites_tests/test1.hpp"
 
 class Suite_Main: public Suites
 {

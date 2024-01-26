@@ -1,4 +1,4 @@
-#include "goldilocks/coordinator/suites_tests/suites.hpp"
+#include "goldilocks/coordinator/suites.hpp"
 
 void Suites::print_container(Suites* suites){
 
@@ -11,8 +11,8 @@ void Suites::print_container(Suites* suites){
             std::cout <<"Suite "<< suite->name <<" contains:\n";
             std::cout<< suite->name <<" suite continer size is: "<< suite->suites_container.size()<<'\n';
 
-            if(!suite->suite_tests_container.empty()){
-                for(auto& name: suite->suite_tests_container){
+			if(!suite->suites_container.empty()){
+				for(auto& name: suite->suites_container){
                     std::cout<<'\t'<<suite->name<<" function name: "<< name.get()->name<<'\n';
                 }
             }

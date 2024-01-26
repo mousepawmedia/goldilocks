@@ -11,7 +11,12 @@ bool Node::has_child(std::string_view name){
 	return false;
 }
 
-Alias::uniq_node Node::get_child(std::string_view name){
-	std::cout<<name;
+Alias::smrt_node Node::get_child(std::string_view name){
+	for(auto& node: children){
+		if(node->node_name == name){
+			std::cout<<"Node found and moving\n";
+			return std::move(node);
+		}
+	}
 	return nullptr;
 }
